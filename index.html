@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V10.4 PRO FINAL</title>
+<title>여우방 맞팔확인 V10.6 PRO FINAL</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--bg:#fff7df;--card:#fff;--cream:#fff5d9;--line:#ead68b;--text:#2a2115;--muted:#73591c;--red:#ef493e;--green:#20a95a;--blue:#2680d9;--shadow:0 8px 22px rgba(100,70,20,.10)}
@@ -28,14 +28,14 @@ button{cursor:pointer}button:disabled{opacity:.65}.primary{width:100%;border:0;b
 nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-size:13px}nav i{display:block;font-style:normal;font-size:24px;margin-bottom:1px}.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#21190d;color:white;padding:12px 16px;border-radius:20px;z-index:99;font-weight:900;display:none}
 </style></head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V10.4 · PRO FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V10.6 · PRO FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 <section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">대기</span></div><div class="grid"><div class="box"><div class="muted">현재 명단</div><div class="num blue" id="roomCount">0</div></div><div class="box"><div class="muted">상태</div><div class="num" style="font-size:24px" id="roomStatus">대기</div></div></div><button class="secondary" onclick="loadRoomList(true)">📥 최신 명단 불러오기</button><p class="warn" id="roomMsg"></p></section>
 <section class="card"><div class="title"><b>📦 인스타그램 ZIP 업로드</b></div><p class="muted">followers_1.html / following.html을 정확히 읽어서 계산합니다.</p><input id="zipFile" type="file" accept=".zip,application/zip,application/x-zip-compressed,*/*"></section>
 <section class="card"><div class="title"><b>👤 내 인스타 정보</b><span class="pill">프로필 숫자</span></div><div class="grid"><div class="box"><label>현재 팔로워</label><input id="currentFollowers" type="number" inputmode="numeric" autocomplete="off"></div><div class="box"><label>현재 팔로잉</label><input id="currentFollowing" type="number" inputmode="numeric" autocomplete="off"></div></div><p class="muted">💡 앱을 새로 열 때마다 빈칸으로 시작합니다.</p><button class="primary" id="analyzeBtn" onclick="analyze()">🦊 맞팔 분석 시작</button><button class="secondary" onclick="clearNumbers()">숫자 초기화</button><p id="status" class="muted"></p></section>
-<section id="cards" class="grid hidden"><div class="stat"><b>👥 단톡방 맞팔</b><div class="num green" id="cRoomMutual">0</div></div><div class="stat"><b>❌ 단톡방인데 날 안함</b><div class="num red" id="cRoomNot">0</div></div><div class="stat"><b>💛 상대만 나를 팔로우</b><div class="num gold" id="cFansOnly">0</div></div><div class="stat"><b>📄 단톡방 명단</b><div class="num blue" id="cRoomTotal">0</div></div></section>
+<section id="cards" class="grid hidden"><div class="stat"><b>👥 단톡방 맞팔</b><div class="num green" id="cRoomMutual">0</div></div><div class="stat"><b>❌ 내가 팔로우했는데 날 안함</b><div class="num red" id="cRoomNot">0</div></div><div class="stat"><b>💛 상대만 나를 팔로우</b><div class="num gold" id="cFansOnly">0</div></div><div class="stat"><b>📄 단톡방 명단</b><div class="num blue" id="cRoomTotal">0</div></div></section>
 <section id="summary" class="card hidden"><div class="title"><b>📊 분석 요약</b><span class="pill" id="doneTime"></span></div><div class="result-grid"><div class="mini">팔로워<strong id="sFollowers">0</strong></div><div class="mini">팔로잉<strong id="sFollowing">0</strong></div><div class="mini">전체 맞팔<strong id="sMutual">0</strong></div><div class="mini">전체 나만 팔로우<strong id="sOnlyMe">0</strong></div></div><p class="muted" id="checkMsg"></p></section>
-<section id="lists" class="card hidden"><div class="tabs"><button class="tab active" onclick="showTab('roomNot',this)">단톡방인데 날 안함</button><button class="tab" onclick="showTab('roomMutual',this)">단톡방 맞팔</button><button class="tab" onclick="showTab('fansOnly',this)">상대만 나를 팔로우</button><button class="tab" onclick="showTab('roomNotFollowed',this)">단톡방 내가 안함</button><button class="tab" onclick="showTab('onlyMe',this)">전체 나만 팔로우</button></div><div class="searchrow"><input id="q" placeholder="아이디/닉네임 검색" oninput="renderList()"><button class="smallbtn" onclick="copyCurrent()">복사</button></div><div class="list" id="list"></div></section>
+<section id="lists" class="card hidden"><div class="tabs"><button class="tab active" onclick="showTab('roomNot',this)">내가 팔로우했는데 날 안함</button><button class="tab" onclick="showTab('roomAll',this)">전체 명단 검색</button><button class="tab" onclick="showTab('roomMutual',this)">단톡방 맞팔</button><button class="tab" onclick="showTab('fansOnly',this)">상대만 나를 팔로우</button><button class="tab" onclick="showTab('roomNotFollowed',this)">단톡방 중 내가 안함</button><button class="tab" onclick="showTab('onlyMe',this)">전체 나만 팔로우</button></div><div class="searchrow"><input id="q" placeholder="아이디/닉네임 검색" oninput="renderList()"><button class="smallbtn" onclick="copyCurrent()">복사</button></div><div class="list" id="list"></div></section>
 <section class="card"><div class="title"><b>⚙️ 관리자 설정</b><span class="pill">비밀번호 0702</span></div><div class="searchrow"><input id="adminPw" type="password" placeholder="관리자 비밀번호"><button class="smallbtn" onclick="adminLogin()">로그인</button></div><div id="adminBox" class="hidden" style="margin-top:12px"><p class="muted">시트 연동이 안 될 때는 명단을 직접 붙여넣어 저장하세요.</p><input id="sheetUrl" type="text" placeholder="Google Sheets CSV/htmlview 주소"><button class="secondary" onclick="saveSheet()">시트 주소 저장 후 다시 불러오기</button><button class="secondary" onclick="resetSheet()">기본 주소로 복원</button><hr style="border:0;border-top:1px solid #f0e3b4;margin:16px 0"><textarea id="manualList" placeholder="예시&#10;1, 유별, @tlso_94&#10;2, 도운맘, @o__dowoon"></textarea><button class="secondary" onclick="saveManualList()">붙여넣은 명단 저장</button><button class="secondary" onclick="clearRoomCache()">저장된 명단 삭제</button><p class="warn" id="adminMsg"></p></div></section>
 </div>
 <nav><button onclick="scrollTo(0,0)"><i>🏠</i>홈</button><button onclick="$('zipFile').scrollIntoView({behavior:'smooth'})"><i>📦</i>업로드</button><button onclick="$('lists').scrollIntoView({behavior:'smooth'})"><i>👥</i>단톡방</button><button onclick="$('cards').scrollIntoView({behavior:'smooth'})"><i>🤝</i>맞팔</button><button onclick="$('adminPw').scrollIntoView({behavior:'smooth'})"><i>⚙️</i>관리자</button></nav><div class="toast" id="toast"></div>
@@ -68,14 +68,99 @@ function extractHtmlIds(text){let ids=[],m;const href=/href=["']https?:\/\/(?:ww
 function collectJson(o,out){if(!o)return;if(typeof o==="string"){const n=norm(o);if(valid(n))out.push(n);return}if(Array.isArray(o)){o.forEach(x=>collectJson(x,out));return}if(typeof o==="object"){if(o.value)collectJson(o.value,out);if(o.href)collectJson(o.href,out);if(o.username)collectJson(o.username,out);Object.keys(o).forEach(k=>collectJson(o[k],out))}}
 function extractJsonIds(text){let ids=[];try{collectJson(JSON.parse(text),ids)}catch(e){}return uniq(ids)}
 async function parseZip(file){if(!file)throw Error("ZIP 파일을 선택해주세요.");const zip=await JSZip.loadAsync(file);const fName=pickFile(zip,"followers_1.html")||pickFile(zip,"followers_1.json");const gName=pickFile(zip,"following.html")||pickFile(zip,"following.json");if(!fName)throw Error("followers_1.html 파일을 찾지 못했어요.");if(!gName)throw Error("following.html 파일을 찾지 못했어요.");const fText=await zip.files[fName].async("string");const gText=await zip.files[gName].async("string");const followers=fName.toLowerCase().endsWith(".json")?extractJsonIds(fText):extractHtmlIds(fText);const following=gName.toLowerCase().endsWith(".json")?extractJsonIds(gText):extractHtmlIds(gText);if(followers.length<10)throw Error("followers_1.html에서 계정을 충분히 읽지 못했어요.");if(following.length<10)throw Error("following.html에서 계정을 충분히 읽지 못했어요.");return {followers,following}}
-async function analyze(){const btn=$("analyzeBtn");try{btn.disabled=true;btn.textContent="분석 중...";$("status").textContent="";if(!roomList.length)await loadRoomList();if(!roomList.length)throw Error("단톡방 명단을 먼저 불러오거나 저장해주세요.");const pf=parseInt($("currentFollowers").value,10),pg=parseInt($("currentFollowing").value,10);if(!pf||!pg)throw Error("현재 팔로워/팔로잉 숫자를 입력해주세요.");$("status").textContent="ZIP 파일 분석 중...";const parsed=await parseZip($("zipFile").files[0]);const followers=parsed.followers,following=parsed.following;const F=new Set(followers),G=new Set(following);const mutual=following.filter(id=>F.has(id));const onlyMe=following.filter(id=>!F.has(id));const roomMutual=roomList.filter(r=>F.has(r.id)&&G.has(r.id));
+async function analyze(){
+  const btn=$("analyzeBtn");
+  try{
+    btn.disabled=true;
+    btn.textContent="분석 중...";
+    $("status").textContent="";
+
+    if(!roomList.length) await loadRoomList();
+    if(!roomList.length) throw Error("단톡방 명단을 먼저 불러오거나 저장해주세요.");
+
+    const pf=parseInt($("currentFollowers").value,10);
+    const pg=parseInt($("currentFollowing").value,10);
+    if(!pf||!pg) throw Error("현재 팔로워/팔로잉 숫자를 입력해주세요.");
+
+    $("status").textContent="ZIP 파일 분석 중...";
+    const parsed=await parseZip($("zipFile").files[0]);
+
+    // 기준 고정
+    // followers = 나를 팔로우하는 사람
+    // following = 내가 팔로우하는 사람
+    const followers=parsed.followers;
+    const following=parsed.following;
+    const F=new Set(followers);
+    const G=new Set(following);
+
+    const mutual=following.filter(id=>F.has(id));        // 전체 맞팔
+    const onlyMe=following.filter(id=>!F.has(id));       // 내가 팔로우했는데 상대는 나를 안함
+    const fansOnly=followers.filter(id=>!G.has(id));     // 상대만 나를 팔로우
+
+    const roomMutual=roomList.filter(r=>F.has(r.id)&&G.has(r.id));
     const roomNot=roomList.filter(r=>G.has(r.id)&&!F.has(r.id));
     const roomFans=roomList.filter(r=>F.has(r.id)&&!G.has(r.id));
     const roomNotFollowed=roomList.filter(r=>!G.has(r.id));
-    results={roomMutual,roomNot,fansOnly:roomFans,roomNotFollowed,onlyMe:onlyMe.map(id=>({id,name:""}))};setNum("cRoomMutual",roomMutual.length);setNum("cRoomNot",roomNot.length);setNum("cFansOnly",roomFans.length);setNum("cRoomTotal",roomList.length);setNum("sFollowers",followers.length);setNum("sFollowing",following.length);setNum("sMutual",mutual.length);setNum("sOnlyMe",onlyMe.length);$("doneTime").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});$("checkMsg").textContent=`검증: 전체 맞팔(${mutual.length}) + 전체 나만 팔로우(${onlyMe.length}) = 팔로잉(${following.length}) / 단톡방 내가 안함 ${roomNotFollowed.length}명`;$("cards").classList.remove("hidden");$("summary").classList.remove("hidden");$("lists").classList.remove("hidden");$("status").innerHTML=`✅ 분석 완료<br>ZIP 팔로워 ${followers.length}명 / ZIP 팔로잉 ${following.length}명`;showTab("roomNot",document.querySelector(".tab"));toast("분석 완료")}catch(e){$("status").textContent="오류: "+e.message;toast("확인 필요")}finally{btn.disabled=false;btn.textContent="🦊 맞팔 분석 시작"}}
+
+    results={
+      roomAll:roomList,
+      roomMutual,
+      roomNot,
+      fansOnly:roomFans,
+      roomNotFollowed,
+      onlyMe:onlyMe.map(id=>({id,name:""}))
+    };
+
+    setNum("cRoomMutual",roomMutual.length);
+    setNum("cRoomNot",roomNot.length);
+    setNum("cFansOnly",roomFans.length);
+    setNum("cRoomTotal",roomList.length);
+
+    setNum("sFollowers",followers.length);
+    setNum("sFollowing",following.length);
+    setNum("sMutual",mutual.length);
+    setNum("sOnlyMe",onlyMe.length);
+
+    $("doneTime").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
+    $("checkMsg").textContent=
+      `검증: 전체 맞팔(${mutual.length}) + 전체 나만 팔로우(${onlyMe.length}) = 내가 팔로잉(${following.length}) / 상대만 나를 팔로우 ${fansOnly.length}명`;
+
+    $("cards").classList.remove("hidden");
+    $("summary").classList.remove("hidden");
+    $("lists").classList.remove("hidden");
+
+    $("status").innerHTML=
+      `✅ 분석 완료<br>ZIP 팔로워 ${followers.length}명 / ZIP 팔로잉 ${following.length}명<br>`+
+      `※ 팔로워=나를 팔로우하는 사람, 팔로잉=내가 팔로우하는 사람`;
+
+    showTab("roomNot",document.querySelector(".tab"));
+    toast("분석 완료");
+  }catch(e){
+    $("status").textContent="오류: "+e.message;
+    toast("확인 필요");
+  }finally{
+    btn.disabled=false;
+    btn.textContent="🦊 맞팔 분석 시작";
+  }
+}
 function clearNumbers(show=true){$("currentFollowers").value="";$("currentFollowing").value="";if(show)toast("숫자 초기화 완료")}
 function showTab(tab,btn){currentTab=tab;document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");renderList()}
-function renderList(){const q=norm($("q").value);const arr=results[currentTab]||[];const f=arr.filter(x=>!q||norm(x.id).includes(q)||String(x.name||"").includes(q));$("list").innerHTML=f.map((x,i)=>{const id=norm(x.id);return `<div class="item"><span>${i+1}.</span><b>${x.name||""}</b><a href="https://www.instagram.com/${id}/" target="_blank" rel="noopener noreferrer">@${id}</a></div>`}).join("")||"<p class='muted'>결과 없음</p>"}
+function renderList(){
+  const q=norm($("q").value);
+  const arr=results[currentTab]||[];
+  const f=arr.filter(x=>!q||norm(x.id).includes(q)||String(x.name||"").includes(q));
+  $("list").innerHTML=f.map((x,i)=>{
+    const id=norm(x.id);
+    let badge="";
+    if(currentTab==="roomAll") badge="명단";
+    if(currentTab==="roomMutual") badge="맞팔";
+    if(currentTab==="roomNot") badge="상대가 날 안함";
+    if(currentTab==="fansOnly") badge="상대만 나를 팔로우";
+    if(currentTab==="roomNotFollowed") badge="내가 안함";
+    if(currentTab==="onlyMe") badge="상대가 날 안함";
+    return `<div class="item"><span>${i+1}.</span><b>${x.name||""}</b><a href="https://www.instagram.com/${id}/" target="_blank" rel="noopener noreferrer">@${id}</a><small style="margin-left:auto;color:#73591c">${badge}</small></div>`;
+  }).join("")||"<p class='muted'>현재 선택한 탭에는 결과가 없어요. 시트 전체에서 찾으려면 [전체 명단 검색] 탭을 눌러주세요.</p>";
+}
 function copyCurrent(){const arr=results[currentTab]||[];navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. @${norm(x.id)}`).join("\n"));toast("복사 완료")}
 function adminLogin(){if($("adminPw").value===ADMIN_PASSWORD){$("adminBox").classList.remove("hidden");$("sheetUrl").value=localStorage.getItem("yb_sheet_url_override")||HTMLVIEW_SHEET_URL;$("adminMsg").textContent="관리자 로그인 완료";toast("관리자 로그인 완료")}else toast("비밀번호가 달라요")}
 function saveSheet(){const u=$("sheetUrl").value.trim();if(!u){toast("주소를 입력해주세요");return}localStorage.setItem("yb_sheet_url_override",u);localStorage.removeItem("yb_room_cache");$("adminMsg").textContent="시트 주소 저장 완료";loadRoomList(true)}
