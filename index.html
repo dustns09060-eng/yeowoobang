@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V9 FINAL</title>
+<title>여우방 맞팔확인 V10 PRO FINAL</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--bg:#fff7df;--card:#fff;--cream:#fff5d9;--line:#ead68b;--text:#2a2115;--muted:#73591c;--red:#ef493e;--green:#20a95a;--blue:#2680d9;--shadow:0 8px 22px rgba(100,70,20,.10)}
@@ -46,7 +46,7 @@ nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-s
 </style>
 </head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V9 · FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V10 · PRO FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 
 <section class="card">
@@ -301,15 +301,18 @@ function renderList(){
   const f=arr.filter(x=>!q||norm(x.id).includes(q)||String(x.name||"").includes(q));
   $("list").innerHTML=f.map((x,i)=>{
     const id=norm(x.id);
-    return `<div class="item"><span>${i+1}.</span><b>${x.name||""}</b><a href="https://www.instagram.com/${id}/" target="_blank" rel="noopener noreferrer">@${id}</a></div>`;
+    const name=x.name||"";
+    return `<div class="item"><span>${i+1}.</span><b>${name}</b><a title="인스타 열기" href="https://www.instagram.com/${id}/" target="_blank" rel="noopener noreferrer">@${id}</a></div>`;
   }).join("")||"<p class='muted'>결과 없음</p>";
 }
 function copyCurrent(){
   const arr=results[currentTab]||[];
-  navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. ${x.name||""} @${norm(x.id)}`).join("\n"));
+  navigator.clipboard.writeText(
+    arr.map((x,i)=>`${i+1}. @${norm(x.id)}`).join("
+")
+  );
   toast("복사 완료");
 }
-
 function adminLogin(){if($("adminPw").value===ADMIN_PASSWORD){$("adminBox").classList.remove("hidden");$("sheetUrl").value=getSheetUrl();toast("관리자 로그인 완료")}else toast("비밀번호가 달라요")}
 function saveSheet(){localStorage.setItem("yb_sheet_url_override",$("sheetUrl").value.trim());loadRoomList(true)}
 function resetSheet(){localStorage.removeItem("yb_sheet_url_override");$("sheetUrl").value=DEFAULT_SHEET_URL;loadRoomList(true)}
