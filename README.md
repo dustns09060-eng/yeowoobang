@@ -1,3 +1,3 @@
-# 여우방 맞팔확인 V3 안정화
+# 여우방 맞팔확인 V4
 
-ZIP 내부 모든 HTML을 탐색해서 followers/following 파일을 자동 선택합니다.
+사이즈 축소 + HTML/JSON ZIP 안정화 엔진
