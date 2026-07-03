@@ -1,6 +1,6 @@
 {
-  "name": "여우방 맞팔확인 GOOGLE SHEET FINAL",
-  "short_name": "여우방시트",
+  "name": "여우방 맞팔확인 사용자 무료입장판",
+  "short_name": "여우방",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff8e8",
