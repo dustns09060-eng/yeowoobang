@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#FFB643">
+<title>여우방 맞팔확인 GitHub FINAL</title>
+<link rel="manifest" href="./manifest.json">
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;background:#fff8e6;color:#2c2212}
+.hidden{display:none!important}
+button,input,textarea{font-family:inherit}
+.bg{min-height:100vh;background:linear-gradient(180deg,#ffc14a 0,#fff1b8 190px,#fff8e6 191px)}
+.wrap{max-width:520px;margin:0 auto;padding:18px 16px 96px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:58px;height:58px;border-radius:20px;background:linear-gradient(145deg,#ffbb45,#ff693d);display:grid;place-items:center;font-size:34px;box-shadow:inset 0 -5px 0 rgba(0,0,0,.09)}
+h1{margin:0;font-size:26px;letter-spacing:-1px}
+.sub{margin:4px 0 0;color:#6c5420;font-size:13.5px;font-weight:800}
+.install{border:0;border-radius:999px;background:#2c2212;color:white;font-weight:950;padding:12px 14px}
+.notice{background:#fff7d7;border:1px solid #efd27e;border-radius:999px;padding:11px 14px;font-weight:900;color:#6d4d00;margin:8px 0 16px;font-size:13px}
+.card{background:white;border:1px solid rgba(213,158,38,.22);border-radius:26px;padding:18px;margin:14px 0;box-shadow:0 12px 28px rgba(128,80,0,.11)}
+.login{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(180deg,#ffc14a,#fff8e6)}
+.login .card{width:100%;max-width:420px;text-align:center}
+.biglogo{width:92px;height:92px;border-radius:31px;margin:0 auto 16px;background:linear-gradient(145deg,#ffbb45,#ff693d);display:grid;place-items:center;font-size:52px}
+.login h1{font-size:31px}
+.login p{color:#765d27;line-height:1.55}
+.pwrow{display:flex;gap:8px}
+.pwrow input{flex:1;min-width:0;border:1px solid #ecd189;border-radius:18px;padding:16px;text-align:center;font-weight:950;font-size:18px;background:#fffdf6}
+.pwrow button{width:62px;border:1px solid #ecd189;border-radius:18px;background:#fff7dc;font-weight:900}
+.primary{width:100%;border:0;border-radius:20px;background:linear-gradient(135deg,#ff9d25,#ff5f3f);color:white;font-size:17px;font-weight:950;padding:16px;margin-top:12px;box-shadow:0 12px 22px rgba(255,101,45,.25)}
+.secondary{width:100%;border:1px solid #efd27e;border-radius:20px;background:#fff9e8;color:#654a0b;font-size:16px;font-weight:950;padding:15px;margin-top:10px}
+.guide{margin:0;padding-left:20px;color:#67511e;line-height:1.75;font-size:14px}
+.drop{border:2px dashed #ecc053;background:#fffaf0;border-radius:24px;padding:22px 14px;text-align:center}
+.drop .ico{font-size:48px}
+.drop b{display:block;font-size:20px;margin:8px 0}
+.drop p{margin:0 0 14px;color:#7d642b;line-height:1.5;font-size:13px}
+input[type=file]{width:100%;border:1px solid #ead28a;border-radius:18px;padding:13px;background:white}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{background:white;border-radius:25px;padding:18px;min-height:118px;box-shadow:0 10px 24px rgba(128,80,0,.09)}
+.stat span{font-size:13px;color:#725a22;font-weight:900}
+.stat b{display:block;margin-top:9px;font-size:34px}
+.green b{color:#20a456}.red b{color:#e3502f}.yellow b{color:#c98b00}.blue b{color:#247ad6}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.summary div{background:#fff8e8;border-radius:18px;padding:14px}
+.summary span{display:block;font-size:12px;color:#725a22;font-weight:800}
+.summary b{font-size:23px}
+.progress{display:none;height:10px;border-radius:999px;background:#ffe4a0;overflow:hidden;margin-top:12px}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,#ffbd44,#ff6040)}
+.status{display:none;background:#fff0bb;border-radius:18px;padding:14px;margin-top:12px;color:#624700;font-size:13px;line-height:1.6;word-break:break-all}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px}
+.tab{border:0;border-radius:999px;background:#fff0c2;color:#735500;font-weight:950;white-space:nowrap;padding:11px 14px}
+.tab.active{background:#2c2212;color:white}
+.tools{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin:4px 0 12px}
+.tools input{min-width:0;border:1px solid #ead28a;border-radius:16px;padding:13px;background:#fffdf6}
+.tools button{border:0;border-radius:16px;background:#ffbd44;color:#513900;font-weight:950;padding:0 11px}
+.meta{display:flex;justify-content:space-between;font-size:13px;color:#725a22;font-weight:950;margin-bottom:8px}
+.list{display:grid;gap:8px;max-height:560px;overflow:auto}
+.item{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#fffaf0;border:1px solid #f0dfa8;border-radius:18px;padding:13px}
+.item a{color:#2c2212;text-decoration:none;font-weight:950;word-break:break-all}
+.item small{display:block;color:#8b7135;margin-top:3px}
+.copy{border:0;border-radius:14px;background:#2c2212;color:white;font-weight:950;padding:9px}
+.bottom{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:520px;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.97);border-top:1px solid #eed58a;padding:8px 6px 10px;z-index:9}
+.bottom button{border:0;background:transparent;color:#7a5d18;font-weight:950;font-size:22px}
+.bottom span{display:block;font-size:11px}
+.muted{color:#735b23;line-height:1.6;font-size:13px}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#2c2212;color:white;border-radius:999px;padding:11px 15px;font-weight:950;opacity:0;transition:.2s;z-index:99}
+.toast.show{opacity:1;bottom:108px}
+.adminbox{display:none}.adminbox.show{display:block}
+textarea{width:100%;min-height:110px;border:1px solid #ead28a;border-radius:18px;background:#fffdf6;padding:12px;resize:vertical}
+</style>
+</head>
+<body>
+<section id="login" class="login">
+  <div class="card">
+    <div class="biglogo">🦊</div>
+    <h1>여우방 맞팔확인</h1>
+    <p>관리자가 단톡방 명단을 한 번 저장하면<br>일반 사용자는 인스타 ZIP만 올리면 돼요.</p>
+    <div class="pwrow"><input id="pw" type="password" placeholder="입장 비밀번호"><button onclick="togglePw()">보기</button></div>
+    <button class="primary" onclick="enter()">🦊 시작하기</button>
+  </div>
+</section>
+
+<main id="app" class="bg hidden">
+  <div class="wrap">
+    <header class="header">
+      <div class="brand">
+        <div class="logo">🦊</div>
+        <div><h1>여우방 맞팔확인</h1><p class="sub">GitHub FINAL · 관리자 명단 저장형</p></div>
+      </div>
+      <button class="install" onclick="installApp()">앱설치</button>
+    </header>
+    <div class="notice">🔐 휴대폰 안에서만 분석 · 외부 서버 전송 없음</div>
+
+    <section class="card">
+      <ol class="guide">
+        <li>관리자가 단톡방 명단을 저장</li>
+        <li>사용자는 인스타 ZIP만 업로드</li>
+        <li>단톡방 맞팔 여부 자동 확인</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <b>👥 저장된 단톡방 명단</b>
+      <div class="summary" style="margin-top:12px">
+        <div><span>저장 인원</span><b id="savedRoomCount">0</b></div>
+        <div><span>상태</span><b id="savedStatus" style="font-size:18px">없음</b></div>
+      </div>
+      <button class="secondary" onclick="openAdmin()">관리자 명단 관리</button>
+      <div id="adminBox" class="adminbox">
+        <div class="pwrow" style="margin-top:12px"><input id="adminPw" type="password" placeholder="관리자 비밀번호"><button onclick="adminLogin()">확인</button></div>
+        <div id="adminPanel" class="hidden">
+          <div class="drop" style="margin-top:12px">
+            <div class="ico">📄</div><b>엑셀로 명단 저장</b>
+            <p>.xlsx / .csv 가능, @아이디 자동 추출</p>
+            <input id="adminExcel" type="file" accept=".xlsx,.xls,.csv">
+          </div>
+          <p class="muted">엑셀이 불편하면 아래에 @아이디 목록을 붙여넣어도 됩니다.</p>
+          <textarea id="manualRoom" placeholder="예시&#10;1. 유별 @tlso_94&#10;2. 도운맘 @o__dowoon"></textarea>
+          <button class="primary" onclick="saveRoomList()">명단 저장하기</button>
+          <button class="secondary" onclick="clearRoomList()">저장 명단 삭제</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="upload">
+      <div class="drop">
+        <div class="ico">📦</div><b>인스타그램 ZIP 업로드</b>
+        <p>인스타에서 받은 데이터 ZIP만 선택해주세요</p>
+        <input id="zipFile" type="file" accept=".zip">
+      </div>
+    </section>
+
+    <section class="card">
+      <b>📌 현재 인스타 앱 숫자</b>
+      <p class="muted">선택 입력입니다. ZIP 데이터와 차이를 알려드려요.</p>
+      <div class="summary">
+        <div><span>현재 팔로워</span><input id="currentFollowers" type="number" placeholder="4431" style="width:100%;border:0;background:transparent;font-size:22px;font-weight:950;outline:0"></div>
+        <div><span>현재 팔로잉</span><input id="currentFollowing" type="number" placeholder="4404" style="width:100%;border:0;background:transparent;font-size:22px;font-weight:950;outline:0"></div>
+      </div>
+      <button class="primary" onclick="analyzeAll()">🚀 결과 확인하기</button>
+      <button class="secondary" onclick="resetAll()">초기화</button>
+      <div class="progress" id="progress"><div id="bar"></div></div>
+      <div class="status" id="status"></div>
+    </section>
+
+    <section id="result" class="hidden">
+      <div class="grid">
+        <div class="stat green"><span>👥 단톡방 맞팔</span><b id="roomMutualCount">0</b></div>
+        <div class="stat red"><span>❌ 단톡방인데 날 안함</span><b id="roomMissingMeCount">0</b></div>
+        <div class="stat yellow"><span>💛 상대만 나를 팔로우</span><b id="roomOnlyFollowerCount">0</b></div>
+        <div class="stat blue"><span>📄 단톡방 명단</span><b id="roomCount">0</b></div>
+      </div>
+      <section class="card">
+        <b>📊 분석 요약 <span id="time" style="float:right;color:#70551b"></span></b>
+        <div class="summary" style="margin-top:12px">
+          <div><span>팔로워</span><b id="followersCount">0</b></div>
+          <div><span>팔로잉</span><b id="followingCount">0</b></div>
+          <div><span>전체 맞팔</span><b id="mutualCount">0</b></div>
+          <div><span>전체 내가만 팔로우</span><b id="notBackCount">0</b></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="tabs">
+          <button class="tab active" data-t="roomMissingMe" onclick="tab('roomMissingMe')">단톡방인데 날 안함</button>
+          <button class="tab" data-t="roomMutual" onclick="tab('roomMutual')">단톡방 맞팔</button>
+          <button class="tab" data-t="roomOnlyFollower" onclick="tab('roomOnlyFollower')">상대만 나를 팔로우</button>
+          <button class="tab" data-t="roomNotFollowing" onclick="tab('roomNotFollowing')">내가 안 한 단톡방</button>
+          <button class="tab" data-t="notBack" onclick="tab('notBack')">전체 내가만 팔로우</button>
+          <button class="tab" data-t="mutual" onclick="tab('mutual')">전체 맞팔</button>
+        </div>
+        <div class="tools"><input id="search" placeholder="아이디/닉네임 검색" oninput="render()"><button onclick="copyCurrent()">복사</button><button onclick="downloadXlsx()">저장</button></div>
+        <div class="meta"><b id="listTitle">단톡방인데 날 안함</b><span id="listCount">0명</span></div>
+        <div id="list" class="list"></div>
+      </section>
+    </section>
+  </div>
+
+  <nav class="bottom">
+    <button onclick="topScroll()">🏠<span>홈</span></button>
+    <button onclick="uploadScroll()">📦<span>업로드</span></button>
+    <button onclick="tabScroll('roomMissingMe')">👥<span>단톡방</span></button>
+    <button onclick="tabScroll('roomMutual')">🤝<span>맞팔</span></button>
+  </nav>
+</main>
+<div id="toast" class="toast"></div>
+
+<script>
+window.ROOM_PASSWORD="0702";
+window.ADMIN_PASSWORD="0702";
+const state={data:{room:[],followers:[],following:[],mutual:[],notBack:[],fans:[],roomMutual:[],roomMissingMe:[],roomOnlyFollower:[],roomNotFollowing:[]},current:"roomMissingMe",deferredPrompt:null};
+const $=id=>document.getElementById(id);
+const BAD=new Set(["instagram","accounts","explore","reel","reels","p","direct","stories","privacy","policy","meta","help","www","com","about","developer","terms","_u","profile"]);
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
+function togglePw(){$("pw").type=$("pw").type==="password"?"text":"password"}
+function enter(){if($("pw").value.trim()===window.ROOM_PASSWORD){sessionStorage.setItem("yb_ok","1");$("login").classList.add("hidden");$("app").classList.remove("hidden");refreshSaved()}else toast("비밀번호가 달라요")}
+if(sessionStorage.getItem("yb_ok")==="1"){$("login").classList.add("hidden");$("app").classList.remove("hidden");setTimeout(refreshSaved,0)}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.deferredPrompt=e});
+function installApp(){if(!state.deferredPrompt){toast("브라우저 메뉴에서 홈 화면에 추가해주세요");return}state.deferredPrompt.prompt();state.deferredPrompt=null}
+function status(m){$("status").style.display="block";$("status").innerHTML=m}
+function prog(n){$("progress").style.display="block";$("bar").style.width=n+"%"}
+function decodeHtml(s){const t=document.createElement("textarea");t.innerHTML=String(s||"");return t.value}
+function norm(v){return String(v||"").replace(/^@/,"").trim().replace(/\s+/g,"").replace(/[^a-zA-Z0-9._]/g,"").toLowerCase()}
+function valid(id){return /^[a-zA-Z0-9._]{2,30}$/.test(id)&&!BAD.has(id)}
+function add(map,v,nickname=""){const id=norm(v);if(valid(id)&&!map.has(id))map.set(id,{id,nickname:nickname||""})}
+function clean(p){return String(p||"").toLowerCase().replace(/\\/g,"/")}
+function fname(p){return clean(p).split("/").pop()}
+function role(p){const path=clean(p), f=fname(p); if(path.includes("followers_and_following/")){if(/^followers_\d+\.(html|htm|json)$/.test(f)||f==="followers.html"||f==="followers.json")return"followers"; if(f==="following.html"||f==="following.htm"||f==="following.json")return"following"} if(/^followers_\d+\.(html|htm|json)$/.test(f)||f==="followers.html"||f==="followers.json")return"followers"; if(f==="following.html"||f==="following.htm"||f==="following.json")return"following"; return"ignore"}
+function getDoc(html){const s=decodeHtml(html).replace(/\\\//g,"/").replace(/&#x2F;/g,"/").replace(/&amp;/g,"&");return new DOMParser().parseFromString(s,"text/html")}
+function pickIdFromText(text){const str=String(text||""); const at=str.match(/@([A-Za-z0-9._]{2,30})/); if(at)return at[1]; const url=str.match(/instagram\.com\/(?:_u\/)?([A-Za-z0-9._]{2,30})/i); if(url)return url[1]; const raw=norm(str); return valid(raw)?raw:""}
+function openAdmin(){$("adminBox").classList.toggle("show")}
+function adminLogin(){if($("adminPw").value.trim()===window.ADMIN_PASSWORD){$("adminPanel").classList.remove("hidden");toast("관리자 확인 완료")}else toast("관리자 비밀번호가 달라요")}
+function refreshSaved(){const arr=JSON.parse(localStorage.getItem("yb_room_list")||"[]");$("savedRoomCount").textContent=arr.length;$("savedStatus").textContent=arr.length?"저장됨":"없음"}
+async function readExcelFile(file){const buf=await file.arrayBuffer(); const wb=XLSX.read(buf,{type:"array"}); const ws=wb.Sheets[wb.SheetNames[0]]; const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:false,defval:""}); const map=new Map(); rows.forEach(row=>{const cells=row.map(x=>String(x||"").trim()).filter(Boolean); const joined=cells.join(" "); const id=pickIdFromText(joined); if(id){const nick=cells.find(c=>!c.includes("@")&&!c.includes("instagram.com")&&!/^\d+$/.test(c)&&norm(c)!==norm(id))||""; add(map,id,nick)}}); return [...map.values()].sort((a,b)=>a.id.localeCompare(b.id))}
+function readManualText(){const map=new Map();($("manualRoom").value||"").split(/\n|,/).forEach(line=>{const id=pickIdFromText(line);if(id){const nick=String(line).replace(/@[A-Za-z0-9._]{2,30}/,"").trim();add(map,id,nick)}});return [...map.values()].sort((a,b)=>a.id.localeCompare(b.id))}
+async function saveRoomList(){try{let room=[]; const file=$("adminExcel").files[0]; if(file) room=await readExcelFile(file); const manual=readManualText(); if(manual.length) room=[...new Map([...room,...manual].map(x=>[x.id,x])).values()].sort((a,b)=>a.id.localeCompare(b.id)); if(!room.length)throw new Error("저장할 아이디를 찾지 못했어요"); localStorage.setItem("yb_room_list",JSON.stringify(room)); refreshSaved(); toast("단톡방 명단 저장 완료")}catch(e){toast(e.message)}}
+function clearRoomList(){localStorage.removeItem("yb_room_list");refreshSaved();toast("저장 명단 삭제 완료")}
+function loadRoomList(){const room=JSON.parse(localStorage.getItem("yb_room_list")||"[]"); if(!room.length)throw new Error("저장된 단톡방 명단이 없어요. 관리자 명단 관리에서 먼저 저장해주세요."); return room}
+function parseFollowersHtml(html){const map=new Map(), doc=getDoc(html); doc.querySelectorAll("a[href]").forEach(a=>{const href=a.getAttribute("href")||"", text=(a.textContent||"").trim(); const m=href.match(/^https?:\/\/(?:www\.)?instagram\.com\/([A-Za-z0-9._]{2,30})\/?$/i); if(m)add(map,m[1]); else {const id=pickIdFromText(text); if(id)add(map,id)} }); return [...map.keys()]}
+function parseFollowingHtml(html){const map=new Map(), doc=getDoc(html); doc.querySelectorAll("h2").forEach(h=>{const id=pickIdFromText(h.textContent||""); if(id)add(map,id)}); if(map.size===0)doc.querySelectorAll("a[href]").forEach(a=>{const href=a.getAttribute("href")||""; const m=href.match(/^https?:\/\/(?:www\.)?instagram\.com\/_u\/([A-Za-z0-9._]{2,30})\/?$/i); if(m)add(map,m[1])}); return [...map.keys()]}
+function parseJson(obj){const map=new Map(); function scan(s){const id=pickIdFromText(s); if(id)add(map,id)} function walk(v){if(Array.isArray(v)){v.forEach(walk);return} if(v&&typeof v==="object"){if(Array.isArray(v.string_list_data))v.string_list_data.forEach(x=>{if(x.value)scan(x.value);if(x.href)scan(x.href)}); Object.values(v).forEach(walk);return} if(typeof v==="string")scan(v)} walk(obj); return [...map.keys()]}
+async function parse(file,r){const n=clean(file.name), txt=await file.async("text"); if(n.endsWith(".json")){try{return parseJson(JSON.parse(txt))}catch(e){return[]}} return r==="following"?parseFollowingHtml(txt):parseFollowersHtml(txt)}
+async function analyzeInstagramZip(){const input=$("zipFile"); if(!input.files||!input.files[0])throw new Error("인스타그램 ZIP 파일을 선택해주세요"); const zip=await JSZip.loadAsync(input.files[0]); const files=Object.values(zip.files).filter(f=>!f.dir); const selected={followers:[],following:[]}; files.forEach(f=>{const r=role(f.name); if(r==="followers")selected.followers.push(f); if(r==="following")selected.following.push(f)}); if(!selected.followers.length||!selected.following.length)throw new Error("인스타 데이터 ZIP이 아니에요. followers_1.html / following.html이 들어있는 ZIP을 올려주세요."); const followers=new Set(),following=new Set(),rows=[]; const targets=[...selected.followers,...selected.following]; for(let i=0;i<targets.length;i++){const r=role(targets[i].name); const arr=await parse(targets[i],r); rows.push({name:targets[i].name,role:r,count:arr.length}); arr.forEach(x=>r==="followers"?followers.add(x):following.add(x)); prog(30+Math.round((i+1)/targets.length*55))} return {followers:[...followers].sort(),following:[...following].sort(),rows}}
+async function analyzeAll(){try{prog(5); status("저장된 단톡방 명단을 불러오는 중..."); const room=loadRoomList(); prog(25); status("인스타 ZIP을 분석하는 중..."); const ig=await analyzeInstagramZip(); const fs=new Set(ig.followers), gs=new Set(ig.following); state.data.room=room; state.data.followers=ig.followers.map(id=>({id})); state.data.following=ig.following.map(id=>({id})); state.data.mutual=ig.following.filter(id=>fs.has(id)).map(id=>({id})); state.data.notBack=ig.following.filter(id=>!fs.has(id)).map(id=>({id})); state.data.fans=ig.followers.filter(id=>!gs.has(id)).map(id=>({id})); state.data.roomMutual=room.filter(x=>fs.has(x.id)&&gs.has(x.id)); state.data.roomMissingMe=room.filter(x=>!fs.has(x.id)); state.data.roomOnlyFollower=room.filter(x=>fs.has(x.id)&&!gs.has(x.id)); state.data.roomNotFollowing=room.filter(x=>!gs.has(x.id)); update(ig.rows); prog(100); $("result").classList.remove("hidden"); tab("roomMissingMe"); setTimeout(()=>$("result").scrollIntoView({behavior:"smooth"}),100); toast("분석 완료")}catch(e){status("오류: "+e.message); toast("확인 필요")}}
+function update(rows){const d=state.data; $("followersCount").textContent=d.followers.length; $("followingCount").textContent=d.following.length; $("mutualCount").textContent=d.mutual.length; $("notBackCount").textContent=d.notBack.length; $("roomCount").textContent=d.room.length; $("roomMutualCount").textContent=d.roomMutual.length; $("roomMissingMeCount").textContent=d.roomMissingMe.length; $("roomOnlyFollowerCount").textContent=d.roomOnlyFollower.length; $("time").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"}); let diff=""; const cf=parseInt($("currentFollowers").value,10), cg=parseInt($("currentFollowing").value,10); if(!isNaN(cf)&&cf!==d.followers.length)diff+=`<br>앱 팔로워 ${cf}명 / ZIP ${d.followers.length}명`; if(!isNaN(cg)&&cg!==d.following.length)diff+=`<br>앱 팔로잉 ${cg}명 / ZIP ${d.following.length}명`; status("분석 완료<br>"+rows.map(r=>`• ${r.name}: ${r.count}개`).join("<br>")+diff+"<br><small>ZIP 데이터 기준 결과입니다.</small>")}
+function label(t){return {roomMissingMe:"단톡방인데 날 안함",roomMutual:"단톡방 맞팔",roomOnlyFollower:"상대만 나를 팔로우",roomNotFollowing:"내가 안 한 단톡방",notBack:"전체 내가만 팔로우",mutual:"전체 맞팔",fans:"전체 나만 팔로우"}[t]||"목록"}
+function tab(t){state.current=t;document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));const b=document.querySelector(`[data-t="${t}"]`);if(b)b.classList.add("active");$("search").value="";render()}
+function current(){const q=($("search").value||"").toLowerCase().trim();const a=state.data[state.current]||[];return q?a.filter(x=>(x.id||"").includes(q)||(x.nickname||"").toLowerCase().includes(q)):a}
+function render(){const arr=current();$("listTitle").textContent=label(state.current);$("listCount").textContent=arr.length+"명";$("list").innerHTML=arr.length?arr.map((x,i)=>`<div class="item"><div><a href="https://www.instagram.com/${x.id}/" target="_blank">${i+1}. @${x.id}</a><small>${x.nickname?x.nickname+" · ":""}${label(state.current)}</small></div><button class="copy" onclick="copy('@${x.id}')">복사</button></div>`).join(""):'<div class="item"><div>🦊 표시할 계정이 없어요.</div></div>'}
+async function copy(t){await navigator.clipboard.writeText(t);toast("복사 완료")}
+async function copyCurrent(){const t=current().map((x,i)=>`${i+1}. @${x.id}${x.nickname?" "+x.nickname:""}`).join("\n"); if(!t)return toast("복사할 목록이 없어요"); await navigator.clipboard.writeText(t);toast("목록 복사 완료")}
+function downloadXlsx(){const arr=current(); if(!arr.length)return toast("저장할 목록이 없어요"); const data=arr.map((x,i)=>({번호:i+1,아이디:"@"+x.id,닉네임:x.nickname||"",분류:label(state.current),주소:"https://www.instagram.com/"+x.id+"/"})); const ws=XLSX.utils.json_to_sheet(data); const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"결과"); XLSX.writeFile(wb,"여우방_"+label(state.current)+".xlsx")}
+function resetAll(){$("zipFile").value="";$("result").classList.add("hidden");$("status").style.display="none";$("progress").style.display="none";$("bar").style.width="0%";toast("초기화 완료")}
+function uploadScroll(){$("upload").scrollIntoView({behavior:"smooth"})}
+function topScroll(){window.scrollTo({top:0,behavior:"smooth"})}
+function tabScroll(t){if(!state.data.room.length){uploadScroll();return toast("먼저 분석해주세요")}tab(t);$("result").scrollIntoView({behavior:"smooth"})}
+</script>
+</body>
+</html>
