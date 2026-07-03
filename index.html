@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V8 FINAL</title>
+<title>여우방 맞팔확인 V9 FINAL</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--bg:#fff7df;--card:#fff;--cream:#fff5d9;--line:#ead68b;--text:#2a2115;--muted:#73591c;--red:#ef493e;--green:#20a95a;--blue:#2680d9;--shadow:0 8px 22px rgba(100,70,20,.10)}
@@ -46,7 +46,7 @@ nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-s
 </style>
 </head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V8 · FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V9 · FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 
 <section class="card">
@@ -214,9 +214,9 @@ async function parseZip(file){
 }
 
 async function analyze(){
-  const btn=$("analyzeBtn");
+  const btn=$("analyzeBtn") || document.querySelector(".primary");
   try{
-    btn.disabled=true;btn.textContent="분석 중...";
+    if(btn){btn.disabled=true;btn.textContent="분석 중...";}
     $("status").textContent="";
     if(!roomList.length) await loadRoomList();
     if(!roomList.length) throw Error("단톡방 명단을 불러오지 못했어요.");
@@ -225,15 +225,15 @@ async function analyze(){
     if(!pf||!pg) throw Error("현재 팔로워/팔로잉 숫자를 입력해주세요.");
     $("status").textContent="ZIP 파일 분석 중...";
     const parsed=await parseZip($("zipFile").files[0]);
-    let followers=parsed.followers;
-    let following=parsed.following;
-    if(followers.length>pf) followers=followers.slice(0,pf);
-    if(following.length>pg) following=following.slice(0,pg);
+
+    const followers=parsed.followers;
+    const following=parsed.following;
 
     const F=new Set(followers);
     const G=new Set(following);
 
-    const mutual=followers.filter(id=>G.has(id));
+    // V9 공식: ZIP 원본 기준으로만 계산
+    const mutual=following.filter(id=>F.has(id));
     const onlyMe=following.filter(id=>!F.has(id));
     const fansOnly=followers.filter(id=>!G.has(id));
 
@@ -258,20 +258,30 @@ async function analyze(){
     setNum("sOnlyMe",onlyMe.length);
 
     $("doneTime").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
+
+    let check=$("checkMsg");
+    if(!check){
+      const p=document.createElement("p");
+      p.className="muted";
+      p.id="checkMsg";
+      $("summary").appendChild(p);
+      check=p;
+    }
+    check.textContent=`검증: 전체 맞팔(${mutual.length}) + 전체 나만 팔로우(${onlyMe.length}) = 팔로잉(${following.length})`;
+
     $("cards").classList.remove("hidden");
     $("summary").classList.remove("hidden");
     $("lists").classList.remove("hidden");
-    $("status").innerHTML=`✅ 분석 완료<br>팔로워 ${followers.length}명 / 팔로잉 ${following.length}명`;
+    $("status").innerHTML=`✅ 분석 완료<br>ZIP 팔로워 ${followers.length}명 / ZIP 팔로잉 ${following.length}명`;
     showTab("roomNot",document.querySelector(".tab"));
     toast("분석 완료");
   }catch(e){
     $("status").textContent="오류: "+e.message;
     toast("확인 필요");
   }finally{
-    btn.disabled=false;btn.textContent="🦊 맞팔 분석 시작";
+    if(btn){btn.disabled=false;btn.textContent="🦊 맞팔 분석 시작";}
   }
 }
-
 function clearNumbers(show=true){$("currentFollowers").value="";$("currentFollowing").value="";if(show)toast("숫자 초기화 완료")}
 
 function openInstagram(id){
@@ -294,7 +304,6 @@ function renderList(){
     return `<div class="item"><span>${i+1}.</span><b>${x.name||""}</b><a href="https://www.instagram.com/${id}/" target="_blank" rel="noopener noreferrer">@${id}</a></div>`;
   }).join("")||"<p class='muted'>결과 없음</p>";
 }
-
 function copyCurrent(){
   const arr=results[currentTab]||[];
   navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. ${x.name||""} @${norm(x.id)}`).join("\n"));
