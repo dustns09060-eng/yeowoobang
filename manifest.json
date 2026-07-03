@@ -1,10 +1,10 @@
 {
-  "name": "여우방 맞팔확인 숫자 자동초기화판",
+  "name": "여우방 맞팔확인 V2",
   "short_name": "여우방",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff8e8",
-  "theme_color": "#FFB640",
+  "theme_color": "#ffb640",
   "icons": [
     {
       "src": "icon.svg",
