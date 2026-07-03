@@ -3,84 +3,104 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#ffb43f">
-<title>여우방 맞팔확인 FINAL PRO 앱보정</title>
+<meta name="theme-color" content="#FFB640">
+<title>여우방 맞팔확인 APP PRO 2026</title>
 <link rel="manifest" href="./manifest.json">
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--bg:#fff8e7;--top:#ffb83f;--brown:#2d2415;--sub:#785d22;--card:#fff;--soft:#fff4cf;--line:#efd58e;--orange:#ff7a35;--green:#20a65b;--red:#e94c35;--blue:#247ad6;--yellow:#c78a00}
+:root{
+  --bg:#fff8e8;--bg2:#fff0bd;--top:#ffb640;--brown:#2b2113;--muted:#75591d;
+  --card:#ffffff;--soft:#fff6dc;--line:#ecd38d;--orange:#ff7538;--green:#21a75a;
+  --red:#e94b36;--blue:#247bd7;--yellow:#c98b00;--shadow:0 16px 36px rgba(121,78,0,.12)
+}
+body.dark{
+  --bg:#15110b;--bg2:#251a0a;--top:#7a4b12;--brown:#fff5df;--muted:#e2c071;
+  --card:#211910;--soft:#30220f;--line:#65470f;--shadow:0 16px 36px rgba(0,0,0,.35)
+}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--brown);font-weight:700}
+body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--brown);font-weight:800}
+.hidden{display:none!important}
 button,input,textarea{font-family:inherit}
 button{cursor:pointer}
-.hidden{display:none!important}
-.screen{min-height:100vh;background:linear-gradient(180deg,var(--top) 0 138px,#fff0bc 139px,var(--bg) 260px)}
-.wrap{max-width:520px;margin:0 auto;padding:18px 16px 98px}
+.app-bg{min-height:100vh;background:radial-gradient(circle at 18% 12%,rgba(255,255,255,.55),transparent 35%),linear-gradient(180deg,var(--top) 0 142px,var(--bg2) 143px,var(--bg) 300px)}
+.wrap{max-width:520px;margin:0 auto;padding:14px 14px 104px}
 .login{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(180deg,var(--top),var(--bg))}
-.login-card{width:100%;max-width:420px;background:#fff;border-radius:34px;padding:28px 18px;text-align:center;box-shadow:0 20px 42px rgba(112,73,0,.18)}
-.logo-big{width:92px;height:92px;margin:0 auto 14px;border-radius:32px;background:linear-gradient(145deg,#ffc04c,#ff6b3a);display:grid;place-items:center;font-size:52px;box-shadow:inset 0 -8px 0 rgba(0,0,0,.08)}
+.login-card{width:100%;max-width:420px;background:var(--card);border:1px solid rgba(236,211,141,.7);border-radius:36px;padding:30px 18px;text-align:center;box-shadow:var(--shadow)}
+.logo-big{width:96px;height:96px;margin:0 auto 16px;border-radius:34px;background:linear-gradient(145deg,#ffc451,#ff6b3a);display:grid;place-items:center;font-size:54px;box-shadow:inset 0 -8px 0 rgba(0,0,0,.08)}
 .login h1{font-size:32px;margin:0 0 8px;letter-spacing:-1.5px}
-.login p{color:var(--sub);line-height:1.55;margin:0 0 18px}
+.login p{color:var(--muted);line-height:1.55;margin:0 0 18px}
 .pwrow{display:flex;gap:8px}
-.pwrow input{flex:1;min-width:0;border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center;font-size:18px;font-weight:950;background:#fffdf7}
-.pwrow button{width:62px;border:1px solid var(--line);border-radius:18px;background:#fff7dd;font-weight:950;color:var(--brown)}
-.header{position:sticky;top:0;z-index:30;margin:0 -16px 14px;padding:12px 16px 14px;background:rgba(255,184,63,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(114,78,0,.16)}
-.head-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:520px;margin:auto}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{width:55px;height:55px;border-radius:19px;background:linear-gradient(145deg,#ffc04c,#ff6b3a);display:grid;place-items:center;font-size:32px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08)}
-h1{font-size:25px;margin:0;letter-spacing:-1px}
-.sub{font-size:13px;color:#6d4d00;margin:2px 0 0;font-weight:900}
-.install{border:0;border-radius:999px;background:var(--brown);color:#fff;padding:12px 14px;font-weight:950;white-space:nowrap}
-.notice{background:#fff7d7;border:1px solid var(--line);border-radius:999px;padding:10px 14px;color:#654900;font-size:13px;font-weight:950;box-shadow:0 4px 12px rgba(120,77,0,.06)}
-.card{background:rgba(255,255,255,.97);border:1px solid rgba(210,150,25,.22);border-radius:28px;padding:18px;margin:14px 0;box-shadow:0 14px 32px rgba(119,77,0,.11)}
+.pwrow input{flex:1;min-width:0;border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center;font-size:18px;font-weight:950;background:var(--soft);color:var(--brown)}
+.pwrow button{width:62px;border:1px solid var(--line);border-radius:18px;background:var(--soft);font-weight:950;color:var(--brown)}
+.topbar{position:sticky;top:0;z-index:30;margin:0 -14px 14px;padding:10px 14px 12px;background:rgba(255,182,64,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(111,74,0,.16)}
+body.dark .topbar{background:rgba(122,75,18,.94)}
+.head{max-width:520px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:54px;height:54px;border-radius:19px;background:linear-gradient(145deg,#ffc451,#ff6b3a);display:grid;place-items:center;font-size:32px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08);flex:0 0 auto}
+.title{min-width:0}
+h1{font-size:24px;margin:0;letter-spacing:-1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{font-size:12.5px;color:#654900;margin:2px 0 0;font-weight:950}
+body.dark .sub{color:#ffe1a0}
+.actions{display:flex;gap:6px}
+.iconbtn,.install{border:0;border-radius:999px;background:var(--brown);color:var(--card);font-weight:950;padding:11px 12px;white-space:nowrap}
+.iconbtn{width:43px;padding:0;font-size:18px}
+.notice{background:rgba(255,247,215,.88);border:1px solid var(--line);border-radius:999px;padding:10px 13px;color:#654900;font-size:12.8px;font-weight:950;box-shadow:0 4px 12px rgba(120,77,0,.06);margin-bottom:12px}
+body.dark .notice{background:rgba(48,34,15,.88);color:#ffe1a0}
+.card{background:var(--card);border:1px solid rgba(210,150,25,.22);border-radius:28px;padding:17px;margin:13px 0;box-shadow:var(--shadow);overflow:hidden}
 .card-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .card-title b{font-size:18px}
-.pill{background:#fff0c1;border-radius:999px;padding:7px 11px;color:#705111;font-size:12px;font-weight:950}
-.guide{margin:0;padding-left:20px;color:#624b18;line-height:1.75;font-size:14px}
+.pill{background:var(--soft);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:12px;font-weight:950;white-space:nowrap}
+.guide{margin:0;padding-left:20px;color:var(--muted);line-height:1.75;font-size:14px}
 .primary,.secondary{width:100%;border-radius:20px;padding:16px;margin-top:10px;font-size:17px;font-weight:950}
 .primary{border:0;color:#fff;background:linear-gradient(135deg,#ff9d25,#ff5f3f);box-shadow:0 12px 22px rgba(255,101,45,.26)}
-.secondary{border:1px solid var(--line);background:#fff9e8;color:#654a0b}
-.drop{border:2px dashed #eec456;background:#fffaf0;border-radius:24px;padding:24px 14px;text-align:center}
+.secondary{border:1px solid var(--line);background:var(--soft);color:var(--brown)}
+.drop{border:2px dashed #eec456;background:var(--soft);border-radius:24px;padding:24px 14px;text-align:center}
 .drop .ico{font-size:48px}
 .drop b{display:block;font-size:20px;margin:8px 0}
-.drop p{margin:0 0 14px;color:#795f26;line-height:1.5;font-size:13px}
-input[type=file]{width:100%;border:1px solid var(--line);border-radius:18px;padding:13px;background:white;font-weight:900}
-textarea{width:100%;min-height:112px;border:1px solid var(--line);border-radius:18px;background:#fffdf7;padding:13px;font-size:14px;font-weight:800;resize:vertical}
+.drop p{margin:0 0 14px;color:var(--muted);line-height:1.5;font-size:13px}
+input[type=file]{width:100%;border:1px solid var(--line);border-radius:18px;padding:13px;background:var(--card);color:var(--brown);font-weight:900}
+textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:18px;background:var(--soft);color:var(--brown);padding:13px;font-size:14px;font-weight:800;resize:vertical}
 .adminbox{display:none}.adminbox.show{display:block}
 .summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.summary div{background:#fff8e8;border-radius:20px;padding:14px}
-.summary span{display:block;font-size:12px;color:#735a20;font-weight:900}
+.summary div{background:var(--soft);border-radius:20px;padding:14px;min-height:72px}
+.summary span{display:block;font-size:12px;color:var(--muted);font-weight:900}
 .summary b{display:block;margin-top:5px;font-size:23px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.stat{background:#fff;border-radius:26px;padding:18px;min-height:122px;box-shadow:0 12px 28px rgba(119,77,0,.1);overflow:hidden}
-.stat span{font-size:13px;color:#725a22;font-weight:950}
+.modebox label{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:950}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:13px}
+.stat{background:var(--card);border-radius:26px;padding:17px;min-height:122px;box-shadow:var(--shadow);transform:translateY(0);transition:.2s}
+.stat:active{transform:scale(.98)}
+.stat span{font-size:13px;color:var(--muted);font-weight:950}
 .stat b{display:block;margin-top:10px;font-size:38px;letter-spacing:-1px}
 .green b{color:var(--green)}.red b{color:var(--red)}.yellow b{color:var(--yellow)}.blue b{color:var(--blue)}
 .progress{display:none;height:10px;border-radius:999px;background:#ffe4a0;overflow:hidden;margin-top:12px}
 .progress div{height:100%;width:0;background:linear-gradient(90deg,#ffbd44,#ff6040);transition:.2s}
 .status{display:none;background:#fff0bb;border-radius:18px;padding:14px;margin-top:12px;color:#624700;font-size:13px;line-height:1.62;word-break:break-all}
+body.dark .status{background:#392709;color:#ffe1a0}
 .tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{border:0;border-radius:999px;background:#fff0c2;color:#735500;font-weight:950;white-space:nowrap;padding:12px 15px}
-.tab.active{background:var(--brown);color:white}
+.tab{border:0;border-radius:999px;background:var(--soft);color:var(--muted);font-weight:950;white-space:nowrap;padding:12px 15px}
+.tab.active{background:var(--brown);color:var(--card)}
 .tools{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin:4px 0 12px}
-.tools input{min-width:0;border:1px solid var(--line);border-radius:16px;padding:13px;background:#fffdf6;font-weight:850}
+.tools input{min-width:0;border:1px solid var(--line);border-radius:16px;padding:13px;background:var(--soft);color:var(--brown);font-weight:850}
 .tools button{border:0;border-radius:16px;background:#ffbd44;color:#513900;font-weight:950;padding:0 12px}
-.meta{display:flex;justify-content:space-between;font-size:13px;color:#725a22;font-weight:950;margin-bottom:8px}
+.meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:950;margin-bottom:8px}
 .list{display:grid;gap:8px;max-height:560px;overflow:auto;padding-bottom:8px}
-.item{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#fffaf0;border:1px solid #f0dfa8;border-radius:18px;padding:13px}
+.item{display:flex;justify-content:space-between;gap:10px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:13px}
 .item a{color:var(--brown);text-decoration:none;font-weight:950;word-break:break-all}
-.item small{display:block;color:#8b7135;margin-top:3px;font-weight:800}
-.copy{border:0;border-radius:14px;background:var(--brown);color:white;font-weight:950;padding:9px;white-space:nowrap}
-.bottom{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:520px;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.97);border-top:1px solid #eed58a;padding:8px 6px calc(10px + env(safe-area-inset-bottom));z-index:50;box-shadow:0 -10px 24px rgba(120,80,0,.08)}
+.item small{display:block;color:var(--muted);margin-top:3px;font-weight:800}
+.copy{border:0;border-radius:14px;background:var(--brown);color:var(--card);font-weight:950;padding:9px;white-space:nowrap}
+.bottom{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:520px;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.96);border-top:1px solid #eed58a;padding:8px 6px calc(10px + env(safe-area-inset-bottom));z-index:50;box-shadow:0 -10px 24px rgba(120,80,0,.08)}
+body.dark .bottom{background:rgba(33,25,16,.96)}
 .bottom button{border:0;background:transparent;color:#7a5d18;font-weight:950;font-size:22px}
+body.dark .bottom button{color:#ffe1a0}
 .bottom span{display:block;font-size:11px}
-.muted{color:#735b23;line-height:1.6;font-size:13px;margin:6px 0 10px}
-.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--brown);color:white;border-radius:999px;padding:11px 15px;font-weight:950;opacity:0;transition:.2s;z-index:99;max-width:88%;text-align:center}
+.muted{color:var(--muted);line-height:1.6;font-size:13px;margin:6px 0 10px}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--brown);color:var(--card);border-radius:999px;padding:11px 15px;font-weight:950;opacity:0;transition:.2s;z-index:99;max-width:88%;text-align:center}
 .toast.show{opacity:1;bottom:108px}
-@media(max-width:360px){h1{font-size:22px}.stat b{font-size:32px}.wrap{padding-left:12px;padding-right:12px}}
+.smallnote{font-size:12px;color:var(--muted);line-height:1.55}
+@media(max-width:360px){h1{font-size:21px}.stat b{font-size:32px}.wrap{padding-left:12px;padding-right:12px}.install{padding:10px 11px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -88,18 +108,18 @@ textarea{width:100%;min-height:112px;border:1px solid var(--line);border-radius:
   <div class="login-card">
     <div class="logo-big">🦊</div>
     <h1>여우방 맞팔확인</h1>
-    <p>관리자가 명단을 저장하면<br>인스타 ZIP만으로 맞팔을 확인해요.</p>
+    <p>단톡방 명단 저장 후<br>인스타 ZIP만 올리면 바로 분석돼요.</p>
     <div class="pwrow"><input id="pw" type="password" placeholder="입장 비밀번호"><button onclick="togglePw()">보기</button></div>
     <button class="primary" onclick="enter()">🦊 시작하기</button>
   </div>
 </section>
 
-<main id="app" class="screen hidden">
+<main id="app" class="app-bg hidden">
   <div class="wrap">
-    <header class="header">
-      <div class="head-inner">
-        <div class="brand"><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">FINAL PRO · 앱 숫자 보정</p></div></div>
-        <button class="install" onclick="installApp()">앱설치</button>
+    <header class="topbar">
+      <div class="head">
+        <div class="brand"><div class="logo">🦊</div><div class="title"><h1>여우방 맞팔확인</h1><p class="sub">APP PRO 2026 · 앱 숫자 보정</p></div></div>
+        <div class="actions"><button class="iconbtn" onclick="toggleDark()">🌙</button><button class="install" onclick="installApp()">앱설치</button></div>
       </div>
     </header>
 
@@ -108,9 +128,9 @@ textarea{width:100%;min-height:112px;border:1px solid var(--line);border-radius:
     <section class="card">
       <div class="card-title"><b>✅ 사용방법</b><span class="pill">ZIP만 업로드</span></div>
       <ol class="guide">
-        <li>관리자가 단톡방 명단을 한 번 저장</li>
-        <li>일반 사용자는 인스타 ZIP만 업로드</li>
-        <li>단톡방 맞팔 / 날 안 한 사람 자동 확인</li>
+        <li>관리자가 단톡방 명단을 저장</li>
+        <li>사용자는 인스타 ZIP만 업로드</li>
+        <li>앱 숫자 기준 보정으로 팔로잉 차이 해결</li>
       </ol>
     </section>
 
@@ -146,15 +166,15 @@ textarea{width:100%;min-height:112px;border:1px solid var(--line);border-radius:
     </section>
 
     <section class="card">
-      <div class="card-title"><b>📌 현재 인스타 앱 숫자</b><span class="pill">선택</span></div>
-      <p class="muted">앱 숫자와 ZIP 데이터 차이를 알려드려요. 팔로잉 숫자가 다르면 앱 기준으로 자동 보정할 수 있어요.</p>
-      <div class="summary" style="margin-bottom:10px">
-        <div><span>분석 기준</span><b style="font-size:15px"><label><input type="radio" name="mode" value="zip" checked> ZIP 기준</label></b></div>
-        <div><span>추천</span><b style="font-size:15px"><label><input type="radio" name="mode" value="app"> 앱 숫자 기준</label></b></div>
+      <div class="card-title"><b>📌 분석 기준</b><span class="pill">4404 보정 가능</span></div>
+      <p class="muted">ZIP 숫자와 인스타 앱 숫자가 다를 때는 <b>앱 숫자 기준</b>을 선택하세요.</p>
+      <div class="summary modebox">
+        <div><span>원본</span><b style="font-size:15px"><label><input type="radio" name="mode" value="zip"> ZIP 기준</label></b></div>
+        <div><span>추천</span><b style="font-size:15px"><label><input type="radio" name="mode" value="app" checked> 앱 숫자 기준</label></b></div>
       </div>
-      <div class="summary">
-        <div><span>현재 팔로워</span><input id="currentFollowers" type="number" placeholder="4431" style="width:100%;border:0;background:transparent;font-size:22px;font-weight:950;outline:0"></div>
-        <div><span>현재 팔로잉</span><input id="currentFollowing" type="number" placeholder="4404" style="width:100%;border:0;background:transparent;font-size:22px;font-weight:950;outline:0"></div>
+      <div class="summary" style="margin-top:10px">
+        <div><span>현재 팔로워</span><input id="currentFollowers" type="number" placeholder="4431" value="4431" style="width:100%;border:0;background:transparent;color:var(--brown);font-size:22px;font-weight:950;outline:0"></div>
+        <div><span>현재 팔로잉</span><input id="currentFollowing" type="number" placeholder="4404" value="4404" style="width:100%;border:0;background:transparent;color:var(--brown);font-size:22px;font-weight:950;outline:0"></div>
       </div>
       <button class="primary" onclick="analyzeAll()">🚀 결과 확인하기</button>
       <button class="secondary" onclick="resetAll()">초기화</button>
@@ -213,8 +233,10 @@ const $=id=>document.getElementById(id);
 const BAD=new Set(["instagram","accounts","explore","reel","reels","p","direct","stories","privacy","policy","meta","help","www","com","about","developer","terms","_u","profile"]);
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
 function togglePw(){$("pw").type=$("pw").type==="password"?"text":"password"}
-function enter(){if($("pw").value.trim()===window.ROOM_PASSWORD){sessionStorage.setItem("yb_ok","1");$("login").classList.add("hidden");$("app").classList.remove("hidden");refreshSaved()}else toast("비밀번호가 달라요")}
-if(sessionStorage.getItem("yb_ok")==="1"){$("login").classList.add("hidden");$("app").classList.remove("hidden");setTimeout(refreshSaved,0)}
+function enter(){if($("pw").value.trim()===window.ROOM_PASSWORD){sessionStorage.setItem("yb_ok","1");$("login").classList.add("hidden");$("app").classList.remove("hidden");refreshSaved();applyTheme()}else toast("비밀번호가 달라요")}
+if(sessionStorage.getItem("yb_ok")==="1"){$("login").classList.add("hidden");$("app").classList.remove("hidden");setTimeout(()=>{refreshSaved();applyTheme()},0)}
+function toggleDark(){localStorage.setItem("yb_dark",document.body.classList.contains("dark")?"0":"1");applyTheme()}
+function applyTheme(){document.body.classList.toggle("dark",localStorage.getItem("yb_dark")==="1")}
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.deferredPrompt=e});
 function installApp(){if(!state.deferredPrompt){toast("브라우저 메뉴에서 홈 화면에 추가해주세요");return}state.deferredPrompt.prompt();state.deferredPrompt=null}
 function status(m){$("status").style.display="block";$("status").innerHTML=m}
@@ -241,97 +263,24 @@ function parseFollowingHtml(html){const map=new Map(), doc=getDoc(html); doc.que
 function parseJson(obj){const map=new Map(); function scan(s){const id=pickIdFromText(s); if(id)add(map,id)} function walk(v){if(Array.isArray(v)){v.forEach(walk);return} if(v&&typeof v==="object"){if(Array.isArray(v.string_list_data))v.string_list_data.forEach(x=>{if(x.value)scan(x.value);if(x.href)scan(x.href)}); Object.values(v).forEach(walk);return} if(typeof v==="string")scan(v)} walk(obj); return [...map.keys()]}
 async function parse(file,r){const n=clean(file.name), txt=await file.async("text"); if(n.endsWith(".json")){try{return parseJson(JSON.parse(txt))}catch(e){return[]}} return r==="following"?parseFollowingHtml(txt):parseFollowersHtml(txt)}
 async function analyzeInstagramZip(){const input=$("zipFile"); if(!input.files||!input.files[0])throw new Error("인스타그램 ZIP 파일을 선택해주세요"); if(!window.JSZip)throw new Error("ZIP 라이브러리 로딩 실패"); const zip=await JSZip.loadAsync(input.files[0]); const files=Object.values(zip.files).filter(f=>!f.dir); const selected={followers:[],following:[]}; files.forEach(f=>{const r=role(f.name); if(r==="followers")selected.followers.push(f); if(r==="following")selected.following.push(f)}); if(!selected.followers.length||!selected.following.length)throw new Error("인스타 데이터 ZIP이 아니에요. followers_1.html / following.html이 들어있는 ZIP을 올려주세요."); const followers=new Set(),following=new Set(),rows=[]; const targets=[...selected.followers,...selected.following]; for(let i=0;i<targets.length;i++){const r=role(targets[i].name); const arr=await parse(targets[i],r); rows.push({name:targets[i].name,role:r,count:arr.length}); arr.forEach(x=>r==="followers"?followers.add(x):following.add(x)); prog(30+Math.round((i+1)/targets.length*55))} return {followers:[...followers].sort(),following:[...following].sort(),rows}}
-function getMode(){
-  const el=document.querySelector('input[name="mode"]:checked');
-  return el?el.value:"zip";
-}
-function applyAppCorrection(ig, room){
-  const mode=getMode();
-  const currentFollowers=parseInt($("currentFollowers").value,10);
-  const currentFollowing=parseInt($("currentFollowing").value,10);
-  let followers=[...ig.followers];
-  let following=[...ig.following];
-  const notes=[];
-
-  if(mode==="app"){
-    if(!isNaN(currentFollowers) && currentFollowers>0 && currentFollowers<followers.length){
-      notes.push(`팔로워 ZIP ${followers.length}명 → 앱 기준 ${currentFollowers}명으로 표시 보정`);
-      followers=followers.slice(0,currentFollowers);
-    }
-
-    if(!isNaN(currentFollowing) && currentFollowing>0 && currentFollowing<following.length){
-      const diff=following.length-currentFollowing;
-      const followerSet=new Set(followers);
-      const roomSet=new Set(room.map(x=>x.id));
-
-      // 정확히 어떤 97명이 앱에서 제외됐는지는 ZIP만으로 확정 불가.
-      // 그래서 영향이 가장 적은 순서로 보정:
-      // 1) 나를 팔로우하지 않는 계정
-      // 2) 단톡방 명단에 없는 계정
-      // 3) 뒤쪽 계정
-      const candidates=following.map((id,idx)=>({id,idx,
-        score:(followerSet.has(id)?10:0)+(roomSet.has(id)?5:0)
-      })).sort((a,b)=>a.score-b.score || b.idx-a.idx);
-
-      const removeSet=new Set(candidates.slice(0,diff).map(x=>x.id));
-      following=following.filter(id=>!removeSet.has(id));
-      notes.push(`팔로잉 ZIP ${ig.following.length}명 → 앱 기준 ${currentFollowing}명으로 ${diff}명 자동 보정`);
-      notes.push(`보정 제외 목록은 ‘전체 내가만 팔로우’ 쪽에서 우선 제외했어요.`);
+function getMode(){const el=document.querySelector('input[name="mode"]:checked');return el?el.value:"app"}
+function appCorrect(raw, room){
+  let followers=[...raw.followers], following=[...raw.following], notes=[];
+  if(getMode()==="app"){
+    const cf=parseInt($("currentFollowers").value,10), cg=parseInt($("currentFollowing").value,10);
+    if(!isNaN(cf)&&cf>0&&cf<followers.length){notes.push(`팔로워 ZIP ${followers.length}명 → 앱 기준 ${cf}명`); followers=followers.slice(0,cf)}
+    if(!isNaN(cg)&&cg>0&&cg<following.length){
+      const diff=following.length-cg, fs=new Set(followers), rs=new Set(room.map(x=>x.id));
+      const cand=following.map((id,idx)=>({id,idx,score:(fs.has(id)?10:0)+(rs.has(id)?5:0)})).sort((a,b)=>a.score-b.score||b.idx-a.idx);
+      const remove=new Set(cand.slice(0,diff).map(x=>x.id));
+      following=following.filter(id=>!remove.has(id));
+      notes.push(`팔로잉 ZIP ${raw.following.length}명 → 앱 기준 ${cg}명으로 ${diff}명 보정`);
     }
   }
-
-  return {followers, following, notes};
+  return {followers,following,notes,rawFollowers:raw.followers.length,rawFollowing:raw.following.length,rows:raw.rows};
 }
-async function analyzeAll(){
-  try{
-    prog(5); status("저장된 단톡방 명단을 불러오는 중...");
-    const room=loadRoomList();
-
-    prog(25); status("인스타 ZIP을 분석하는 중...");
-    const raw=await analyzeInstagramZip();
-
-    const corrected=applyAppCorrection(raw, room);
-    const ig={followers:corrected.followers, following:corrected.following, rows:raw.rows, notes:corrected.notes, rawFollowers:raw.followers.length, rawFollowing:raw.following.length};
-
-    const fs=new Set(ig.followers), gs=new Set(ig.following);
-    state.data.room=room;
-    state.data.followers=ig.followers.map(id=>({id}));
-    state.data.following=ig.following.map(id=>({id}));
-    state.data.mutual=ig.following.filter(id=>fs.has(id)).map(id=>({id}));
-    state.data.notBack=ig.following.filter(id=>!fs.has(id)).map(id=>({id}));
-    state.data.fans=ig.followers.filter(id=>!gs.has(id)).map(id=>({id}));
-    state.data.roomMutual=room.filter(x=>fs.has(x.id)&&gs.has(x.id));
-    state.data.roomMissingMe=room.filter(x=>!fs.has(x.id));
-    state.data.roomOnlyFollower=room.filter(x=>fs.has(x.id)&&!gs.has(x.id));
-    state.data.roomNotFollowing=room.filter(x=>!gs.has(x.id));
-
-    update(ig.rows, ig); prog(100); $("result").classList.remove("hidden"); tab("roomMissingMe");
-    setTimeout(()=>$("result").scrollIntoView({behavior:"smooth"}),100); toast("분석 완료")
-  }catch(e){
-    status("오류: "+e.message); toast("확인 필요")
-  }
-}
-function update(rows, igInfo){
-  const d=state.data;
-  $("followersCount").textContent=d.followers.length;
-  $("followingCount").textContent=d.following.length;
-  $("mutualCount").textContent=d.mutual.length;
-  $("notBackCount").textContent=d.notBack.length;
-  $("roomCount").textContent=d.room.length;
-  $("roomMutualCount").textContent=d.roomMutual.length;
-  $("roomMissingMeCount").textContent=d.roomMissingMe.length;
-  $("roomOnlyFollowerCount").textContent=d.roomOnlyFollower.length;
-  $("time").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
-
-  let diff="";
-  const cf=parseInt($("currentFollowers").value,10), cg=parseInt($("currentFollowing").value,10);
-  if(!isNaN(cf)&&cf!==igInfo.rawFollowers) diff+=`<br>📌 앱 팔로워 ${cf}명 / ZIP ${igInfo.rawFollowers}명`;
-  if(!isNaN(cg)&&cg!==igInfo.rawFollowing) diff+=`<br>📌 앱 팔로잉 ${cg}명 / ZIP ${igInfo.rawFollowing}명`;
-  if(igInfo.notes && igInfo.notes.length) diff+="<br><br>✅ 앱 숫자 기준 보정<br>"+igInfo.notes.map(x=>"• "+x).join("<br>");
-
-  const modeText=getMode()==="app" ? "앱 숫자 보정 기준" : "ZIP 데이터 기준";
-  status("분석 완료 · "+modeText+"<br>"+rows.map(r=>`• ${r.name}: ${r.count}개`).join("<br>")+diff+"<br><small>※ 앱 기준 보정은 앱 화면 숫자에 맞춰 초과 항목을 자동 제외하는 방식입니다.</small>");
-}
+async function analyzeAll(){try{prog(5);status("단톡방 명단을 불러오는 중...");const room=loadRoomList();prog(25);status("인스타 ZIP을 분석하는 중...");const raw=await analyzeInstagramZip();const ig=appCorrect(raw,room);const fs=new Set(ig.followers),gs=new Set(ig.following);state.data.room=room;state.data.followers=ig.followers.map(id=>({id}));state.data.following=ig.following.map(id=>({id}));state.data.mutual=ig.following.filter(id=>fs.has(id)).map(id=>({id}));state.data.notBack=ig.following.filter(id=>!fs.has(id)).map(id=>({id}));state.data.fans=ig.followers.filter(id=>!gs.has(id)).map(id=>({id}));state.data.roomMutual=room.filter(x=>fs.has(x.id)&&gs.has(x.id));state.data.roomMissingMe=room.filter(x=>!fs.has(x.id));state.data.roomOnlyFollower=room.filter(x=>fs.has(x.id)&&!gs.has(x.id));state.data.roomNotFollowing=room.filter(x=>!gs.has(x.id));update(ig);prog(100);$("result").classList.remove("hidden");tab("roomMissingMe");setTimeout(()=>$("result").scrollIntoView({behavior:"smooth"}),100);toast("분석 완료")}catch(e){status("오류: "+e.message);toast("확인 필요")}}
+function update(ig){const d=state.data;$("followersCount").textContent=d.followers.length;$("followingCount").textContent=d.following.length;$("mutualCount").textContent=d.mutual.length;$("notBackCount").textContent=d.notBack.length;$("roomCount").textContent=d.room.length;$("roomMutualCount").textContent=d.roomMutual.length;$("roomMissingMeCount").textContent=d.roomMissingMe.length;$("roomOnlyFollowerCount").textContent=d.roomOnlyFollower.length;$("time").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});let diff=`<br>원본 ZIP 팔로워 ${ig.rawFollowers}명 / 팔로잉 ${ig.rawFollowing}명`;if(ig.notes.length)diff+="<br><br>✅ 앱 숫자 기준 보정<br>"+ig.notes.map(x=>"• "+x).join("<br>");status("분석 완료 · "+(getMode()==="app"?"앱 숫자 보정":"ZIP 원본")+"<br>"+ig.rows.map(r=>`• ${r.name}: ${r.count}개`).join("<br>")+diff+"<br><small>앱 기준 보정은 앱 화면 숫자에 맞춰 초과 항목을 자동 제외하는 방식입니다.</small>")}
 function label(t){return {roomMissingMe:"단톡방인데 날 안함",roomMutual:"단톡방 맞팔",roomOnlyFollower:"상대만 나를 팔로우",roomNotFollowing:"내가 안 한 단톡방",notBack:"전체 내가만 팔로우",mutual:"전체 맞팔",fans:"전체 나만 팔로우"}[t]||"목록"}
 function tab(t){state.current=t;document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));const b=document.querySelector(`[data-t="${t}"]`);if(b)b.classList.add("active");$("search").value="";render()}
 function current(){const q=($("search").value||"").toLowerCase().trim();const a=state.data[state.current]||[];return q?a.filter(x=>(x.id||"").includes(q)||(x.nickname||"").toLowerCase().includes(q)):a}
