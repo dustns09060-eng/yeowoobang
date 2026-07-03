@@ -19,7 +19,7 @@ nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);back
 </style>
 </head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V7 · 링크추가</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V7 · 빠른수정</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 <section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">불러오는 중</span></div><div class="grid"><div class="box"><div class="muted">현재 명단</div><div class="num blue" id="roomCount">0</div></div><div class="box"><div class="muted">상태</div><div class="num" style="font-size:24px" id="roomStatus">대기</div></div></div><button class="secondary" onclick="loadRoomList(true)">📥 최신 명단 불러오기</button></section>
 <section class="card"><div class="title"><b>📦 인스타그램 ZIP 업로드</b></div><p class="muted">followers_1.html / following.html의 인스타 링크만 정확히 읽습니다.</p><input id="zipFile" type="file" accept=".zip,application/zip,application/x-zip-compressed,*/*"></section>
@@ -41,7 +41,43 @@ function valid(x){return /^[a-z0-9._]{1,30}$/.test(x)&&!["instagram","accounts",
 function uniq(a){const s=new Set();(a||[]).forEach(v=>{v=norm(v);if(valid(v))s.add(v)});return [...s]}
 function parseCSV(t){const rows=[];let r=[],c="",q=false;for(let i=0;i<t.length;i++){let ch=t[i],n=t[i+1];if(ch=='"'&&q&&n=='"'){c+='"';i++;continue}if(ch=='"'){q=!q;continue}if(ch==','&&!q){r.push(c);c="";continue}if((ch==='\n'||ch==='\r')&&!q){if(c||r.length){r.push(c);rows.push(r);r=[];c=""}if(ch==='\r'&&n==='\n')i++;continue}c+=ch}if(c||r.length){r.push(c);rows.push(r)}return rows}
 function getSheetUrl(){return localStorage.getItem("yb_sheet_url_override")||DEFAULT_SHEET_URL}
-async function loadRoomList(show=false){try{$("sheetState").textContent="불러오는 중";const res=await fetch(getSheetUrl()+"&t="+Date.now());if(!res.ok)throw Error();const rows=parseCSV(await res.text()),data=[];rows.forEach((r,i)=>{if(i===0&&String(r[0]).includes("번호"))return;const id=norm(r[2]||r[1]||"");if(valid(id))data.push({no:r[0]||"",name:r[1]||"",id})});const seen=new Set();roomList=data.filter(x=>!seen.has(x.id)&&seen.add(x.id));$("roomCount").textContent=roomList.length;$("roomStatus").textContent=roomList.length?"최신":"확인";$("sheetState").textContent=roomList.length?"자동연동":"확인필요";if(show)toast("명단 불러오기 완료")}catch(e){$("roomStatus").textContent="실패";$("sheetState").textContent="오류";if(show)toast("명단 실패")}}
+async function loadRoomList(show=false){
+  try{
+    const cached=localStorage.getItem("yb_room_cache");
+    if(cached && !roomList.length){
+      roomList=JSON.parse(cached)||[];
+      $("roomCount").textContent=roomList.length;
+      $("roomStatus").textContent=roomList.length?"캐시":"대기";
+      $("sheetState").textContent=roomList.length?"빠른불러옴":"확인";
+    }
+    $("sheetState").textContent=roomList.length?"최신확인":"불러오는 중";
+    const res=await fetch(getSheetUrl()+"&t="+Date.now());
+    if(!res.ok)throw Error();
+    const rows=parseCSV(await res.text()),data=[];
+    rows.forEach((r,i)=>{
+      if(i===0&&String(r[0]).includes("번호"))return;
+      const id=norm(r[2]||r[1]||"");
+      if(valid(id))data.push({no:r[0]||"",name:r[1]||"",id});
+    });
+    const seen=new Set();
+    roomList=data.filter(x=>!seen.has(x.id)&&seen.add(x.id));
+    localStorage.setItem("yb_room_cache",JSON.stringify(roomList));
+    $("roomCount").textContent=roomList.length;
+    $("roomStatus").textContent=roomList.length?"최신":"확인";
+    $("sheetState").textContent=roomList.length?"자동연동":"확인필요";
+    if(show)toast("명단 불러오기 완료");
+  }catch(e){
+    if(roomList.length){
+      $("roomStatus").textContent="캐시";
+      $("sheetState").textContent="캐시사용";
+      if(show)toast("저장된 명단 사용");
+    }else{
+      $("roomStatus").textContent="실패";
+      $("sheetState").textContent="오류";
+      if(show)toast("명단 실패");
+    }
+  }
+}
 function extractHtmlIds(text){let ids=[],m;const href=/href=["']https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)\/?["']/g;while((m=href.exec(text)))ids.push(m[1]);if(ids.length)return uniq(ids);const url=/https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)/g;while((m=url.exec(text)))ids.push(m[1]);return uniq(ids)}
 function collectJson(o,out){if(!o)return;if(typeof o==="string"){const n=norm(o);if(valid(n))out.push(n);return}if(Array.isArray(o)){o.forEach(x=>collectJson(x,out));return}if(typeof o==="object"){if(o.value)collectJson(o.value,out);if(o.href)collectJson(o.href,out);if(o.username)collectJson(o.username,out);Object.keys(o).forEach(k=>collectJson(o[k],out))}}
 function extractJsonIds(text){let ids=[];try{collectJson(JSON.parse(text),ids)}catch(e){}return uniq(ids)}
@@ -50,7 +86,41 @@ async function parseZip(file){if(!file)throw Error("ZIP 파일을 선택해주�
 </script>
 <script>
 function setNum(id,n){document.getElementById(id).textContent=String(n)}
-async function analyze(){try{if(!roomList.length)await loadRoomList();if(!roomList.length)throw Error("단톡방 명단을 불러오지 못했어요.");const pf=parseInt($("currentFollowers").value,10),pg=parseInt($("currentFollowing").value,10);if(!pf||!pg)throw Error("현재 팔로워/팔로잉 숫자를 입력해주세요.");const parsed=await parseZip($("zipFile").files[0]);let followers=parsed.followers,following=parsed.following;if(followers.length>pf)followers=followers.slice(0,pf);if(following.length>pg)following=following.slice(0,pg);const F=new Set(followers),G=new Set(following);const mutual=following.filter(id=>F.has(id));const onlyMe=following.filter(id=>!F.has(id));const roomMutual=roomList.filter(r=>F.has(r.id)&&G.has(r.id));const roomNot=roomList.filter(r=>G.has(r.id)&&!F.has(r.id));const roomFans=roomList.filter(r=>F.has(r.id)&&!G.has(r.id));results={roomMutual,roomNot,fansOnly:roomFans,onlyMe:onlyMe.map(id=>({id,name:""}))};setNum("cRoomMutual",roomMutual.length);setNum("cRoomNot",roomNot.length);setNum("cFansOnly",roomFans.length);setNum("cRoomTotal",roomList.length);setNum("sFollowers",followers.length);setNum("sFollowing",following.length);setNum("sMutual",mutual.length);setNum("sOnlyMe",onlyMe.length);$("doneTime").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});$("cards").classList.remove("hidden");$("summary").classList.remove("hidden");$("lists").classList.remove("hidden");$("status").innerHTML=`✅ 분석 완료<br>팔로워 ${followers.length}명 / 팔로잉 ${following.length}명`;showTab("roomNot",document.querySelector(".tab"));toast("분석 완료")}catch(e){$("status").textContent="오류: "+e.message;toast("확인 필요")}}
+async function analyze(){
+  const btn=document.querySelector(".primary");
+  try{
+    if(btn){btn.disabled=true;btn.textContent="분석 중...";}
+    $("status").textContent="분석 준비 중...";
+    if(!roomList.length) await loadRoomList();
+    if(!roomList.length) throw Error("단톡방 명단을 불러오지 못했어요. 최신 명단 불러오기를 먼저 눌러주세요.");
+    const pf=parseInt($("currentFollowers").value,10),pg=parseInt($("currentFollowing").value,10);
+    if(!pf||!pg) throw Error("현재 팔로워/팔로잉 숫자를 입력해주세요.");
+    $("status").textContent="ZIP 파일 분석 중...";
+    const parsed=await parseZip($("zipFile").files[0]);
+    let followers=parsed.followers, following=parsed.following;
+    if(followers.length>pf) followers=followers.slice(0,pf);
+    if(following.length>pg) following=following.slice(0,pg);
+    const F=new Set(followers),G=new Set(following);
+    const mutual=following.filter(id=>F.has(id));
+    const onlyMe=following.filter(id=>!F.has(id));
+    const roomMutual=roomList.filter(r=>F.has(r.id)&&G.has(r.id));
+    const roomNot=roomList.filter(r=>G.has(r.id)&&!F.has(r.id));
+    const roomFans=roomList.filter(r=>F.has(r.id)&&!G.has(r.id));
+    results={roomMutual,roomNot,fansOnly:roomFans,onlyMe:onlyMe.map(id=>({id,name:""}))};
+    setNum("cRoomMutual",roomMutual.length);setNum("cRoomNot",roomNot.length);setNum("cFansOnly",roomFans.length);setNum("cRoomTotal",roomList.length);
+    setNum("sFollowers",followers.length);setNum("sFollowing",following.length);setNum("sMutual",mutual.length);setNum("sOnlyMe",onlyMe.length);
+    $("doneTime").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
+    $("cards").classList.remove("hidden");$("summary").classList.remove("hidden");$("lists").classList.remove("hidden");
+    $("status").innerHTML=`✅ 분석 완료<br>팔로워 ${followers.length}명 / 팔로잉 ${following.length}명`;
+    showTab("roomNot",document.querySelector(".tab"));
+    toast("분석 완료");
+  }catch(e){
+    $("status").textContent="오류: "+e.message;
+    toast("확인 필요");
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent="🦊 맞팔 분석 시작";}
+  }
+}
 function clearNumbers(show=true){$("currentFollowers").value="";$("currentFollowing").value="";if(show)toast("숫자 초기화 완료")}
 function showTab(tab,btn){currentTab=tab;document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");renderList()}
 function renderList(){
@@ -59,14 +129,12 @@ function renderList(){
   const f=arr.filter(x=>!q||norm(x.id).includes(q)||String(x.name||"").includes(q));
   $("list").innerHTML=f.map((x,i)=>{
     const id=norm(x.id);
-    const name=x.name||"";
-    return `<div class="item"><span>${i+1}.</span><b>${name}</b><a href="https://www.instagram.com/${id}/" target="_blank" rel="noopener noreferrer">@${id}</a></div>`;
+    return `<div class="item"><span>${i+1}.</span><b>${x.name||""}</b><a href="https://www.instagram.com/${id}/" target="_blank" rel="noopener noreferrer">@${id}</a></div>`;
   }).join("")||"<p class='muted'>결과 없음</p>";
 }
 function copyCurrent(){
   const arr=results[currentTab]||[];
-  navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. ${x.name||""} @${norm(x.id)}`).join("
-"));
+  navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. ${x.name||""} @${norm(x.id)}`).join("\n"));
   toast("복사 완료");
 }
 function adminLogin(){if($("adminPw").value===ADMIN_PASSWORD){$("adminBox").classList.remove("hidden");$("sheetUrl").value=getSheetUrl();toast("관리자 로그인 완료")}else toast("비밀번호가 달라요")}
