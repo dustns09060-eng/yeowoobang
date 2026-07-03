@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V10 PRO FINAL</title>
+<title>여우방 맞팔확인 V10.1 PRO FINAL</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--bg:#fff7df;--card:#fff;--cream:#fff5d9;--line:#ead68b;--text:#2a2115;--muted:#73591c;--red:#ef493e;--green:#20a95a;--blue:#2680d9;--shadow:0 8px 22px rgba(100,70,20,.10)}
@@ -46,7 +46,7 @@ nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-s
 </style>
 </head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V10 · PRO FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V10.1 · PRO FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 
 <section class="card">
@@ -120,7 +120,9 @@ nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-s
 
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script>
-const DEFAULT_SHEET_URL="https://docs.google.com/spreadsheets/d/1_WsSmEpXcckIV9wbQp2K6YZe4jZ2XlX2Vt6lmXmfiHs/export?format=csv&gid=0";
+const SHEET_ID="1_WsSmEpXcckIV9wbQp2K6YZe4jZ2XlX2Vt6lmXmfiHs";
+const DEFAULT_SHEET_URL="https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/export?format=csv&gid=0";
+const BACKUP_SHEET_URL="https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:csv&gid=0";
 const ADMIN_PASSWORD="0702";
 let roomList=[], results={}, currentTab="roomNot";
 const $=id=>document.getElementById(id);
@@ -134,48 +136,115 @@ function setNum(id,n){$(id).textContent=String(n)}
 function parseCSV(t){const rows=[];let r=[],c="",q=false;for(let i=0;i<t.length;i++){let ch=t[i],n=t[i+1];if(ch=='"'&&q&&n=='"'){c+='"';i++;continue}if(ch=='"'){q=!q;continue}if(ch==','&&!q){r.push(c);c="";continue}if((ch==='\n'||ch==='\r')&&!q){if(c||r.length){r.push(c);rows.push(r);r=[];c=""}if(ch==='\r'&&n==='\n')i++;continue}c+=ch}if(c||r.length){r.push(c);rows.push(r)}return rows}
 function getSheetUrl(){return localStorage.getItem("yb_sheet_url_override")||DEFAULT_SHEET_URL}
 
+async function fetchCsvSmart(){
+  const urls=[];
+  const saved=localStorage.getItem("yb_sheet_url_override");
+  if(saved) urls.push(saved);
+  urls.push(DEFAULT_SHEET_URL);
+  if(typeof BACKUP_SHEET_URL!=="undefined") urls.push(BACKUP_SHEET_URL);
+  let lastErr=null;
+  for(const u of urls){
+    try{
+      const joiner=u.includes("?") ? "&" : "?";
+      const res=await fetch(u+joiner+"t="+Date.now(), {cache:"no-store"});
+      if(!res.ok) throw Error("HTTP "+res.status);
+      const txt=await res.text();
+      if(txt && txt.length>20) return txt;
+    }catch(e){ lastErr=e; }
+  }
+  throw lastErr || Error("시트 불러오기 실패");
+}
+
+function applyRoomRows(csvText){
+  const rows=parseCSV(csvText), data=[];
+  rows.forEach((r,i)=>{
+    if(i===0 && (String(r[0]).includes("번호") || String(r[2]).includes("아이디"))) return;
+    const id=norm(r[2]||r[1]||r[0]||"");
+    if(valid(id)) data.push({no:r[0]||"", name:r[1]||"", id});
+  });
+  const seen=new Set();
+  roomList=data.filter(x=>!seen.has(x.id)&&seen.add(x.id));
+  localStorage.setItem("yb_room_cache", JSON.stringify(roomList));
+  setNum("roomCount", roomList.length);
+  $("roomStatus").textContent=roomList.length ? "최신" : "확인";
+  $("sheetState").textContent=roomList.length ? "자동연동" : "확인필요";
+  return roomList.length;
+}
+
+async function fetchCsvSmart(){
+  const urls=[];
+  const saved=localStorage.getItem("yb_sheet_url_override");
+  if(saved) urls.push(saved);
+  urls.push(DEFAULT_SHEET_URL);
+  if(typeof BACKUP_SHEET_URL!=="undefined") urls.push(BACKUP_SHEET_URL);
+  let lastErr=null;
+  for(const u of urls){
+    try{
+      const joiner=u.includes("?") ? "&" : "?";
+      const res=await fetch(u+joiner+"t="+Date.now(), {cache:"no-store"});
+      if(!res.ok) throw Error("HTTP "+res.status);
+      const txt=await res.text();
+      if(txt && txt.length>20) return txt;
+    }catch(e){ lastErr=e; }
+  }
+  throw lastErr || Error("시트 불러오기 실패");
+}
+
+function applyRoomRows(csvText){
+  const rows=parseCSV(csvText), data=[];
+  rows.forEach((r,i)=>{
+    if(i===0 && (String(r[0]).includes("번호") || String(r[2]).includes("아이디"))) return;
+    const id=norm(r[2]||r[1]||r[0]||"");
+    if(valid(id)) data.push({no:r[0]||"", name:r[1]||"", id});
+  });
+  const seen=new Set();
+  roomList=data.filter(x=>!seen.has(x.id)&&seen.add(x.id));
+  localStorage.setItem("yb_room_cache", JSON.stringify(roomList));
+  setNum("roomCount", roomList.length);
+  $("roomStatus").textContent=roomList.length ? "최신" : "확인";
+  $("sheetState").textContent=roomList.length ? "자동연동" : "확인필요";
+  return roomList.length;
+}
+
 function showRoomCache(){
   try{
     const cached=localStorage.getItem("yb_room_cache");
-    if(cached && !roomList.length){
-      roomList=JSON.parse(cached)||[];
-      setNum("roomCount",roomList.length);
-      $("roomStatus").textContent=roomList.length?"캐시":"대기";
-      $("sheetState").textContent=roomList.length?"빠른불러옴":"확인";
+    if(cached){
+      const parsed=JSON.parse(cached)||[];
+      if(parsed.length){
+        roomList=parsed;
+        setNum("roomCount", roomList.length);
+        $("roomStatus").textContent="저장됨";
+        $("sheetState").textContent="빠른표시";
+        return true;
+      }
     }
   }catch(e){}
+  return false;
 }
 
 async function loadRoomList(show=false){
+  const hadCache=showRoomCache();
   try{
-    showRoomCache();
-    $("sheetState").textContent=roomList.length?"최신확인":"불러오는 중";
-    const res=await fetch(getSheetUrl()+"&t="+Date.now());
-    if(!res.ok) throw Error();
-    const rows=parseCSV(await res.text()), data=[];
-    rows.forEach((r,i)=>{
-      if(i===0&&String(r[0]).includes("번호")) return;
-      const id=norm(r[2]||r[1]||"");
-      if(valid(id)) data.push({no:r[0]||"",name:r[1]||"",id});
-    });
-    const seen=new Set();
-    roomList=data.filter(x=>!seen.has(x.id)&&seen.add(x.id));
-    localStorage.setItem("yb_room_cache",JSON.stringify(roomList));
-    setNum("roomCount",roomList.length);
-    $("roomStatus").textContent=roomList.length?"최신":"확인";
-    $("sheetState").textContent=roomList.length?"자동연동":"확인필요";
-    if(show)toast("명단 불러오기 완료");
+    $("sheetState").textContent=hadCache ? "최신확인" : "불러오는 중";
+    if(!hadCache){
+      $("roomStatus").textContent="불러오는 중";
+      setNum("roomCount", 0);
+    }
+    const csv=await fetchCsvSmart();
+    const count=applyRoomRows(csv);
+    if(show) toast(count ? "명단 불러오기 완료" : "명단 확인 필요");
   }catch(e){
-    showRoomCache();
-    if(roomList.length){$("roomStatus").textContent="캐시";$("sheetState").textContent="캐시사용";if(show)toast("저장된 명단 사용");}
-    else{$("roomStatus").textContent="실패";$("sheetState").textContent="오류";if(show)toast("명단 실패");}
+    if(hadCache || roomList.length){
+      $("roomStatus").textContent="저장됨";
+      $("sheetState").textContent="캐시사용";
+      if(show) toast("저장된 명단 사용");
+    }else{
+      $("roomStatus").textContent="실패";
+      $("sheetState").textContent="오류";
+      if(show) toast("시트 공유 설정을 확인해주세요");
+    }
   }
-}
-
-function pickFile(zip, exactName){
-  const exact=exactName.toLowerCase();
-  const names=Object.keys(zip.files).filter(n=>!zip.files[n].dir);
-  return names.find(n=>n.toLowerCase().replace(/\\/g,"/").split("/").pop()===exact);
 }
 
 function extractHtmlIds(text){
@@ -314,11 +383,11 @@ function copyCurrent(){
   toast("복사 완료");
 }
 function adminLogin(){if($("adminPw").value===ADMIN_PASSWORD){$("adminBox").classList.remove("hidden");$("sheetUrl").value=getSheetUrl();toast("관리자 로그인 완료")}else toast("비밀번호가 달라요")}
-function saveSheet(){localStorage.setItem("yb_sheet_url_override",$("sheetUrl").value.trim());loadRoomList(true)}
-function resetSheet(){localStorage.removeItem("yb_sheet_url_override");$("sheetUrl").value=DEFAULT_SHEET_URL;loadRoomList(true)}
+function saveSheet(){localStorage.setItem("yb_sheet_url_override",$("sheetUrl").value.trim());localStorage.removeItem("yb_room_cache");loadRoomList(true)}
+function resetSheet(){localStorage.removeItem("yb_sheet_url_override");localStorage.removeItem("yb_room_cache");$("sheetUrl").value=DEFAULT_SHEET_URL;loadRoomList(true)}
 
 $("installBtn").onclick=()=>toast("브라우저 메뉴에서 홈 화면에 추가를 눌러주세요");
-window.addEventListener("load",()=>{clearNumbers(false);showRoomCache();loadRoomList(false);});
+window.addEventListener("load",()=>{clearNumbers(false);showRoomCache();setTimeout(()=>loadRoomList(false),80);});
 window.addEventListener("pageshow",()=>{clearNumbers(false);});
 </script>
 </body></html>
