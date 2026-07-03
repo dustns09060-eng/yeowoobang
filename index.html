@@ -3,115 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta name="theme-color" content="#FFB640">
-<title>여우방 맞팔확인 FINAL PRO V2</title>
+<title>여우방 맞팔확인 ADMIN USER FINAL</title>
 <link rel="manifest" href="./manifest.json">
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
-  --bg:#fff8e8;--bg2:#fff0bd;--top:#ffb640;--brown:#2b2113;--muted:#75591d;
-  --card:#ffffff;--soft:#fff6dc;--line:#ecd38d;--orange:#ff7538;--green:#21a75a;
-  --red:#e94b36;--blue:#247bd7;--yellow:#c98b00;--shadow:0 16px 36px rgba(121,78,0,.12)
-}
-body.dark{
-  --bg:#15110b;--bg2:#251a0a;--top:#7a4b12;--brown:#fff5df;--muted:#e2c071;
-  --card:#211910;--soft:#30220f;--line:#65470f;--shadow:0 16px 36px rgba(0,0,0,.35)
-}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--brown);font-weight:800}
-.hidden{display:none!important}
-button,input,textarea{font-family:inherit}
-button{cursor:pointer}
+:root{--bg:#fff8e8;--bg2:#fff0bd;--top:#ffb640;--brown:#2b2113;--muted:#75591d;--card:#fff;--soft:#fff6dc;--line:#ecd38d;--orange:#ff7538;--green:#21a75a;--red:#e94b36;--blue:#247bd7;--yellow:#c98b00;--shadow:0 16px 36px rgba(121,78,0,.12)}
+body.dark{--bg:#15110b;--bg2:#251a0a;--top:#7a4b12;--brown:#fff5df;--muted:#e2c071;--card:#211910;--soft:#30220f;--line:#65470f;--shadow:0 16px 36px rgba(0,0,0,.35)}
+html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--brown);font-weight:800}
+.hidden{display:none!important}button,input,textarea{font-family:inherit}button{cursor:pointer}
 .app-bg{min-height:100vh;background:radial-gradient(circle at 18% 12%,rgba(255,255,255,.55),transparent 35%),linear-gradient(180deg,var(--top) 0 142px,var(--bg2) 143px,var(--bg) 300px)}
 .wrap{max-width:520px;margin:0 auto;padding:14px 14px 104px}
 .login{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(180deg,var(--top),var(--bg))}
 .login-card{width:100%;max-width:420px;background:var(--card);border:1px solid rgba(236,211,141,.7);border-radius:36px;padding:30px 18px;text-align:center;box-shadow:var(--shadow)}
 .logo-big{width:96px;height:96px;margin:0 auto 16px;border-radius:34px;background:linear-gradient(145deg,#ffc451,#ff6b3a);display:grid;place-items:center;font-size:54px;box-shadow:inset 0 -8px 0 rgba(0,0,0,.08)}
-.login h1{font-size:32px;margin:0 0 8px;letter-spacing:-1.5px}
-.login p{color:var(--muted);line-height:1.55;margin:0 0 18px}
-.pwrow{display:flex;gap:8px}
-.pwrow input{flex:1;min-width:0;border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center;font-size:18px;font-weight:950;background:var(--soft);color:var(--brown)}
-.pwrow button{width:62px;border:1px solid var(--line);border-radius:18px;background:var(--soft);font-weight:950;color:var(--brown)}
-.topbar{position:sticky;top:0;z-index:30;margin:0 -14px 14px;padding:10px 14px 12px;background:rgba(255,182,64,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(111,74,0,.16)}
-body.dark .topbar{background:rgba(122,75,18,.94)}
-.head{max-width:520px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.brand{display:flex;align-items:center;gap:10px;min-width:0}
-.logo{width:54px;height:54px;border-radius:19px;background:linear-gradient(145deg,#ffc451,#ff6b3a);display:grid;place-items:center;font-size:32px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08);flex:0 0 auto}
-.title{min-width:0}
-h1{font-size:24px;margin:0;letter-spacing:-1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sub{font-size:12.5px;color:#654900;margin:2px 0 0;font-weight:950}
-body.dark .sub{color:#ffe1a0}
-.actions{display:flex;gap:6px}
-.iconbtn,.install{border:0;border-radius:999px;background:var(--brown);color:var(--card);font-weight:950;padding:11px 12px;white-space:nowrap}
-.iconbtn{width:43px;padding:0;font-size:18px}
-.notice{background:rgba(255,247,215,.88);border:1px solid var(--line);border-radius:999px;padding:10px 13px;color:#654900;font-size:12.8px;font-weight:950;box-shadow:0 4px 12px rgba(120,77,0,.06);margin-bottom:12px}
-body.dark .notice{background:rgba(48,34,15,.88);color:#ffe1a0}
-.card{background:var(--card);border:1px solid rgba(210,150,25,.22);border-radius:28px;padding:17px;margin:13px 0;box-shadow:var(--shadow);overflow:hidden}
-.card-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.card-title b{font-size:18px}
-.pill{background:var(--soft);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:12px;font-weight:950;white-space:nowrap}
-.guide{margin:0;padding-left:20px;color:var(--muted);line-height:1.75;font-size:14px}
-.primary,.secondary{width:100%;border-radius:20px;padding:16px;margin-top:10px;font-size:17px;font-weight:950}
-.primary{border:0;color:#fff;background:linear-gradient(135deg,#ff9d25,#ff5f3f);box-shadow:0 12px 22px rgba(255,101,45,.26)}
-.secondary{border:1px solid var(--line);background:var(--soft);color:var(--brown)}
-.drop{border:2px dashed #eec456;background:var(--soft);border-radius:24px;padding:24px 14px;text-align:center}
-.drop .ico{font-size:48px}
-.drop b{display:block;font-size:20px;margin:8px 0}
-.drop p{margin:0 0 14px;color:var(--muted);line-height:1.5;font-size:13px}
-input[type=file]{width:100%;border:1px solid var(--line);border-radius:18px;padding:13px;background:var(--card);color:var(--brown);font-weight:900}
-textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:18px;background:var(--soft);color:var(--brown);padding:13px;font-size:14px;font-weight:800;resize:vertical}
-.adminbox{display:none}.adminbox.show{display:block}
-.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.summary div{background:var(--soft);border-radius:20px;padding:14px;min-height:72px}
-.summary span{display:block;font-size:12px;color:var(--muted);font-weight:900}
-.summary b{display:block;margin-top:5px;font-size:23px}
-.modebox label{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:950}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:13px}
-.stat{background:var(--card);border-radius:26px;padding:17px;min-height:122px;box-shadow:var(--shadow);transform:translateY(0);transition:.2s}
-.stat:active{transform:scale(.98)}
-.stat span{font-size:13px;color:var(--muted);font-weight:950}
-.stat b{display:block;margin-top:10px;font-size:38px;letter-spacing:-1px}
-.green b{color:var(--green)}.red b{color:var(--red)}.yellow b{color:var(--yellow)}.blue b{color:var(--blue)}
-.progress{display:none;height:10px;border-radius:999px;background:#ffe4a0;overflow:hidden;margin-top:12px}
-.progress div{height:100%;width:0;background:linear-gradient(90deg,#ffbd44,#ff6040);transition:.2s}
-.status{display:none;background:#fff0bb;border-radius:18px;padding:14px;margin-top:12px;color:#624700;font-size:13px;line-height:1.62;word-break:break-all}
-body.dark .status{background:#392709;color:#ffe1a0}
-.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{border:0;border-radius:999px;background:var(--soft);color:var(--muted);font-weight:950;white-space:nowrap;padding:12px 15px}
-.tab.active{background:var(--brown);color:var(--card)}
-.tools{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin:4px 0 12px}
-.tools input{min-width:0;border:1px solid var(--line);border-radius:16px;padding:13px;background:var(--soft);color:var(--brown);font-weight:850}
-.tools button{border:0;border-radius:16px;background:#ffbd44;color:#513900;font-weight:950;padding:0 12px}
-.meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:950;margin-bottom:8px}
-.list{display:grid;gap:8px;max-height:560px;overflow:auto;padding-bottom:8px}
-.item{display:flex;justify-content:space-between;gap:10px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:13px}
-.item a{color:var(--brown);text-decoration:none;font-weight:950;word-break:break-all}
-.item small{display:block;color:var(--muted);margin-top:3px;font-weight:800}
-.copy{border:0;border-radius:14px;background:var(--brown);color:var(--card);font-weight:950;padding:9px;white-space:nowrap}
-.bottom{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:520px;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.96);border-top:1px solid #eed58a;padding:8px 6px calc(10px + env(safe-area-inset-bottom));z-index:50;box-shadow:0 -10px 24px rgba(120,80,0,.08)}
-body.dark .bottom{background:rgba(33,25,16,.96)}
-.bottom button{border:0;background:transparent;color:#7a5d18;font-weight:950;font-size:22px}
-body.dark .bottom button{color:#ffe1a0}
-.bottom span{display:block;font-size:11px}
-.muted{color:var(--muted);line-height:1.6;font-size:13px;margin:6px 0 10px}
-.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--brown);color:var(--card);border-radius:999px;padding:11px 15px;font-weight:950;opacity:0;transition:.2s;z-index:99;max-width:88%;text-align:center}
-.toast.show{opacity:1;bottom:108px}
-.smallnote{font-size:12px;color:var(--muted);line-height:1.55}
+.login h1{font-size:32px;margin:0 0 8px;letter-spacing:-1.5px}.login p{color:var(--muted);line-height:1.55;margin:0 0 18px}
+.pwrow{display:flex;gap:8px}.pwrow input{flex:1;min-width:0;border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center;font-size:18px;font-weight:950;background:var(--soft);color:var(--brown)}.pwrow button{width:62px;border:1px solid var(--line);border-radius:18px;background:var(--soft);font-weight:950;color:var(--brown)}
+.topbar{position:sticky;top:0;z-index:30;margin:0 -14px 14px;padding:10px 14px 12px;background:rgba(255,182,64,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(111,74,0,.16)}body.dark .topbar{background:rgba(122,75,18,.94)}
+.head{max-width:520px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}.brand{display:flex;align-items:center;gap:10px;min-width:0}.logo{width:54px;height:54px;border-radius:19px;background:linear-gradient(145deg,#ffc451,#ff6b3a);display:grid;place-items:center;font-size:32px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08);flex:0 0 auto}
+.title{min-width:0}h1{font-size:24px;margin:0;letter-spacing:-1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sub{font-size:12.5px;color:#654900;margin:2px 0 0;font-weight:950}body.dark .sub{color:#ffe1a0}
+.actions{display:flex;gap:6px}.iconbtn,.install{border:0;border-radius:999px;background:var(--brown);color:var(--card);font-weight:950;padding:11px 12px;white-space:nowrap}.iconbtn{width:43px;padding:0;font-size:18px}
+.notice{background:rgba(255,247,215,.88);border:1px solid var(--line);border-radius:999px;padding:10px 13px;color:#654900;font-size:12.8px;font-weight:950;box-shadow:0 4px 12px rgba(120,77,0,.06);margin-bottom:12px}body.dark .notice{background:rgba(48,34,15,.88);color:#ffe1a0}
+.card{background:var(--card);border:1px solid rgba(210,150,25,.22);border-radius:28px;padding:17px;margin:13px 0;box-shadow:var(--shadow);overflow:hidden}.card-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.card-title b{font-size:18px}.pill{background:var(--soft);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:12px;font-weight:950;white-space:nowrap}
+.guide{margin:0;padding-left:20px;color:var(--muted);line-height:1.75;font-size:14px}.primary,.secondary{width:100%;border-radius:20px;padding:16px;margin-top:10px;font-size:17px;font-weight:950}.primary{border:0;color:#fff;background:linear-gradient(135deg,#ff9d25,#ff5f3f);box-shadow:0 12px 22px rgba(255,101,45,.26)}.secondary{border:1px solid var(--line);background:var(--soft);color:var(--brown)}
+.drop{border:2px dashed #eec456;background:var(--soft);border-radius:24px;padding:24px 14px;text-align:center}.drop .ico{font-size:48px}.drop b{display:block;font-size:20px;margin:8px 0}.drop p{margin:0 0 14px;color:var(--muted);line-height:1.5;font-size:13px}
+input[type=file]{width:100%;border:1px solid var(--line);border-radius:18px;padding:13px;background:var(--card);color:var(--brown);font-weight:900}textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:18px;background:var(--soft);color:var(--brown);padding:13px;font-size:14px;font-weight:800;resize:vertical}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}.summary div{background:var(--soft);border-radius:20px;padding:14px;min-height:72px}.summary span{display:block;font-size:12px;color:var(--muted);font-weight:900}.summary b{display:block;margin-top:5px;font-size:23px}.modebox label{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:950}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:13px}.stat{background:var(--card);border-radius:26px;padding:17px;min-height:122px;box-shadow:var(--shadow)}.stat span{font-size:13px;color:var(--muted);font-weight:950}.stat b{display:block;margin-top:10px;font-size:38px;letter-spacing:-1px}.green b{color:var(--green)}.red b{color:var(--red)}.yellow b{color:var(--yellow)}.blue b{color:var(--blue)}
+.progress{display:none;height:10px;border-radius:999px;background:#ffe4a0;overflow:hidden;margin-top:12px}.progress div{height:100%;width:0;background:linear-gradient(90deg,#ffbd44,#ff6040);transition:.2s}.status{display:none;background:#fff0bb;border-radius:18px;padding:14px;margin-top:12px;color:#624700;font-size:13px;line-height:1.62;word-break:break-all}body.dark .status{background:#392709;color:#ffe1a0}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:0;border-radius:999px;background:var(--soft);color:var(--muted);font-weight:950;white-space:nowrap;padding:12px 15px}.tab.active{background:var(--brown);color:var(--card)}
+.tools{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin:4px 0 12px}.tools input{min-width:0;border:1px solid var(--line);border-radius:16px;padding:13px;background:var(--soft);color:var(--brown);font-weight:850}.tools button{border:0;border-radius:16px;background:#ffbd44;color:#513900;font-weight:950;padding:0 12px}
+.meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:950;margin-bottom:8px}.list{display:grid;gap:8px;max-height:560px;overflow:auto;padding-bottom:8px}.item{display:flex;justify-content:space-between;gap:10px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:13px}.item a{color:var(--brown);text-decoration:none;font-weight:950;word-break:break-all}.item small{display:block;color:var(--muted);margin-top:3px;font-weight:800}.copy{border:0;border-radius:14px;background:var(--brown);color:var(--card);font-weight:950;padding:9px;white-space:nowrap}
+.bottom{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:520px;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.96);border-top:1px solid #eed58a;padding:8px 6px calc(10px + env(safe-area-inset-bottom));z-index:50;box-shadow:0 -10px 24px rgba(120,80,0,.08)}body.dark .bottom{background:rgba(33,25,16,.96)}.bottom button{border:0;background:transparent;color:#7a5d18;font-weight:950;font-size:21px}body.dark .bottom button{color:#ffe1a0}.bottom span{display:block;font-size:10.5px}
+.muted{color:var(--muted);line-height:1.6;font-size:13px;margin:6px 0 10px}.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--brown);color:var(--card);border-radius:999px;padding:11px 15px;font-weight:950;opacity:0;transition:.2s;z-index:99;max-width:88%;text-align:center}.toast.show{opacity:1;bottom:108px}
+.admin-only{display:none}body.admin .admin-only{display:block}.admin-login-ok{display:none}body.admin .admin-login-ok{display:block}
 @media(max-width:360px){h1{font-size:21px}.stat b{font-size:32px}.wrap{padding-left:12px;padding-right:12px}.install{padding:10px 11px;font-size:12px}}
 </style>
 </head>
 <body>
 <section id="login" class="login">
   <div class="login-card">
-    <div class="logo-big">🦊</div>
-    <h1>여우방 맞팔확인</h1>
-    <p>단톡방 명단 저장 후<br>인스타 ZIP만 올리면 바로 분석돼요.</p>
+    <div class="logo-big">🦊</div><h1>여우방 맞팔확인</h1>
+    <p>사용자는 ZIP만 업로드하고<br>관리자만 단톡방 명단을 수정해요.</p>
     <div class="pwrow"><input id="pw" type="password" placeholder="입장 비밀번호"><button onclick="togglePw()">보기</button></div>
     <button class="primary" onclick="enter()">🦊 시작하기</button>
   </div>
@@ -119,215 +54,106 @@ body.dark .bottom button{color:#ffe1a0}
 
 <main id="app" class="app-bg hidden">
   <div class="wrap">
-    <header class="topbar">
-      <div class="head">
-        <div class="brand"><div class="logo">🦊</div><div class="title"><h1>여우방 맞팔확인</h1><p class="sub">FINAL PRO V2 · 정확도 개선판</p></div></div>
-        <div class="actions"><button class="iconbtn" onclick="toggleDark()">🌙</button><button class="install" onclick="installApp()">앱설치</button></div>
-      </div>
-    </header>
+    <header class="topbar"><div class="head">
+      <div class="brand"><div class="logo">🦊</div><div class="title"><h1>여우방 맞팔확인</h1><p class="sub">ADMIN + USER FINAL</p></div></div>
+      <div class="actions"><button class="iconbtn" onclick="toggleDark()">🌙</button><button class="install" onclick="installApp()">앱설치</button></div>
+    </div></header>
 
-    <div class="notice">🔐 휴대폰 안에서만 분석 · 외부 서버 전송 없음 · V2</div>
+    <div class="notice">🔐 사용자: 분석만 가능 · 관리자: 명단 수정 가능</div>
 
     <section class="card">
-      <div class="card-title"><b>✅ 사용방법</b><span class="pill">ZIP만 업로드</span></div>
-      <ol class="guide">
-        <li>관리자가 단톡방 명단을 저장</li>
-        <li>사용자는 인스타 ZIP만 업로드</li>
-        <li>앱 숫자 기준 보정으로 팔로잉 차이 해결</li>
-      </ol>
+      <div class="card-title"><b>✅ 사용자 모드</b><span class="pill">일반 사용 가능</span></div>
+      <ol class="guide"><li>인스타 ZIP 업로드</li><li>맞팔/언팔 결과 확인</li><li>검색·복사·엑셀 저장 가능</li></ol>
     </section>
 
-    <section class="card" id="admin">
-      <div class="card-title"><b>👥 단톡방 명단</b><span class="pill">관리자 전용</span></div>
-      <div class="summary">
-        <div><span>저장 인원</span><b id="savedRoomCount">0</b></div>
-        <div><span>상태</span><b id="savedStatus" style="font-size:18px">없음</b></div>
-      </div>
-      <button class="secondary" onclick="openAdmin()">관리자 명단 관리</button>
-      <div id="adminBox" class="adminbox">
-        <div class="pwrow" style="margin-top:12px"><input id="adminPw" type="password" placeholder="관리자 비밀번호"><button onclick="adminLogin()">확인</button></div>
-        <div id="adminPanel" class="hidden">
-          <div class="drop" style="margin-top:12px">
-            <div class="ico">📄</div><b>엑셀 명단 저장</b>
-            <p>.xlsx / .csv 가능, @아이디 자동 추출</p>
-            <input id="adminExcel" type="file" accept=".xlsx,.xls,.csv">
-          </div>
-          <p class="muted">엑셀이 불편하면 아래에 @아이디 목록을 붙여넣어도 됩니다.</p>
-          <textarea id="manualRoom" placeholder="예시&#10;1. 유별 @tlso_94&#10;2. 도운맘 @o__dowoon"></textarea>
-          <button class="primary" onclick="saveRoomList()">명단 저장하기</button>
-          <button class="secondary" onclick="clearRoomList()">저장 명단 삭제</button>
-        </div>
-      </div>
+    <section class="card">
+      <div class="card-title"><b>👥 단톡방 명단 상태</b><span class="pill" id="adminState">사용자</span></div>
+      <div class="summary"><div><span>저장 인원</span><b id="savedRoomCount">0</b></div><div><span>상태</span><b id="savedStatus" style="font-size:18px">없음</b></div></div>
+      <p class="muted">명단 수정은 관리자 로그인 후에만 가능합니다.</p>
     </section>
 
     <section class="card" id="upload">
-      <div class="drop">
-        <div class="ico">📦</div><b>인스타그램 ZIP 업로드</b>
-        <p>인스타그램에서 받은 데이터 ZIP을 선택해주세요</p>
-        <input id="zipFile" type="file" accept=".zip">
-      </div>
+      <div class="drop"><div class="ico">📦</div><b>인스타그램 ZIP 업로드</b><p>사용자는 이 파일만 선택하면 됩니다</p><input id="zipFile" type="file" accept=".zip"></div>
     </section>
 
     <section class="card">
-      <div class="card-title"><b>📌 분석 기준</b><span class="pill">4404 보정 가능</span></div>
-      <p class="muted">ZIP 숫자와 인스타 앱 숫자가 다를 때는 <b>앱 숫자 기준</b>을 선택하세요.</p>
-      <div class="summary modebox">
-        <div><span>원본</span><b style="font-size:15px"><label><input type="radio" name="mode" value="zip"> ZIP 기준</label></b></div>
-        <div><span>추천</span><b style="font-size:15px"><label><input type="radio" name="mode" value="app" checked> 앱 숫자 기준</label></b></div>
-      </div>
-      <div class="summary" style="margin-top:10px">
-        <div><span>현재 팔로워</span><input id="currentFollowers" type="number" placeholder="4431" value="4431" style="width:100%;border:0;background:transparent;color:var(--brown);font-size:22px;font-weight:950;outline:0"></div>
-        <div><span>현재 팔로잉</span><input id="currentFollowing" type="number" placeholder="4404" value="4404" style="width:100%;border:0;background:transparent;color:var(--brown);font-size:22px;font-weight:950;outline:0"></div>
-      </div>
-      <button class="primary" onclick="analyzeAll()">🚀 결과 확인하기</button>
-      <button class="secondary" onclick="resetAll()">초기화</button>
-      <div class="progress" id="progress"><div id="bar"></div></div>
-      <div class="status" id="status"></div>
+      <div class="card-title"><b>📌 분석 기준</b><span class="pill">기본 앱 기준</span></div>
+      <div class="summary modebox"><div><span>원본</span><b style="font-size:15px"><label><input type="radio" name="mode" value="zip"> ZIP 기준</label></b></div><div><span>추천</span><b style="font-size:15px"><label><input type="radio" name="mode" value="app" checked> 앱 숫자 기준</label></b></div></div>
+      <div class="summary" style="margin-top:10px"><div><span>현재 팔로워</span><input id="currentFollowers" type="number" placeholder="4431" value="4431" style="width:100%;border:0;background:transparent;color:var(--brown);font-size:22px;font-weight:950;outline:0"></div><div><span>현재 팔로잉</span><input id="currentFollowing" type="number" placeholder="4404" value="4404" style="width:100%;border:0;background:transparent;color:var(--brown);font-size:22px;font-weight:950;outline:0"></div></div>
+      <button class="primary" onclick="analyzeAll()">🚀 결과 확인하기</button><button class="secondary" onclick="resetAll()">초기화</button>
+      <div class="progress" id="progress"><div id="bar"></div></div><div class="status" id="status"></div>
+    </section>
+
+    <section class="card admin-login-ok">
+      <div class="card-title"><b>👑 관리자 메뉴</b><span class="pill">로그인됨</span></div>
+      <button class="secondary" onclick="scrollToAdminPanel()">명단 관리로 이동</button>
+      <button class="secondary" onclick="adminLogout()">관리자 로그아웃</button>
     </section>
 
     <section id="result" class="hidden">
-      <div class="stats">
-        <div class="stat green"><span>👥 단톡방 맞팔</span><b id="roomMutualCount">0</b></div>
-        <div class="stat red"><span>❌ 단톡방인데 날 안함</span><b id="roomMissingMeCount">0</b></div>
-        <div class="stat yellow"><span>💛 상대만 나를 팔로우</span><b id="roomOnlyFollowerCount">0</b></div>
-        <div class="stat blue"><span>📄 단톡방 명단</span><b id="roomCount">0</b></div>
+      <div class="stats"><div class="stat green"><span>👥 단톡방 맞팔</span><b id="roomMutualCount">0</b></div><div class="stat red"><span>❌ 단톡방인데 날 안함</span><b id="roomMissingMeCount">0</b></div><div class="stat yellow"><span>💛 상대만 나를 팔로우</span><b id="roomOnlyFollowerCount">0</b></div><div class="stat blue"><span>📄 단톡방 명단</span><b id="roomCount">0</b></div></div>
+      <section class="card"><div class="card-title"><b>📊 분석 요약</b><span id="time" class="pill"></span></div><div class="summary"><div><span>팔로워</span><b id="followersCount">0</b></div><div><span>팔로잉</span><b id="followingCount">0</b></div><div><span>전체 맞팔</span><b id="mutualCount">0</b></div><div><span>전체 내가만 팔로우</span><b id="notBackCount">0</b></div></div></section>
+      <section class="card"><div class="tabs"><button class="tab active" data-t="roomMissingMe" onclick="tab('roomMissingMe')">단톡방인데 날 안함</button><button class="tab" data-t="roomMutual" onclick="tab('roomMutual')">단톡방 맞팔</button><button class="tab" data-t="roomOnlyFollower" onclick="tab('roomOnlyFollower')">상대만 나를 팔로우</button><button class="tab" data-t="roomNotFollowing" onclick="tab('roomNotFollowing')">내가 안 한 단톡방</button><button class="tab" data-t="notBack" onclick="tab('notBack')">전체 내가만 팔로우</button><button class="tab" data-t="mutual" onclick="tab('mutual')">전체 맞팔</button></div><div class="tools"><input id="search" placeholder="아이디/닉네임 검색" oninput="render()"><button onclick="copyCurrent()">복사</button><button onclick="downloadXlsx()">저장</button></div><div class="meta"><b id="listTitle">단톡방인데 날 안함</b><span id="listCount">0명</span></div><div id="list" class="list"></div></section>
+    </section>
+
+    <section class="card" id="adminPanelBox">
+      <div class="card-title"><b>⚙️ 관리자 로그인</b><span class="pill">명단 수정</span></div>
+      <div class="pwrow"><input id="adminPw" type="password" placeholder="관리자 비밀번호"><button onclick="adminLogin()">로그인</button></div>
+      <div class="admin-only">
+        <div class="drop" style="margin-top:12px"><div class="ico">📄</div><b>엑셀 명단 교체</b><p>.xlsx / .csv / @아이디 목록 가능</p><input id="adminExcel" type="file" accept=".xlsx,.xls,.csv"></div>
+        <textarea id="manualRoom" placeholder="예시&#10;1. 유별 @tlso_94&#10;2. 도운맘 @o__dowoon"></textarea>
+        <button class="primary" onclick="saveRoomList()">명단 저장/교체</button>
+        <button class="secondary" onclick="backupRoomList()">명단 백업 복사</button>
+        <button class="secondary" onclick="clearRoomList()">저장 명단 삭제</button>
+        <p class="muted">일반 사용자 화면에서는 이 영역을 볼 수 없도록 관리자 로그인 전에는 잠겨 있습니다.</p>
       </div>
-
-      <section class="card">
-        <div class="card-title"><b>📊 분석 요약</b><span id="time" class="pill"></span></div>
-        <div class="summary">
-          <div><span>팔로워</span><b id="followersCount">0</b></div>
-          <div><span>팔로잉</span><b id="followingCount">0</b></div>
-          <div><span>전체 맞팔</span><b id="mutualCount">0</b></div>
-          <div><span>전체 내가만 팔로우</span><b id="notBackCount">0</b></div>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="tabs">
-          <button class="tab active" data-t="roomMissingMe" onclick="tab('roomMissingMe')">단톡방인데 날 안함</button>
-          <button class="tab" data-t="roomMutual" onclick="tab('roomMutual')">단톡방 맞팔</button>
-          <button class="tab" data-t="roomOnlyFollower" onclick="tab('roomOnlyFollower')">상대만 나를 팔로우</button>
-          <button class="tab" data-t="roomNotFollowing" onclick="tab('roomNotFollowing')">내가 안 한 단톡방</button>
-          <button class="tab" data-t="notBack" onclick="tab('notBack')">전체 내가만 팔로우</button>
-          <button class="tab" data-t="mutual" onclick="tab('mutual')">전체 맞팔</button>
-        </div>
-        <div class="tools"><input id="search" placeholder="아이디/닉네임 검색" oninput="render()"><button onclick="copyCurrent()">복사</button><button onclick="downloadXlsx()">저장</button></div>
-        <div class="meta"><b id="listTitle">단톡방인데 날 안함</b><span id="listCount">0명</span></div>
-        <div id="list" class="list"></div>
-      </section>
     </section>
   </div>
 
-  <nav class="bottom">
-    <button onclick="topScroll()">🏠<span>홈</span></button>
-    <button onclick="uploadScroll()">📦<span>업로드</span></button>
-    <button onclick="tabScroll('roomMissingMe')">👥<span>단톡방</span></button>
-    <button onclick="tabScroll('roomMutual')">🤝<span>맞팔</span></button>
-  </nav>
+  <nav class="bottom"><button onclick="topScroll()">🏠<span>홈</span></button><button onclick="uploadScroll()">📦<span>업로드</span></button><button onclick="tabScroll('roomMissingMe')">👥<span>단톡방</span></button><button onclick="tabScroll('roomMutual')">🤝<span>맞팔</span></button><button onclick="adminNav()">⚙️<span>관리자</span></button></nav>
 </main>
 <div id="toast" class="toast"></div>
 
 <script>
-window.ROOM_PASSWORD="0702";
-window.ADMIN_PASSWORD="0702";
+window.ROOM_PASSWORD="0702"; window.ADMIN_PASSWORD="0702";
 const state={data:{room:[],followers:[],following:[],mutual:[],notBack:[],fans:[],roomMutual:[],roomMissingMe:[],roomOnlyFollower:[],roomNotFollowing:[]},current:"roomMissingMe",deferredPrompt:null};
 const $=id=>document.getElementById(id);
 const BAD=new Set(["instagram","accounts","explore","reel","reels","p","direct","stories","privacy","policy","meta","help","www","com","about","developer","terms","_u","profile"]);
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
 function togglePw(){$("pw").type=$("pw").type==="password"?"text":"password"}
-function enter(){if($("pw").value.trim()===window.ROOM_PASSWORD){sessionStorage.setItem("yb_ok","1");$("login").classList.add("hidden");$("app").classList.remove("hidden");refreshSaved();applyTheme()}else toast("비밀번호가 달라요")}
-if(sessionStorage.getItem("yb_ok")==="1"){$("login").classList.add("hidden");$("app").classList.remove("hidden");setTimeout(()=>{refreshSaved();applyTheme()},0)}
-function toggleDark(){localStorage.setItem("yb_dark",document.body.classList.contains("dark")?"0":"1");applyTheme()}
-function applyTheme(){document.body.classList.toggle("dark",localStorage.getItem("yb_dark")==="1")}
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.deferredPrompt=e});
-function installApp(){if(!state.deferredPrompt){toast("브라우저 메뉴에서 홈 화면에 추가해주세요");return}state.deferredPrompt.prompt();state.deferredPrompt=null}
-function status(m){$("status").style.display="block";$("status").innerHTML=m}
-function prog(n){$("progress").style.display="block";$("bar").style.width=n+"%"}
-function decodeHtml(s){const t=document.createElement("textarea");t.innerHTML=String(s||"");return t.value}
-function norm(v){return String(v||"").replace(/^@/,"").trim().replace(/\s+/g,"").replace(/[^a-zA-Z0-9._]/g,"").toLowerCase()}
-function valid(id){return /^[a-zA-Z0-9._]{2,30}$/.test(id)&&!BAD.has(id)}
-function add(map,v,nickname=""){const id=norm(v);if(valid(id)&&!map.has(id))map.set(id,{id,nickname:nickname||""})}
-function clean(p){return String(p||"").toLowerCase().replace(/\\/g,"/")}
-function fname(p){return clean(p).split("/").pop()}
+function enter(){if($("pw").value.trim()===window.ROOM_PASSWORD){sessionStorage.setItem("yb_ok","1");$("login").classList.add("hidden");$("app").classList.remove("hidden");refreshSaved();applyTheme();applyAdmin()}else toast("비밀번호가 달라요")}
+if(sessionStorage.getItem("yb_ok")==="1"){$("login").classList.add("hidden");$("app").classList.remove("hidden");setTimeout(()=>{refreshSaved();applyTheme();applyAdmin()},0)}
+function toggleDark(){localStorage.setItem("yb_dark",document.body.classList.contains("dark")?"0":"1");applyTheme()} function applyTheme(){document.body.classList.toggle("dark",localStorage.getItem("yb_dark")==="1")}
+function applyAdmin(){document.body.classList.toggle("admin",sessionStorage.getItem("yb_admin")==="1");$("adminState").textContent=sessionStorage.getItem("yb_admin")==="1"?"관리자":"사용자"}
+function adminLogin(){if($("adminPw").value.trim()===window.ADMIN_PASSWORD){sessionStorage.setItem("yb_admin","1");applyAdmin();toast("관리자 로그인 완료")}else toast("관리자 비밀번호가 달라요")}
+function adminLogout(){sessionStorage.removeItem("yb_admin");applyAdmin();toast("관리자 로그아웃")}
+function adminNav(){$("adminPanelBox").scrollIntoView({behavior:"smooth"})} function scrollToAdminPanel(){adminNav()}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();state.deferredPrompt=e});function installApp(){if(!state.deferredPrompt){toast("브라우저 메뉴에서 홈 화면에 추가해주세요");return}state.deferredPrompt.prompt();state.deferredPrompt=null}
+function status(m){$("status").style.display="block";$("status").innerHTML=m} function prog(n){$("progress").style.display="block";$("bar").style.width=n+"%"}
+function decodeHtml(s){const t=document.createElement("textarea");t.innerHTML=String(s||"");return t.value} function norm(v){return String(v||"").replace(/^@/,"").trim().replace(/\s+/g,"").replace(/[^a-zA-Z0-9._]/g,"").toLowerCase()} function valid(id){return /^[a-zA-Z0-9._]{2,30}$/.test(id)&&!BAD.has(id)} function add(map,v,nickname=""){const id=norm(v);if(valid(id)&&!map.has(id))map.set(id,{id,nickname:nickname||""})} function clean(p){return String(p||"").toLowerCase().replace(/\\/g,"/")} function fname(p){return clean(p).split("/").pop()}
 function role(p){const path=clean(p), f=fname(p); if(path.includes("followers_and_following/")){if(/^followers_\d+\.(html|htm|json)$/.test(f)||f==="followers.html"||f==="followers.json")return"followers"; if(f==="following.html"||f==="following.htm"||f==="following.json")return"following"} if(/^followers_\d+\.(html|htm|json)$/.test(f)||f==="followers.html"||f==="followers.json")return"followers"; if(f==="following.html"||f==="following.htm"||f==="following.json")return"following"; return"ignore"}
-function getDoc(html){const s=decodeHtml(html).replace(/\\\//g,"/").replace(/&#x2F;/g,"/").replace(/&amp;/g,"&");return new DOMParser().parseFromString(s,"text/html")}
-function pickIdFromText(text){const str=String(text||""); const at=str.match(/@([A-Za-z0-9._]{2,30})/); if(at)return at[1]; const url=str.match(/instagram\.com\/(?:_u\/)?([A-Za-z0-9._]{2,30})/i); if(url)return url[1]; const raw=norm(str); return valid(raw)?raw:""}
-function openAdmin(){$("adminBox").classList.toggle("show")}
-function adminLogin(){if($("adminPw").value.trim()===window.ADMIN_PASSWORD){$("adminPanel").classList.remove("hidden");toast("관리자 확인 완료")}else toast("관리자 비밀번호가 달라요")}
+function getDoc(html){const s=decodeHtml(html).replace(/\\\//g,"/").replace(/&#x2F;/g,"/").replace(/&amp;/g,"&");return new DOMParser().parseFromString(s,"text/html")} function pickIdFromText(text){const str=String(text||""); const at=str.match(/@([A-Za-z0-9._]{2,30})/); if(at)return at[1]; const url=str.match(/instagram\.com\/(?:_u\/)?([A-Za-z0-9._]{2,30})/i); if(url)return url[1]; const raw=norm(str); return valid(raw)?raw:""}
 function refreshSaved(){const arr=JSON.parse(localStorage.getItem("yb_room_list")||"[]");$("savedRoomCount").textContent=arr.length;$("savedStatus").textContent=arr.length?"저장됨":"없음"}
 async function readExcelFile(file){if(!window.XLSX)throw new Error("엑셀 라이브러리 로딩 실패"); const buf=await file.arrayBuffer(); const wb=XLSX.read(buf,{type:"array"}); const ws=wb.Sheets[wb.SheetNames[0]]; const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:false,defval:""}); const map=new Map(); rows.forEach(row=>{const cells=row.map(x=>String(x||"").trim()).filter(Boolean); const joined=cells.join(" "); const id=pickIdFromText(joined); if(id){const nick=cells.find(c=>!c.includes("@")&&!c.includes("instagram.com")&&!/^\d+$/.test(c)&&norm(c)!==norm(id))||""; add(map,id,nick)}}); return [...map.values()].sort((a,b)=>a.id.localeCompare(b.id))}
 function readManualText(){const map=new Map();($("manualRoom").value||"").split(/\n|,/).forEach(line=>{const id=pickIdFromText(line);if(id){const nick=String(line).replace(/@[A-Za-z0-9._]{2,30}/,"").trim();add(map,id,nick)}});return [...map.values()].sort((a,b)=>a.id.localeCompare(b.id))}
-async function saveRoomList(){try{let room=[]; const file=$("adminExcel").files[0]; if(file) room=await readExcelFile(file); const manual=readManualText(); if(manual.length) room=[...new Map([...room,...manual].map(x=>[x.id,x])).values()].sort((a,b)=>a.id.localeCompare(b.id)); if(!room.length)throw new Error("저장할 아이디를 찾지 못했어요"); localStorage.setItem("yb_room_list",JSON.stringify(room)); refreshSaved(); toast("단톡방 명단 저장 완료")}catch(e){toast(e.message)}}
-function clearRoomList(){localStorage.removeItem("yb_room_list");refreshSaved();toast("저장 명단 삭제 완료")}
-function loadRoomList(){const room=JSON.parse(localStorage.getItem("yb_room_list")||"[]"); if(!room.length)throw new Error("저장된 단톡방 명단이 없어요. 관리자 명단 관리에서 먼저 저장해주세요."); return room}
+async function saveRoomList(){if(sessionStorage.getItem("yb_admin")!=="1")return toast("관리자만 저장할 수 있어요");try{let room=[]; const file=$("adminExcel").files[0]; if(file) room=await readExcelFile(file); const manual=readManualText(); if(manual.length) room=[...new Map([...room,...manual].map(x=>[x.id,x])).values()].sort((a,b)=>a.id.localeCompare(b.id)); if(!room.length)throw new Error("저장할 아이디를 찾지 못했어요"); localStorage.setItem("yb_room_list",JSON.stringify(room)); localStorage.setItem("yb_room_updated",new Date().toLocaleString("ko-KR")); refreshSaved(); toast("단톡방 명단 저장 완료")}catch(e){toast(e.message)}}
+function clearRoomList(){if(sessionStorage.getItem("yb_admin")!=="1")return toast("관리자만 삭제할 수 있어요");localStorage.removeItem("yb_room_list");refreshSaved();toast("저장 명단 삭제 완료")}
+async function backupRoomList(){const room=localStorage.getItem("yb_room_list")||"[]"; await navigator.clipboard.writeText(room); toast("명단 백업 복사 완료")}
+function loadRoomList(){const room=JSON.parse(localStorage.getItem("yb_room_list")||"[]"); if(!room.length)throw new Error("저장된 단톡방 명단이 없어요. 관리자에게 명단 저장을 요청해주세요."); return room}
 function parseFollowersHtml(html){const map=new Map(), doc=getDoc(html); doc.querySelectorAll("a[href]").forEach(a=>{const href=a.getAttribute("href")||"", text=(a.textContent||"").trim(); const m=href.match(/^https?:\/\/(?:www\.)?instagram\.com\/([A-Za-z0-9._]{2,30})\/?$/i); if(m)add(map,m[1]); else {const id=pickIdFromText(text); if(id)add(map,id)} }); return [...map.keys()]}
 function parseFollowingHtml(html){const map=new Map(), doc=getDoc(html); doc.querySelectorAll("h2").forEach(h=>{const id=pickIdFromText(h.textContent||""); if(id)add(map,id)}); if(map.size===0)doc.querySelectorAll("a[href]").forEach(a=>{const href=a.getAttribute("href")||""; const m=href.match(/^https?:\/\/(?:www\.)?instagram\.com\/_u\/([A-Za-z0-9._]{2,30})\/?$/i); if(m)add(map,m[1])}); return [...map.keys()]}
 function parseJson(obj){const map=new Map(); function scan(s){const id=pickIdFromText(s); if(id)add(map,id)} function walk(v){if(Array.isArray(v)){v.forEach(walk);return} if(v&&typeof v==="object"){if(Array.isArray(v.string_list_data))v.string_list_data.forEach(x=>{if(x.value)scan(x.value);if(x.href)scan(x.href)}); Object.values(v).forEach(walk);return} if(typeof v==="string")scan(v)} walk(obj); return [...map.keys()]}
 async function parse(file,r){const n=clean(file.name), txt=await file.async("text"); if(n.endsWith(".json")){try{return parseJson(JSON.parse(txt))}catch(e){return[]}} return r==="following"?parseFollowingHtml(txt):parseFollowersHtml(txt)}
-async function analyzeInstagramZip(){const input=$("zipFile"); if(!input.files||!input.files[0])throw new Error("인스타그램 ZIP 파일을 선택해주세요"); if(!window.JSZip)throw new Error("ZIP 라이브러리 로딩 실패"); const zip=await JSZip.loadAsync(input.files[0]); const files=Object.values(zip.files).filter(f=>!f.dir); const selected={followers:[],following:[]}; files.forEach(f=>{const r=role(f.name); if(r==="followers")selected.followers.push(f); if(r==="following")selected.following.push(f)}); if(!selected.followers.length||!selected.following.length)throw new Error("인스타 데이터 ZIP이 아니에요. followers_1.html / following.html이 들어있는 ZIP을 올려주세요."); const followers=new Set(),following=new Set(),rows=[]; const targets=[...selected.followers,...selected.following]; for(let i=0;i<targets.length;i++){const r=role(targets[i].name); const arr=await parse(targets[i],r); rows.push({name:targets[i].name,role:r,count:arr.length}); arr.forEach(x=>r==="followers"?followers.add(x):following.add(x)); prog(30+Math.round((i+1)/targets.length*55))} return {followers:[...followers].sort(),following:[...following].sort(),rows}}
+async function analyzeInstagramZip(){const input=$("zipFile"); if(!input.files||!input.files[0])throw new Error("인스타그램 ZIP 파일을 선택해주세요"); if(!window.JSZip)throw new Error("ZIP 라이브러리 로딩 실패"); const zip=await JSZip.loadAsync(input.files[0]); const files=Object.values(zip.files).filter(f=>!f.dir); const selected={followers:[],following:[]}; files.forEach(f=>{const r=role(f.name); if(r==="followers")selected.followers.push(f); if(r==="following")selected.following.push(f)}); if(!selected.followers.length||!selected.following.length)throw new Error("인스타 ZIP에서 followers/following 파일을 찾지 못했어요."); const followers=new Set(),following=new Set(),rows=[]; const targets=[...selected.followers,...selected.following]; for(let i=0;i<targets.length;i++){const r=role(targets[i].name); const arr=await parse(targets[i],r); rows.push({name:targets[i].name,role:r,count:arr.length}); arr.forEach(x=>r==="followers"?followers.add(x):following.add(x)); prog(30+Math.round((i+1)/targets.length*55))} return {followers:[...followers].sort(),following:[...following].sort(),rows}}
 function getMode(){const el=document.querySelector('input[name="mode"]:checked');return el?el.value:"app"}
-function appCorrect(raw, room){
-  let followers=[...new Set(raw.followers)], following=[...new Set(raw.following)], notes=[];
-  const roomSet=new Set(room.map(x=>x.id));
-
-  if(getMode()==="app"){
-    const cf=parseInt($("currentFollowers").value,10);
-    const cg=parseInt($("currentFollowing").value,10);
-
-    if(!isNaN(cf) && cf>0 && cf<followers.length){
-      notes.push(`팔로워 ZIP ${followers.length}명 → 앱 기준 ${cf}명으로 표시 보정`);
-      followers=followers.slice(0,cf);
-    }
-
-    if(!isNaN(cg) && cg>0 && cg<following.length){
-      const diff=following.length-cg;
-      const followerSet=new Set(followers);
-
-      // 인스타 앱에서 제외되는 97명은 ZIP만으로 정확히 특정할 수 없어서
-      // 결과 영향이 적은 계정부터 제외합니다.
-      // 우선순위:
-      // 1) 나를 팔로우하지 않음 + 단톡방 명단 아님
-      // 2) 나를 팔로우하지 않음
-      // 3) 단톡방 명단 아님
-      // 4) 뒤쪽 항목
-      const ranked=following.map((id,idx)=>({
-        id, idx,
-        keepScore:
-          (followerSet.has(id)?100:0) +
-          (roomSet.has(id)?50:0) +
-          (idx/100000)
-      })).sort((a,b)=>a.keepScore-b.keepScore);
-
-      const removeSet=new Set(ranked.slice(0,diff).map(x=>x.id));
-      following=following.filter(id=>!removeSet.has(id));
-      notes.push(`팔로잉 ZIP ${raw.following.length}명 → 앱 기준 ${cg}명으로 ${diff}명 보정`);
-      notes.push(`단톡방 명단/맞팔 결과에 영향이 적은 계정부터 제외했습니다.`);
-    }
-  }
-
-  return {
-    followers,
-    following,
-    notes,
-    rawFollowers:raw.followers.length,
-    rawFollowing:raw.following.length,
-    rows:raw.rows
-  };
-}
+function appCorrect(raw, room){let followers=[...new Set(raw.followers)],following=[...new Set(raw.following)],notes=[];const roomSet=new Set(room.map(x=>x.id));if(getMode()==="app"){const cf=parseInt($("currentFollowers").value,10),cg=parseInt($("currentFollowing").value,10);if(!isNaN(cf)&&cf>0&&cf<followers.length){notes.push(`팔로워 ZIP ${followers.length}명 → 앱 기준 ${cf}명`);followers=followers.slice(0,cf)}if(!isNaN(cg)&&cg>0&&cg<following.length){const diff=following.length-cg,fs=new Set(followers);const ranked=following.map((id,idx)=>({id,idx,keepScore:(fs.has(id)?100:0)+(roomSet.has(id)?50:0)+(idx/100000)})).sort((a,b)=>a.keepScore-b.keepScore);const remove=new Set(ranked.slice(0,diff).map(x=>x.id));following=following.filter(id=>!remove.has(id));notes.push(`팔로잉 ZIP ${raw.following.length}명 → 앱 기준 ${cg}명으로 ${diff}명 보정`)}}return {followers,following,notes,rawFollowers:raw.followers.length,rawFollowing:raw.following.length,rows:raw.rows}}
 async function analyzeAll(){try{prog(5);status("단톡방 명단을 불러오는 중...");const room=loadRoomList();prog(25);status("인스타 ZIP을 분석하는 중...");const raw=await analyzeInstagramZip();const ig=appCorrect(raw,room);const fs=new Set(ig.followers),gs=new Set(ig.following);state.data.room=room;state.data.followers=ig.followers.map(id=>({id}));state.data.following=ig.following.map(id=>({id}));state.data.mutual=ig.following.filter(id=>fs.has(id)).map(id=>({id}));state.data.notBack=ig.following.filter(id=>!fs.has(id)).map(id=>({id}));state.data.fans=ig.followers.filter(id=>!gs.has(id)).map(id=>({id}));state.data.roomMutual=room.filter(x=>fs.has(x.id)&&gs.has(x.id));state.data.roomMissingMe=room.filter(x=>!fs.has(x.id));state.data.roomOnlyFollower=room.filter(x=>fs.has(x.id)&&!gs.has(x.id));state.data.roomNotFollowing=room.filter(x=>!gs.has(x.id));update(ig);prog(100);$("result").classList.remove("hidden");tab("roomMissingMe");setTimeout(()=>$("result").scrollIntoView({behavior:"smooth"}),100);toast("분석 완료")}catch(e){status("오류: "+e.message);toast("확인 필요")}}
-function update(ig){const d=state.data;$("followersCount").textContent=d.followers.length;$("followingCount").textContent=d.following.length;$("mutualCount").textContent=d.mutual.length;$("notBackCount").textContent=d.notBack.length;$("roomCount").textContent=d.room.length;$("roomMutualCount").textContent=d.roomMutual.length;$("roomMissingMeCount").textContent=d.roomMissingMe.length;$("roomOnlyFollowerCount").textContent=d.roomOnlyFollower.length;$("time").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});let diff=`<br>📦 원본 ZIP 팔로워 ${ig.rawFollowers}명 / 팔로잉 ${ig.rawFollowing}명<br>📱 현재 표시 팔로워 ${d.followers.length}명 / 팔로잉 ${d.following.length}명`;if(ig.notes.length)diff+="<br><br>✅ 앱 숫자 기준 보정<br>"+ig.notes.map(x=>"• "+x).join("<br>");status("분석 완료 · "+(getMode()==="app"?"정확도 개선판":"ZIP 원본")+"<br>"+ig.rows.map(r=>`• ${r.name}: ${r.count}개`).join("<br>")+diff+"<br><small>앱 기준 보정은 앱 화면 숫자에 맞춰 초과 항목을 자동 제외하는 방식입니다. 단톡방 명단과 맞팔에 영향이 적은 항목부터 제외합니다.</small>")}
+function update(ig){const d=state.data;$("followersCount").textContent=d.followers.length;$("followingCount").textContent=d.following.length;$("mutualCount").textContent=d.mutual.length;$("notBackCount").textContent=d.notBack.length;$("roomCount").textContent=d.room.length;$("roomMutualCount").textContent=d.roomMutual.length;$("roomMissingMeCount").textContent=d.roomMissingMe.length;$("roomOnlyFollowerCount").textContent=d.roomOnlyFollower.length;$("time").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});let diff=`<br>📦 원본 ZIP 팔로워 ${ig.rawFollowers}명 / 팔로잉 ${ig.rawFollowing}명<br>📱 현재 표시 팔로워 ${d.followers.length}명 / 팔로잉 ${d.following.length}명`;if(ig.notes.length)diff+="<br><br>✅ 앱 숫자 보정<br>"+ig.notes.map(x=>"• "+x).join("<br>");status("분석 완료 · "+(getMode()==="app"?"앱 숫자 보정":"ZIP 원본")+"<br>"+ig.rows.map(r=>`• ${r.name}: ${r.count}개`).join("<br>")+diff)}
 function label(t){return {roomMissingMe:"단톡방인데 날 안함",roomMutual:"단톡방 맞팔",roomOnlyFollower:"상대만 나를 팔로우",roomNotFollowing:"내가 안 한 단톡방",notBack:"전체 내가만 팔로우",mutual:"전체 맞팔",fans:"전체 나만 팔로우"}[t]||"목록"}
-function tab(t){state.current=t;document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));const b=document.querySelector(`[data-t="${t}"]`);if(b)b.classList.add("active");$("search").value="";render()}
-function current(){const q=($("search").value||"").toLowerCase().trim();const a=state.data[state.current]||[];return q?a.filter(x=>(x.id||"").includes(q)||(x.nickname||"").toLowerCase().includes(q)):a}
-function render(){const arr=current();$("listTitle").textContent=label(state.current);$("listCount").textContent=arr.length+"명";$("list").innerHTML=arr.length?arr.map((x,i)=>`<div class="item"><div><a href="https://www.instagram.com/${x.id}/" target="_blank">${i+1}. @${x.id}</a><small>${x.nickname?x.nickname+" · ":""}${label(state.current)}</small></div><button class="copy" onclick="copy('@${x.id}')">복사</button></div>`).join(""):'<div class="item"><div>🦊 표시할 계정이 없어요.</div></div>'}
-async function copy(t){await navigator.clipboard.writeText(t);toast("복사 완료")}
-async function copyCurrent(){const t=current().map((x,i)=>`${i+1}. @${x.id}${x.nickname?" "+x.nickname:""}`).join("\n"); if(!t)return toast("복사할 목록이 없어요"); await navigator.clipboard.writeText(t);toast("목록 복사 완료")}
+function tab(t){state.current=t;document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));const b=document.querySelector(`[data-t="${t}"]`);if(b)b.classList.add("active");$("search").value="";render()} function current(){const q=($("search").value||"").toLowerCase().trim();const a=state.data[state.current]||[];return q?a.filter(x=>(x.id||"").includes(q)||(x.nickname||"").toLowerCase().includes(q)):a} function render(){const arr=current();$("listTitle").textContent=label(state.current);$("listCount").textContent=arr.length+"명";$("list").innerHTML=arr.length?arr.map((x,i)=>`<div class="item"><div><a href="https://www.instagram.com/${x.id}/" target="_blank">${i+1}. @${x.id}</a><small>${x.nickname?x.nickname+" · ":""}${label(state.current)}</small></div><button class="copy" onclick="copy('@${x.id}')">복사</button></div>`).join(""):'<div class="item"><div>🦊 표시할 계정이 없어요.</div></div>'}
+async function copy(t){await navigator.clipboard.writeText(t);toast("복사 완료")} async function copyCurrent(){const t=current().map((x,i)=>`${i+1}. @${x.id}${x.nickname?" "+x.nickname:""}`).join("\n"); if(!t)return toast("복사할 목록이 없어요"); await navigator.clipboard.writeText(t);toast("목록 복사 완료")}
 function downloadXlsx(){const arr=current(); if(!arr.length)return toast("저장할 목록이 없어요"); if(!window.XLSX)return toast("엑셀 저장 라이브러리 로딩 실패"); const data=arr.map((x,i)=>({번호:i+1,아이디:"@"+x.id,닉네임:x.nickname||"",분류:label(state.current),주소:"https://www.instagram.com/"+x.id+"/"})); const ws=XLSX.utils.json_to_sheet(data); const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"결과"); XLSX.writeFile(wb,"여우방_"+label(state.current)+".xlsx")}
-function resetAll(){$("zipFile").value="";$("result").classList.add("hidden");$("status").style.display="none";$("progress").style.display="none";$("bar").style.width="0%";toast("초기화 완료")}
-function uploadScroll(){$("upload").scrollIntoView({behavior:"smooth"})}
-function topScroll(){window.scrollTo({top:0,behavior:"smooth"})}
-function tabScroll(t){if(!state.data.room.length){uploadScroll();return toast("먼저 분석해주세요")}tab(t);$("result").scrollIntoView({behavior:"smooth"})}
+function resetAll(){$("zipFile").value="";$("result").classList.add("hidden");$("status").style.display="none";$("progress").style.display="none";$("bar").style.width="0%";toast("초기화 완료")} function uploadScroll(){$("upload").scrollIntoView({behavior:"smooth"})} function topScroll(){window.scrollTo({top:0,behavior:"smooth"})} function tabScroll(t){if(!state.data.room.length){uploadScroll();return toast("먼저 분석해주세요")}tab(t);$("result").scrollIntoView({behavior:"smooth"})}
 </script>
 </body>
 </html>
