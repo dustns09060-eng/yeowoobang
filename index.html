@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V7</title>
+<title>여우방 맞팔확인 V8</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--bg:#fff7df;--card:#fff;--cream:#fff5d9;--line:#ead68b;--text:#2a2115;--muted:#73591c;--red:#ef493e;--green:#20a95a;--blue:#2680d9;--shadow:0 8px 22px rgba(100,70,20,.10)}
@@ -13,13 +13,13 @@ header{position:sticky;top:0;z-index:20;background:#ffb640;padding:13px 16px;dis
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{background:#fff;border-radius:22px;padding:17px;min-height:108px;box-shadow:var(--shadow)}.stat b{font-size:15px;color:#4d3b18}.num{font-size:36px;margin-top:11px;font-weight:1000}.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--blue)}.gold{color:#c69300}.box{background:var(--cream);border-radius:20px;padding:14px}label{display:block;margin-bottom:8px;color:#6f5419}
 input[type=number],input[type=password],input[type=text]{width:100%;height:50px;border:2px solid var(--line);border-radius:21px;background:#fff;padding:0 16px;font-size:20px;font-weight:900}input[type=file]{width:100%;background:#fff;border:2px solid var(--line);border-radius:21px;padding:13px;font-size:15px;font-weight:900}
 button{cursor:pointer}.primary{width:100%;border:0;border-radius:23px;background:linear-gradient(90deg,#ff9800,#ff513d);color:#fff;padding:17px;font-size:21px;font-weight:1000;margin-top:13px}.secondary{width:100%;border:2px solid var(--line);border-radius:21px;background:#fff8dc;color:#21190d;padding:14px;font-size:18px;font-weight:1000;margin-top:11px}
-.muted{color:var(--muted);font-size:15px;line-height:1.55}.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mini{background:var(--cream);border-radius:18px;padding:15px;font-size:14px}.mini strong{display:block;font-size:27px;margin-top:7px;color:#21190d}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:8px}.tab{border:0;border-radius:22px;background:#fff0b8;padding:11px 15px;font-size:15px;font-weight:1000;white-space:nowrap}.tab.active{background:#241a0d;color:#fff}.searchrow{display:flex;gap:8px;margin-top:12px}.searchrow input{font-size:16px;height:50px}.smallbtn{border:0;border-radius:17px;background:#ffb640;padding:0 14px;font-weight:1000;font-size:14px}.list{margin-top:10px;max-height:390px;overflow:auto}.item{display:flex;align-items:center;gap:8px;padding:10px;border-bottom:1px solid #f0e3b4;font-size:15px}.item code{font-family:inherit;font-weight:1000}
+.muted{color:var(--muted);font-size:15px;line-height:1.55}.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mini{background:var(--cream);border-radius:18px;padding:15px;font-size:14px}.mini strong{display:block;font-size:27px;margin-top:7px;color:#21190d}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:8px}.tab{border:0;border-radius:22px;background:#fff0b8;padding:11px 15px;font-size:15px;font-weight:1000;white-space:nowrap}.tab.active{background:#241a0d;color:#fff}.searchrow{display:flex;gap:8px;margin-top:12px}.searchrow input{font-size:16px;height:50px}.smallbtn{border:0;border-radius:17px;background:#ffb640;padding:0 14px;font-weight:1000;font-size:14px}.list{margin-top:10px;max-height:390px;overflow:auto}.item{display:flex;align-items:center;gap:8px;padding:10px;border-bottom:1px solid #f0e3b4;font-size:15px}.item code{font-family:inherit;font-weight:1000}.item a{color:#2a2115;text-decoration:none;font-weight:1000}.item a:active{opacity:.65}
 nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 0 10px;border-top:1px solid #eee;z-index:30}nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-size:13px}nav i{display:block;font-style:normal;font-size:24px;margin-bottom:1px}.hidden{display:none!important}.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#21190d;color:white;padding:12px 16px;border-radius:20px;z-index:99;font-weight:900;display:none}
 @media(max-width:420px){h1{font-size:23px}.num{font-size:35px}.card{border-radius:23px;padding:15px}}
 </style>
 </head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V7 · 정확도 엔진</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V8 · 링크수정</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 <section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">불러오는 중</span></div><div class="grid"><div class="box"><div class="muted">현재 명단</div><div class="num blue" id="roomCount">0</div></div><div class="box"><div class="muted">상태</div><div class="num" style="font-size:24px" id="roomStatus">대기</div></div></div><button class="secondary" onclick="loadRoomList(true)">📥 최신 명단 불러오기</button></section>
 <section class="card"><div class="title"><b>📦 인스타그램 ZIP 업로드</b></div><p class="muted">followers_1.html / following.html의 인스타 링크만 정확히 읽습니다.</p><input id="zipFile" type="file" accept=".zip,application/zip,application/x-zip-compressed,*/*"></section>
@@ -53,8 +53,21 @@ function setNum(id,n){document.getElementById(id).textContent=String(n)}
 async function analyze(){try{if(!roomList.length)await loadRoomList();if(!roomList.length)throw Error("단톡방 명단을 불러오지 못했어요.");const pf=parseInt($("currentFollowers").value,10),pg=parseInt($("currentFollowing").value,10);if(!pf||!pg)throw Error("현재 팔로워/팔로잉 숫자를 입력해주세요.");const parsed=await parseZip($("zipFile").files[0]);let followers=parsed.followers,following=parsed.following;if(followers.length>pf)followers=followers.slice(0,pf);if(following.length>pg)following=following.slice(0,pg);const F=new Set(followers),G=new Set(following);const mutual=following.filter(id=>F.has(id));const onlyMe=following.filter(id=>!F.has(id));const roomMutual=roomList.filter(r=>F.has(r.id)&&G.has(r.id));const roomNot=roomList.filter(r=>G.has(r.id)&&!F.has(r.id));const roomFans=roomList.filter(r=>F.has(r.id)&&!G.has(r.id));results={roomMutual,roomNot,fansOnly:roomFans,onlyMe:onlyMe.map(id=>({id,name:""}))};setNum("cRoomMutual",roomMutual.length);setNum("cRoomNot",roomNot.length);setNum("cFansOnly",roomFans.length);setNum("cRoomTotal",roomList.length);setNum("sFollowers",followers.length);setNum("sFollowing",following.length);setNum("sMutual",mutual.length);setNum("sOnlyMe",onlyMe.length);$("doneTime").textContent=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});$("cards").classList.remove("hidden");$("summary").classList.remove("hidden");$("lists").classList.remove("hidden");$("status").innerHTML=`✅ 분석 완료<br>팔로워 ${followers.length}명 / 팔로잉 ${following.length}명`;showTab("roomNot",document.querySelector(".tab"));toast("분석 완료")}catch(e){$("status").textContent="오류: "+e.message;toast("확인 필요")}}
 function clearNumbers(show=true){$("currentFollowers").value="";$("currentFollowing").value="";if(show)toast("숫자 초기화 완료")}
 function showTab(tab,btn){currentTab=tab;document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");renderList()}
-function renderList(){const q=norm($("q").value);const arr=results[currentTab]||[];const f=arr.filter(x=>!q||norm(x.id).includes(q)||String(x.name||"").includes(q));$("list").innerHTML=f.map((x,i)=>`<div class="item"><span>${i+1}.</span><b>${x.name||""}</b><code>@${x.id}</code></div>`).join("")||"<p class='muted'>결과 없음</p>"}
-function copyCurrent(){const arr=results[currentTab]||[];navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. ${x.name||""} @${x.id}`).join("\n"));toast("복사 완료")}
+function renderList(){
+  const q=norm($("q").value);
+  const arr=results[currentTab]||[];
+  const f=arr.filter(x=>!q||norm(x.id).includes(q)||String(x.name||"").includes(q));
+  $("list").innerHTML=f.map((x,i)=>{
+    const id=norm(x.id);
+    const name=x.name||"";
+    return `<div class="item"><span>${i+1}.</span><b>${name}</b><a href="https://www.instagram.com/${id}/" target="_blank" rel="noopener noreferrer">@${id}</a></div>`;
+  }).join("")||"<p class='muted'>결과 없음</p>";
+}
+function copyCurrent(){
+  const arr=results[currentTab]||[];
+  navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. ${x.name||""} @${norm(x.id)}`).join("\n"));
+  toast("복사 완료");
+}
 function adminLogin(){if($("adminPw").value===ADMIN_PASSWORD){$("adminBox").classList.remove("hidden");$("sheetUrl").value=getSheetUrl();toast("관리자 로그인 완료")}else toast("비밀번호가 달라요")}
 function saveSheet(){localStorage.setItem("yb_sheet_url_override",$("sheetUrl").value.trim());loadRoomList(true)}function resetSheet(){localStorage.removeItem("yb_sheet_url_override");$("sheetUrl").value=DEFAULT_SHEET_URL;loadRoomList(true)}$("installBtn").onclick=()=>toast("브라우저 메뉴에서 홈 화면에 추가를 눌러주세요");window.addEventListener("load",()=>{clearNumbers(false)});loadRoomList();
 </script></body></html>
