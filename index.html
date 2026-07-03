@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#FFB640">
-<title>여우방 맞팔확인 USER FREE · ADMIN ONLY</title>
+<title>여우방 맞팔확인 자동연동 최종판</title>
 <link rel="manifest" href="./manifest.json">
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -26,18 +26,18 @@ h1{font-size:25px;margin:0;letter-spacing:-1px}.sub{font-size:12px;color:#654900
 <body>
 <section id="login" class="login hidden"></section>
 <main id="app"><div class="wrap">
-<header class="top"><div class="head"><div class="brand"><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">USER FREE · ADMIN ONLY</p></div></div><button class="install" onclick="installApp()">앱설치</button></div></header>
-<div class="notice">☁️ 비밀번호 없이 바로 사용 · 관리자 메뉴만 비밀번호 필요</div>
+<header class="top"><div class="head"><div class="brand"><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">PUBLIC · SHEET AUTO</p></div></div><button class="install" onclick="installApp()">앱설치</button></div></header>
+<div class="notice">☁️ 비밀번호 없이 바로 사용 · 단톡방 명단 자동 불러오기</div>
 <section class="card"><div class="title"><b>✅ 사용자 모드</b><span class="pill">공개</span></div><ol class="guide"><li>앱 실행 시 구글시트 명단 자동 불러오기</li><li>인스타 ZIP 업로드</li><li>단톡방 맞팔/누락 확인</li></ol></section>
-<section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">대기</span></div><div class="summary"><div><span>시트 인원</span><b id="savedRoomCount">0</b></div><div><span>상태</span><b id="savedStatus" style="font-size:18px">없음</b></div></div><button class="secondary" onclick="loadSheetList()">🔄 명단 새로고침</button><p class="muted" id="sheetInfo">관리자가 저장한 Google Sheets CSV 주소를 사용합니다.</p></section>
+<section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">대기</span></div><div class="summary"><div><span>현재 명단</span><b id="savedRoomCount">0</b></div><div><span>상태</span><b id="savedStatus" style="font-size:18px">없음</b></div></div><button class="secondary" onclick="loadSheetList()">📥 최신 명단 불러오기</button><p class="muted" id="sheetInfo">여우방 공식 Google Sheets 명단을 자동으로 불러옵니다.</p></section>
 <section class="card" id="upload"><div class="drop"><div class="ico">📦</div><b>인스타그램 ZIP 업로드</b><p>followers / following 파일 자동 분석</p><input id="zipFile" type="file" accept=".zip"></div></section>
-<section class="card"><div class="title"><b>📌 분석 기준</b><span class="pill">앱 숫자 보정</span></div><div class="summary"><div><span>현재 팔로워</span><input id="currentFollowers" type="number" value="4431"></div><div><span>현재 팔로잉</span><input id="currentFollowing" type="number" value="4404"></div></div><button class="primary" onclick="analyzeAll()">🚀 결과 확인하기</button><button class="secondary" onclick="resetAll()">초기화</button><div class="progress" id="progress"><div id="bar"></div></div><div class="status" id="status"></div></section>
+<section class="card"><div class="title"><b>👤 내 인스타 정보</b><span class="pill">프로필 숫자</span></div><div class="summary"><div><span>현재 팔로워</span><input id="currentFollowers" type="number" value="4431"></div><div><span>현재 팔로잉</span><input id="currentFollowing" type="number" value="4404"></div></div><p class="muted">💡 인스타 프로필에 표시되는 팔로워/팔로잉 숫자를 그대로 입력하세요.</p><button class="primary" onclick="analyzeAll()">🦊 맞팔 분석 시작</button><button class="secondary" onclick="resetAll()">초기화</button><div class="progress" id="progress"><div id="bar"></div></div><div class="status" id="status"></div></section>
 <section id="result" class="hidden"><div class="stats"><div class="stat green"><span>👥 단톡방 맞팔</span><b id="roomMutualCount">0</b></div><div class="stat red"><span>❌ 단톡방인데 날 안함</span><b id="roomMissingMeCount">0</b></div><div class="stat yellow"><span>💛 상대만 나를 팔로우</span><b id="roomOnlyFollowerCount">0</b></div><div class="stat blue"><span>📄 단톡방 명단</span><b id="roomCount">0</b></div></div><section class="card"><div class="title"><b>📊 분석 요약</b><span class="pill" id="time"></span></div><div class="summary"><div><span>팔로워</span><b id="followersCount">0</b></div><div><span>팔로잉</span><b id="followingCount">0</b></div><div><span>전체 맞팔</span><b id="mutualCount">0</b></div><div><span>전체 내가만 팔로우</span><b id="notBackCount">0</b></div></div></section><section class="card"><div class="tabs"><button class="tab active" data-t="roomMissingMe" onclick="tab('roomMissingMe')">단톡방인데 날 안함</button><button class="tab" data-t="roomMutual" onclick="tab('roomMutual')">단톡방 맞팔</button><button class="tab" data-t="roomOnlyFollower" onclick="tab('roomOnlyFollower')">상대만 나를 팔로우</button><button class="tab" data-t="notBack" onclick="tab('notBack')">전체 내가만 팔로우</button><button class="tab" data-t="mutual" onclick="tab('mutual')">전체 맞팔</button></div><div class="tools"><input id="search" placeholder="아이디/닉네임 검색" oninput="render()"><button onclick="copyCurrent()">복사</button><button onclick="downloadXlsx()">저장</button></div><div class="meta"><b id="listTitle">목록</b><span id="listCount">0명</span></div><div id="list" class="list"></div></section></section>
-<section class="card" id="adminPanel"><div class="title"><b>⚙️ 관리자 설정</b><span class="pill">관리자만</span></div><p class="muted">일반 사용자는 이곳을 건드릴 필요가 없습니다. 관리자만 비밀번호 입력 후 시트 주소를 수정할 수 있어요.</p><div class="pwrow"><input id="adminPw" type="password" placeholder="관리자 비밀번호"><button onclick="adminLogin()">로그인</button></div><div class="admin-only"><p class="muted">구글시트 CSV 주소를 저장하면 모든 사용자가 같은 명단을 불러옵니다.</p><input id="sheetUrl" type="url" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv&gid=0"><button class="primary" onclick="saveSheetUrl()">시트 주소 저장</button><button class="secondary" onclick="loadSheetList()">시트 명단 테스트 불러오기</button><button class="secondary" onclick="clearSheetUrl()">시트 주소 삭제</button><p class="muted">시트는 번호 / 닉네임 / 아이디 3열 형식을 추천합니다.</p></div></section>
+<section class="card" id="adminPanel"><div class="title"><b>⚙️ 관리자 설정</b><span class="pill">관리자만</span></div><p class="muted">일반 사용자는 이곳을 건드릴 필요가 없습니다. 관리자만 비밀번호 입력 후 시트 주소를 수정할 수 있어요.</p><div class="pwrow"><input id="adminPw" type="password" placeholder="관리자 비밀번호"><button onclick="adminLogin()">로그인</button></div><div class="admin-only"><p class="muted">기본 명단은 자동 연결되어 있습니다. 필요할 때만 관리자 비밀번호로 시트 주소를 변경하세요.</p><input id="sheetUrl" type="url" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv&gid=0"><button class="primary" onclick="saveSheetUrl()">시트 주소 저장</button><button class="secondary" onclick="loadSheetList()">시트 명단 테스트 불러오기</button><button class="secondary" onclick="clearSheetUrl()">시트 주소 삭제</button><p class="muted">시트는 번호 / 닉네임 / 아이디 3열 형식을 추천합니다.</p></div></section>
 </div><nav class="bottom"><button onclick="topScroll()">🏠<span>홈</span></button><button onclick="uploadScroll()">📦<span>업로드</span></button><button onclick="tabScroll('roomMissingMe')">👥<span>단톡방</span></button><button onclick="tabScroll('roomMutual')">🤝<span>맞팔</span></button><button onclick="adminNav()">⚙️<span>관리자</span></button></nav></main><div id="toast" class="toast"></div>
 <script>
 const ROOM_PASSWORD="0702",ADMIN_PASSWORD="0702";
-const DEFAULT_SHEET_URL="";
+const DEFAULT_SHEET_URL="https://docs.google.com/spreadsheets/d/1_WsSmEpXcckIV9wbQp2K6YZe4jZ2XlX2Vt6lmXmfiHs/export?format=csv&gid=0";
 const state={data:{room:[],followers:[],following:[],mutual:[],notBack:[],roomMutual:[],roomMissingMe:[],roomOnlyFollower:[]},current:"roomMissingMe",deferredPrompt:null};
 const $=id=>document.getElementById(id);
 const BAD=new Set(["instagram","accounts","www","com","meta","help","privacy","terms","_u","profile","direct","explore","stories","reels","reel"]);
@@ -75,14 +75,14 @@ function csvToRoom(csv){
  rows.forEach((r,idx)=>{ if(idx===0 && r.join(" ").includes("아이디")) return; const cells=r.map(x=>String(x||"").trim()).filter(Boolean); const joined=cells.join(" "); const id=pickIdFromText(joined); if(id){ const nick=cells.find(c=>!c.includes("@")&&!c.includes("instagram.com")&&!/^\d+$/.test(c)&&norm(c)!==norm(id))||""; add(map,id,nick)} });
  return [...map.values()].sort((a,b)=>a.id.localeCompare(b.id));
 }
-function getSheetUrl(){return localStorage.getItem("yb_sheet_url")||DEFAULT_SHEET_URL}
+function getSheetUrl(){return localStorage.getItem("yb_sheet_url_override")||DEFAULT_SHEET_URL}
 function loadSavedSheetUrl(){const url=getSheetUrl(); if($("sheetUrl")) $("sheetUrl").value=url}
-function saveSheetUrl(){if(sessionStorage.getItem("yb_admin")!=="1")return toast("관리자만 가능");const url=$("sheetUrl").value.trim();if(!url.includes("docs.google.com/spreadsheets"))return toast("구글시트 CSV 주소를 넣어주세요");localStorage.setItem("yb_sheet_url",url);toast("시트 주소 저장 완료");loadSheetList()}
-function clearSheetUrl(){if(sessionStorage.getItem("yb_admin")!=="1")return toast("관리자만 가능");localStorage.removeItem("yb_sheet_url");state.data.room=[];refreshRoomStatus([],"없음");toast("시트 주소 삭제 완료")}
+function saveSheetUrl(){if(sessionStorage.getItem("yb_admin")!=="1")return toast("관리자만 가능");const url=$("sheetUrl").value.trim();if(!url.includes("docs.google.com/spreadsheets"))return toast("구글시트 CSV 주소를 넣어주세요");localStorage.setItem("yb_sheet_url_override",url);toast("시트 주소 저장 완료");loadSheetList()}
+function clearSheetUrl(){if(sessionStorage.getItem("yb_admin")!=="1")return toast("관리자만 가능");localStorage.removeItem("yb_sheet_url_override");state.data.room=[];refreshRoomStatus([],"없음");toast("시트 주소 삭제 완료")}
 function refreshRoomStatus(room,msg){$("savedRoomCount").textContent=room.length;$("savedStatus").textContent=msg|| (room.length?"불러옴":"없음");$("sheetState").textContent=room.length?"연결됨":"대기"}
 async function loadSheetList(){
  const url=getSheetUrl();
- if(!url){refreshRoomStatus([],"주소 없음");$("sheetInfo").textContent="관리자 설정에서 구글시트 CSV 주소를 저장해주세요.";return}
+ if(!url){refreshRoomStatus([],"불러오는 중");$("sheetInfo").textContent="명단을 불러오지 못했어요. 새로고침을 눌러주세요.";return}
  try{
    $("sheetInfo").textContent="구글시트 명단을 불러오는 중...";
    const res=await fetch(url+"&t="+Date.now(),{cache:"no-store"});
