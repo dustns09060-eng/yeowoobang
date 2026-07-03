@@ -1,6 +1,11 @@
-# 여우방 맞팔확인 ADMIN USER FINAL
+# 여우방 맞팔확인 PRO
 
-입장 비밀번호: 0702
+입장 비밀번호: 0702  
 관리자 비밀번호: 0702
 
-일반 사용자는 분석만 가능하고, 관리자 로그인 후에만 명단 수정이 가능합니다.
+포함 파일:
+- index.html
+- manifest.json
+- icon.svg
+- .nojekyll
+- README.md

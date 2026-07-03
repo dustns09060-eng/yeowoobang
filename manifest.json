@@ -1,6 +1,6 @@
 {
-  "name": "여우방 맞팔확인 ADMIN USER FINAL",
-  "short_name": "맞팔관리",
+  "name": "여우방 맞팔확인 PRO",
+  "short_name": "여우방PRO",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff8e8",
