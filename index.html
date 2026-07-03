@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V10.1 PRO FINAL</title>
+<title>여우방 맞팔확인 V10.2 PRO FINAL</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--bg:#fff7df;--card:#fff;--cream:#fff5d9;--line:#ead68b;--text:#2a2115;--muted:#73591c;--red:#ef493e;--green:#20a95a;--blue:#2680d9;--shadow:0 8px 22px rgba(100,70,20,.10)}
@@ -46,7 +46,7 @@ nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-s
 </style>
 </head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V10.1 · PRO FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V10.2 · PRO FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 
 <section class="card">
@@ -123,6 +123,7 @@ nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-s
 const SHEET_ID="1_WsSmEpXcckIV9wbQp2K6YZe4jZ2XlX2Vt6lmXmfiHs";
 const DEFAULT_SHEET_URL="https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/export?format=csv&gid=0";
 const BACKUP_SHEET_URL="https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:csv&gid=0";
+const HTMLVIEW_SHEET_URL="https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/htmlview";
 const ADMIN_PASSWORD="0702";
 let roomList=[], results={}, currentTab="roomNot";
 const $=id=>document.getElementById(id);
