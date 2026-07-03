@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V5 완성본</title>
+<title>여우방 맞팔확인 V6 완성본</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{
@@ -58,7 +58,7 @@ nav i{display:block;font-style:normal;font-size:24px;margin-bottom:1px}
 <body>
 <header>
   <div class="logo">🦊</div>
-  <div><h1>여우방 맞팔확인</h1><p class="sub">V5 · 완성본</p></div>
+  <div><h1>여우방 맞팔확인</h1><p class="sub">V6 · 완성본</p></div>
   <button class="install" id="installBtn">앱설치</button>
 </header>
 
@@ -74,7 +74,7 @@ nav i{display:block;font-style:normal;font-size:24px;margin-bottom:1px}
 
 <section class="card">
   <div class="title"><b>📦 인스타그램 ZIP 업로드</b></div>
-  <p class="muted">followers_1 파일은 팔로워, following 파일은 팔로잉으로 정확히 구분해서 분석합니다.</p>
+  <p class="muted">followers_1.html은 팔로워, following.html은 팔로잉으로 정확히 구분해서 분석합니다.</p>
   <input id="zipFile" type="file" accept=".zip,application/zip,application/x-zip-compressed,*/*">
 </section>
 
@@ -179,20 +179,41 @@ function collectFromObj(o,out){
 function extract(text){
   let ids=[];
   try{const j=JSON.parse(text);collectFromObj(j,ids)}catch(e){}
+
   let m;
-  const valueRe=/"value"\s*:\s*"([^"]+)"/g; while((m=valueRe.exec(text))) ids.push(m[1]);
-  const hrefRe=/https?:\/\/(?:www\.)?instagram\.com\/([A-Za-z0-9._]+)/g; while((m=hrefRe.exec(text))) ids.push(m[1]);
-  const atRe=/(?:^|[^A-Za-z0-9._])@([A-Za-z0-9._]{1,30})/g; while((m=atRe.exec(text))) ids.push(m[1]);
+
+  // 1) HTML href 속성에서 정확히 추출
+  // followers_1.html: https://www.instagram.com/아이디
+  // following.html: https://www.instagram.com/_u/아이디
+  const hrefExact=/href=["']https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)["']/g;
+  while((m=hrefExact.exec(text))) ids.push(m[1]);
+
+  // 2) JSON value 구조
+  const valueRe=/"value"\s*:\s*"([^"]+)"/g;
+  while((m=valueRe.exec(text))) ids.push(m[1]);
+
+  // 3) 일반 URL 백업 추출
+  const urlRe=/https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)/g;
+  while((m=urlRe.exec(text))) ids.push(m[1]);
+
+  // 4) @아이디 백업 추출
+  const atRe=/(?:^|[^A-Za-z0-9._])@([A-Za-z0-9._]{1,30})/g;
+  while((m=atRe.exec(text))) ids.push(m[1]);
+
   return uniq(ids);
 }
 
 function classifyPath(path){
   const p=path.toLowerCase().replace(/\\/g,"/");
   const name=p.split("/").pop();
-  if(name==="followers_1.html"||name==="followers_1.htm"||name==="followers_1.json") return "followers_exact";
-  if(name==="following.html"||name==="following.htm"||name==="following.json") return "following_exact";
+
+  // 정확한 파일명 우선
+  if(name==="followers_1.html" || name==="followers_1.htm" || name==="followers_1.json") return "followers_exact";
+  if(name==="following.html" || name==="following.htm" || name==="following.json") return "following_exact";
+
+  // 백업용
   if(name.includes("followers") && !name.includes("following")) return "followers";
-  if(name.includes("following")) return "following";
+  if(name.includes("following") && !name.includes("followers_")) return "following";
   return "";
 }
 
