@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V8</title>
+<title>여우방 맞팔확인 V7</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--bg:#fff7df;--card:#fff;--cream:#fff5d9;--line:#ead68b;--text:#2a2115;--muted:#73591c;--red:#ef493e;--green:#20a95a;--blue:#2680d9;--shadow:0 8px 22px rgba(100,70,20,.10)}
@@ -19,7 +19,7 @@ nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);back
 </style>
 </head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V8 · 링크수정</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V7 · 링크추가</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 <section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">불러오는 중</span></div><div class="grid"><div class="box"><div class="muted">현재 명단</div><div class="num blue" id="roomCount">0</div></div><div class="box"><div class="muted">상태</div><div class="num" style="font-size:24px" id="roomStatus">대기</div></div></div><button class="secondary" onclick="loadRoomList(true)">📥 최신 명단 불러오기</button></section>
 <section class="card"><div class="title"><b>📦 인스타그램 ZIP 업로드</b></div><p class="muted">followers_1.html / following.html의 인스타 링크만 정확히 읽습니다.</p><input id="zipFile" type="file" accept=".zip,application/zip,application/x-zip-compressed,*/*"></section>
@@ -65,7 +65,8 @@ function renderList(){
 }
 function copyCurrent(){
   const arr=results[currentTab]||[];
-  navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. ${x.name||""} @${norm(x.id)}`).join("\n"));
+  navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. ${x.name||""} @${norm(x.id)}`).join("
+"));
   toast("복사 완료");
 }
 function adminLogin(){if($("adminPw").value===ADMIN_PASSWORD){$("adminBox").classList.remove("hidden");$("sheetUrl").value=getSheetUrl();toast("관리자 로그인 완료")}else toast("비밀번호가 달라요")}
