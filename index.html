@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V10.6 PRO FINAL</title>
+<title>여우방 맞팔확인 V10.7 PRO FINAL</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--bg:#fff7df;--card:#fff;--cream:#fff5d9;--line:#ead68b;--text:#2a2115;--muted:#73591c;--red:#ef493e;--green:#20a95a;--blue:#2680d9;--shadow:0 8px 22px rgba(100,70,20,.10)}
@@ -28,7 +28,7 @@ button{cursor:pointer}button:disabled{opacity:.65}.primary{width:100%;border:0;b
 nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-size:13px}nav i{display:block;font-style:normal;font-size:24px;margin-bottom:1px}.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#21190d;color:white;padding:12px 16px;border-radius:20px;z-index:99;font-weight:900;display:none}
 </style></head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V10.6 · PRO FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V10.7 · PRO FINAL</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 <section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">대기</span></div><div class="grid"><div class="box"><div class="muted">현재 명단</div><div class="num blue" id="roomCount">0</div></div><div class="box"><div class="muted">상태</div><div class="num" style="font-size:24px" id="roomStatus">대기</div></div></div><button class="secondary" onclick="loadRoomList(true)">📥 최신 명단 불러오기</button><p class="warn" id="roomMsg"></p></section>
 <section class="card"><div class="title"><b>📦 인스타그램 ZIP 업로드</b></div><p class="muted">followers_1.html / following.html을 정확히 읽어서 계산합니다.</p><input id="zipFile" type="file" accept=".zip,application/zip,application/x-zip-compressed,*/*"></section>
@@ -60,8 +60,8 @@ function parseHtmlTable(htmlText){const rows=[];let tr;const trRe=/<tr[\s\S]*?<\
 function getSheetUrls(){const urls=[];const saved=localStorage.getItem("yb_sheet_url_override");if(saved)urls.push(saved);urls.push(LOCAL_ROOM_URL,DEFAULT_SHEET_URL,BACKUP_SHEET_URL,HTMLVIEW_SHEET_URL);return urls}
 async function fetchTextSmart(){let last="";for(const u of getSheetUrls()){try{const joiner=u.includes("?")?"&":"?";const res=await fetch(u+joiner+"t="+Date.now(),{cache:"no-store"});if(!res.ok)throw Error("HTTP "+res.status);const txt=await res.text();if(txt&&txt.length>20)return txt}catch(e){last=String(e.message||e)}}throw Error(last||"시트 불러오기 실패")}
 function rowsToRoom(rows){const data=[];rows.forEach((r,i)=>{const joined=r.join(" ");if(i===0&&(joined.includes("번호")||joined.includes("닉네임")||joined.includes("아이디")))return;const id=norm(r[2]||r[1]||r[0]||"");if(valid(id))data.push({no:r[0]||"",name:r[1]||"",id})});const seen=new Set();return data.filter(x=>!seen.has(x.id)&&seen.add(x.id))}
-function applyRoomText(text){const isHtml=/<table|<tr|<td|<th/i.test(text);const rows=isHtml?parseHtmlTable(text):parseCSV(text);roomList=rowsToRoom(rows);localStorage.setItem("yb_room_cache",JSON.stringify(roomList));setNum("roomCount",roomList.length);$("roomStatus").textContent=roomList.length?"최신":"확인";$("sheetState").textContent=roomList.length?"자동연동":"확인필요";$("roomMsg").textContent=roomList.length?`명단 ${roomList.length}명 불러옴`:"명단을 읽지 못했어요.";return roomList.length}
-function showRoomCache(){try{const cached=localStorage.getItem("yb_room_cache");if(cached){const parsed=JSON.parse(cached)||[];if(parsed.length){roomList=parsed;setNum("roomCount",roomList.length);$("roomStatus").textContent="저장됨";$("sheetState").textContent="빠른표시";$("roomMsg").textContent=`저장된 명단 ${roomList.length}명 표시 중`;return true}}}catch(e){}return false}
+function applyRoomText(text){const isHtml=/<table|<tr|<td|<th/i.test(text);const rows=isHtml?parseHtmlTable(text):parseCSV(text);roomList=rowsToRoom(rows);results.roomAll=roomList;localStorage.setItem("yb_room_cache",JSON.stringify(roomList));setNum("roomCount",roomList.length);$("roomStatus").textContent=roomList.length?"최신":"확인";$("sheetState").textContent=roomList.length?"자동연동":"확인필요";$("roomMsg").textContent=roomList.length?`명단 ${roomList.length}명 불러옴`:"명단을 읽지 못했어요.";return roomList.length}
+function showRoomCache(){try{const cached=localStorage.getItem("yb_room_cache");if(cached){const parsed=JSON.parse(cached)||[];if(parsed.length){roomList=parsed;results.roomAll=roomList;setNum("roomCount",roomList.length);$("roomStatus").textContent="저장됨";$("sheetState").textContent="빠른표시";$("roomMsg").textContent=`저장된 명단 ${roomList.length}명 표시 중`;return true}}}catch(e){}return false}
 async function loadRoomList(show=false){const hadCache=showRoomCache();try{$("sheetState").textContent=hadCache?"최신확인":"불러오는 중";if(!hadCache){$("roomStatus").textContent="불러오는 중";setNum("roomCount",0)}const text=await fetchTextSmart();const count=applyRoomText(text);if(show)toast(count?"명단 불러오기 완료":"명단 확인 필요")}catch(e){if(hadCache||roomList.length){$("roomStatus").textContent="저장됨";$("sheetState").textContent="캐시사용";$("roomMsg").textContent="시트 직접 연동은 실패해서 저장된 명단을 사용 중입니다.";if(show)toast("저장된 명단 사용")}else{$("roomStatus").textContent="실패";$("sheetState").textContent="오류";$("roomMsg").textContent="시트 연동 실패. 관리자 설정에서 명단을 붙여넣어 저장하세요.";if(show)toast("시트 연결 실패")}}}
 function pickFile(zip, exactName){const exact=exactName.toLowerCase();return Object.keys(zip.files).filter(n=>!zip.files[n].dir).find(n=>n.toLowerCase().replace(/\\/g,"/").split("/").pop()===exact)}
 function extractHtmlIds(text){let ids=[],m;const href=/href=["']https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)\/?["']/g;while((m=href.exec(text)))ids.push(m[1]);if(ids.length)return uniq(ids);const url=/https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)/g;while((m=url.exec(text)))ids.push(m[1]);return uniq(ids)}
@@ -144,11 +144,22 @@ async function analyze(){
   }
 }
 function clearNumbers(show=true){$("currentFollowers").value="";$("currentFollowing").value="";if(show)toast("숫자 초기화 완료")}
-function showTab(tab,btn){currentTab=tab;document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");renderList()}
+function showTab(tab,btn){
+  currentTab=tab;
+  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  if(tab==="roomAll") results.roomAll=roomList;
+  renderList();
+}
 function renderList(){
-  const q=norm($("q").value);
-  const arr=results[currentTab]||[];
-  const f=arr.filter(x=>!q||norm(x.id).includes(q)||String(x.name||"").includes(q));
+  const raw=String($("q").value||"").trim().toLowerCase();
+  const q=norm(raw);
+  const arr=currentTab==="roomAll" ? roomList : (results[currentTab]||[]);
+  const f=arr.filter(x=>{
+    const id=norm(x.id);
+    const name=String(x.name||"").toLowerCase();
+    return !raw || id.includes(q) || name.includes(raw) || name.includes(q);
+  });
   $("list").innerHTML=f.map((x,i)=>{
     const id=norm(x.id);
     let badge="";
@@ -159,9 +170,21 @@ function renderList(){
     if(currentTab==="roomNotFollowed") badge="내가 안함";
     if(currentTab==="onlyMe") badge="상대가 날 안함";
     return `<div class="item"><span>${i+1}.</span><b>${x.name||""}</b><a href="https://www.instagram.com/${id}/" target="_blank" rel="noopener noreferrer">@${id}</a><small style="margin-left:auto;color:#73591c">${badge}</small></div>`;
-  }).join("")||"<p class='muted'>현재 선택한 탭에는 결과가 없어요. 시트 전체에서 찾으려면 [전체 명단 검색] 탭을 눌러주세요.</p>";
+  }).join("")||"<p class='muted'>현재 선택한 탭에는 결과가 없어요. 시트에 있는 사람만 확인하려면 [전체 명단 검색] 탭을 눌러주세요.</p>";
 }
-function copyCurrent(){const arr=results[currentTab]||[];navigator.clipboard.writeText(arr.map((x,i)=>`${i+1}. @${norm(x.id)}`).join("\n"));toast("복사 완료")}
+function copyCurrent(){
+  const arr=currentTab==="roomAll" ? roomList : (results[currentTab]||[]);
+  const raw=String($("q").value||"").trim().toLowerCase();
+  const q=norm(raw);
+  const f=arr.filter(x=>{
+    const id=norm(x.id);
+    const name=String(x.name||"").toLowerCase();
+    return !raw || id.includes(q) || name.includes(raw) || name.includes(q);
+  });
+  navigator.clipboard.writeText(f.map((x,i)=>`${i+1}. ${x.name||""} @${norm(x.id)}`).join("
+"));
+  toast("복사 완료");
+}
 function adminLogin(){if($("adminPw").value===ADMIN_PASSWORD){$("adminBox").classList.remove("hidden");$("sheetUrl").value=localStorage.getItem("yb_sheet_url_override")||HTMLVIEW_SHEET_URL;$("adminMsg").textContent="관리자 로그인 완료";toast("관리자 로그인 완료")}else toast("비밀번호가 달라요")}
 function saveSheet(){const u=$("sheetUrl").value.trim();if(!u){toast("주소를 입력해주세요");return}localStorage.setItem("yb_sheet_url_override",u);localStorage.removeItem("yb_room_cache");$("adminMsg").textContent="시트 주소 저장 완료";loadRoomList(true)}
 function resetSheet(){localStorage.removeItem("yb_sheet_url_override");localStorage.removeItem("yb_room_cache");$("sheetUrl").value=HTMLVIEW_SHEET_URL;loadRoomList(true)}
