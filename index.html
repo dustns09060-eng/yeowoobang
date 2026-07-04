@@ -3,12 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V11.8 GOLD ULTIMATE</title>
+<title>여우방맞팔확인</title>
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-title" content="여우방맞팔확인">
+<meta name="application-name" content="여우방맞팔확인">
+<meta property="og:title" content="여우방맞팔확인">
+<meta property="og:image" content="icon-512.png">
 </head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V11.8 · GOLD ULTIMATE</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo"><img src="icon-192.png" alt="여우방"></div><div><h1>여우방 맞팔확인</h1><p class="sub">V12 · GOLD ULTIMATE</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 <section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">자동확인</span></div><div class="grid"><div class="box"><div class="muted">현재 명단</div><div class="num blue" id="roomCount">0</div></div><div class="box"><div class="muted">상태</div><div class="num" style="font-size:24px" id="roomStatus">확인중</div></div></div><button id="loadRoomBtn" class="secondary">📥 최신 명단 불러오기</button><p class="warn" id="roomMsg">저장 명단 → GitHub 백업 → Google Sheets 순서로 확인합니다.</p></section>
 <section class="card"><div class="title"><b>🏆 GOLD 상태</b><span class="pill">자동점검</span></div><div class="result-grid"><div class="mini">앱 상태<strong id="goldStatus">확인중</strong></div><div class="mini">명단 출처<strong id="goldSource">확인중</strong></div><div class="mini">정확도 검사<strong id="goldCheck">대기</strong></div><div class="mini">마지막 명단<strong id="goldRoomTime">대기</strong></div></div></section>
@@ -22,5 +27,5 @@
 <nav><button data-scroll="top"><i>🏠</i>홈</button><button data-scroll="zipFile"><i>📦</i>업로드</button><button data-scroll="lists"><i>👥</i>단톡방</button><button data-scroll="cards"><i>🤝</i>맞팔</button><button data-scroll="adminPw"><i>⚙️</i>관리자</button></nav>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="app.js"></script>
+<script src="app.js?v=119"></script>
 </body></html>
