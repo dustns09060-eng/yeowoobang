@@ -4,8 +4,8 @@
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#fff8e8",
-  "theme_color": "#ffb640",
+  "background_color": "#fff1f7",
+  "theme_color": "#f43f8c",
   "description": "여우방 맞팔확인 앱",
   "icons": [
     {
