@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V11.1 GOLD PATCH</title>
+<title>여우방 맞팔확인 V11.2 GOLD PATCH</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{--bg:#fff7df;--card:#fff;--cream:#fff5d9;--line:#ead68b;--text:#2a2115;--muted:#73591c;--red:#ef493e;--green:#20a95a;--blue:#2680d9;--shadow:0 8px 22px rgba(100,70,20,.10)}
@@ -28,7 +28,7 @@ button{cursor:pointer}button:disabled{opacity:.65}.primary{width:100%;border:0;b
 nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-size:13px}nav i{display:block;font-style:normal;font-size:24px;margin-bottom:1px}.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#21190d;color:white;padding:12px 16px;border-radius:20px;z-index:99;font-weight:900;display:none}
 </style></head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V11.1 · GOLD PATCH</p></div><button class="install" id="installBtn">앱설치</button></header>
+<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V11.2 · GOLD PATCH</p></div><button class="install" id="installBtn">앱설치</button></header>
 <div class="wrap">
 <section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">자동확인</span></div><div class="grid"><div class="box"><div class="muted">현재 명단</div><div class="num blue" id="roomCount">0</div></div><div class="box"><div class="muted">상태</div><div class="num" style="font-size:24px" id="roomStatus">확인중</div></div></div><button class="secondary" onclick="loadRoomList(true)">📥 최신 명단 불러오기</button><p class="warn" id="roomMsg"></p></section>
 <section class="card">
@@ -46,7 +46,7 @@ nav button{border:0;background:transparent;font-weight:1000;color:#6b5118;font-s
 <section id="cards" class="grid hidden"><div class="stat"><b>👥 단톡방 맞팔</b><div class="num green" id="cRoomMutual">0</div></div><div class="stat"><b>❌ 내가 팔로우했는데 날 안함</b><div class="num red" id="cRoomNot">0</div></div><div class="stat"><b>💛 상대만 나를 팔로우</b><div class="num gold" id="cFansOnly">0</div></div><div class="stat"><b>📄 단톡방 명단</b><div class="num blue" id="cRoomTotal">0</div></div></section>
 <section id="summary" class="card hidden"><div class="title"><b>📊 분석 요약</b><span class="pill" id="doneTime"></span></div><div class="result-grid"><div class="mini">팔로워<strong id="sFollowers">0</strong></div><div class="mini">팔로잉<strong id="sFollowing">0</strong></div><div class="mini">전체 맞팔<strong id="sMutual">0</strong></div><div class="mini">전체 나만 팔로우<strong id="sOnlyMe">0</strong></div></div><p class="muted" id="checkMsg"></p></section>
 <section id="lists" class="card hidden"><div class="tabs"><button class="tab active" onclick="showTab('roomNot',this)">내가 팔로우했는데 날 안함</button><button class="tab" onclick="showTab('roomAll',this)">전체 명단 검색</button><button class="tab" onclick="showTab('roomMutual',this)">단톡방 맞팔</button><button class="tab" onclick="showTab('fansOnly',this)">상대만 나를 팔로우</button><button class="tab" onclick="showTab('roomNotFollowed',this)">단톡방 중 내가 안함</button><button class="tab" onclick="showTab('onlyMe',this)">전체 나만 팔로우</button></div><div class="searchrow"><input id="q" placeholder="아이디/닉네임 검색" oninput="renderList()"><button class="smallbtn" onclick="copyCurrent()">복사</button></div><div class="list" id="list"></div></section>
-<section class="card"><div class="title"><b>⚙️ 관리자 설정</b><span class="pill">비밀번호 0702</span></div><div class="searchrow"><input id="adminPw" type="password" placeholder="관리자 비밀번호"><button class="smallbtn" onclick="adminLogin()">로그인</button></div><div id="adminBox" class="hidden" style="margin-top:12px"><p class="muted">시트 연동이 안 될 때는 명단을 직접 붙여넣어 저장하세요.</p><input id="sheetUrl" type="text" placeholder="Google Sheets CSV/htmlview 주소"><button class="secondary" onclick="saveSheet()">시트 주소 저장 후 다시 불러오기</button><button class="secondary" onclick="resetSheet()">기본 주소로 복원</button><hr style="border:0;border-top:1px solid #f0e3b4;margin:16px 0"><textarea id="manualList" placeholder="예시&#10;1, 유별, @tlso_94&#10;2, 도운맘, @o__dowoon"></textarea><button class="secondary" onclick="saveManualList()">붙여넣은 명단 저장</button><button class="secondary" onclick="clearRoomCache()">저장된 명단 삭제</button><p class="warn" id="adminMsg"></p></div></section>
+<section class="card"><div class="title"><b>⚙️ 관리자 설정</b><span class="pill">관리자</span></div><div class="searchrow"><input id="adminPw" type="password" placeholder="관리자 비밀번호"><button type="button" class="smallbtn" onclick="adminLogin()">로그인</button></div><div id="adminBox" class="hidden" style="margin-top:12px"><p class="muted">시트 연동이 안 될 때는 명단을 직접 붙여넣어 저장하세요.</p><input id="sheetUrl" type="text" placeholder="Google Sheets CSV/htmlview 주소"><button class="secondary" onclick="saveSheet()">시트 주소 저장 후 다시 불러오기</button><button class="secondary" onclick="resetSheet()">기본 주소로 복원</button><hr style="border:0;border-top:1px solid #f0e3b4;margin:16px 0"><textarea id="manualList" placeholder="예시&#10;1, 유별, @tlso_94&#10;2, 도운맘, @o__dowoon"></textarea><button class="secondary" onclick="saveManualList()">붙여넣은 명단 저장</button><button class="secondary" onclick="clearRoomCache()">저장된 명단 삭제</button><p class="warn" id="adminMsg"></p></div></section>
 </div>
 <nav><button onclick="scrollTo(0,0)"><i>🏠</i>홈</button><button onclick="$('zipFile').scrollIntoView({behavior:'smooth'})"><i>📦</i>업로드</button><button onclick="$('lists').scrollIntoView({behavior:'smooth'})"><i>👥</i>단톡방</button><button onclick="$('cards').scrollIntoView({behavior:'smooth'})"><i>🤝</i>맞팔</button><button onclick="$('adminPw').scrollIntoView({behavior:'smooth'})"><i>⚙️</i>관리자</button></nav><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
@@ -101,7 +101,7 @@ async function fetchTextSmart(){let last="";for(const u of getSheetUrls()){try{c
 function rowsToRoom(rows){const data=[];rows.forEach((r,i)=>{const joined=r.join(" ");if(i===0&&(joined.includes("번호")||joined.includes("닉네임")||joined.includes("아이디")))return;const id=norm(r[2]||r[1]||r[0]||"");if(valid(id))data.push({no:r[0]||"",name:r[1]||"",id})});const seen=new Set();return data.filter(x=>!seen.has(x.id)&&seen.add(x.id))}
 function applyRoomText(text){const isHtml=/<table|<tr|<td|<th/i.test(text);const rows=isHtml?parseHtmlTable(text):parseCSV(text);roomList=rowsToRoom(rows);results.roomAll=roomList;localStorage.setItem("yb_room_cache",JSON.stringify(roomList));setNum("roomCount",roomList.length);$("roomStatus").textContent=roomList.length?"최신":"확인";if($("goldStatus"))$("goldStatus").textContent=roomList.length?"정상":"확인";if(roomList.length)setGoldRoomTime();updateGoldStatus("정상");$("sheetState").textContent=roomList.length?"자동연동":"확인필요";$("roomMsg").textContent=roomList.length?`명단 ${roomList.length}명 불러옴`:"명단을 읽지 못했어요.";return roomList.length}
 function showRoomCache(){try{const cached=localStorage.getItem("yb_room_cache");if(cached){const parsed=JSON.parse(cached)||[];if(parsed.length){roomList=parsed;results.roomAll=roomList;setNum("roomCount",roomList.length);$("roomStatus").textContent="저장됨";updateGoldStatus("정상");$("sheetState").textContent="빠른표시";$("roomMsg").textContent=`저장된 명단 ${roomList.length}명 표시 중`;return true}}}catch(e){}if($("goldCache"))$("goldCache").textContent="없음";return false}
-async function loadRoomList(show=false){setGoldLoading();const hadCache=showRoomCache();try{$("sheetState").textContent=hadCache?"최신확인":"불러오는 중";if(!hadCache){$("roomStatus").textContent="불러오는 중";setNum("roomCount",0)}const text=await fetchTextSmart();const count=applyRoomText(text);if(show)toast(count?"명단 불러오기 완료":"명단 확인 필요")}catch(e){if(hadCache||roomList.length){$("roomStatus").textContent="저장됨";$("sheetState").textContent="캐시사용";$("roomMsg").textContent="시트 직접 연동은 실패해서 저장된 명단을 사용 중입니다.";if(show)toast("저장된 명단 사용")}else{$("roomStatus").textContent="실패";$("sheetState").textContent="오류";$("roomMsg").textContent="시트 연동 실패. 저장된 명단이 없으면 관리자 설정에서 명단을 붙여넣어 저장하세요.";updateGoldStatus("오류");if(show)toast("시트 연결 실패")}}}
+async function loadRoomList(show=false){setGoldLoading();const hadCache=showRoomCache();try{$("sheetState").textContent=hadCache?"최신확인":"불러오는 중";if(!hadCache){$("roomStatus").textContent="불러오는 중";setNum("roomCount",0)}const text=await fetchTextSmart();const count=applyRoomText(text);if(show)toast(count?"명단 불러오기 완료":"명단 확인 필요")}catch(e){if(hadCache||roomList.length){$("roomStatus").textContent="저장됨";$("sheetState").textContent="캐시사용";$("roomMsg").textContent="시트 직접 연동은 실패해서 저장된 명단을 사용 중입니다.";if(show)toast("저장된 명단 사용")}else{$("roomStatus").textContent="실패";$("sheetState").textContent="오류";$("roomMsg").textContent="명단 자동 연동 실패. [최신 명단 불러오기]를 다시 누르거나 관리자에서 명단을 붙여넣어 저장해주세요.";updateGoldStatus("오류");if(show)toast("명단 연결 실패")}}}
 function pickFile(zip, exactName){const exact=exactName.toLowerCase();return Object.keys(zip.files).filter(n=>!zip.files[n].dir).find(n=>n.toLowerCase().replace(/\\/g,"/").split("/").pop()===exact)}
 function extractHtmlIds(text){let ids=[],m;const href=/href=["']https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)\/?["']/g;while((m=href.exec(text)))ids.push(m[1]);if(ids.length)return uniq(ids);const url=/https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)/g;while((m=url.exec(text)))ids.push(m[1]);return uniq(ids)}
 function collectJson(o,out){if(!o)return;if(typeof o==="string"){const n=norm(o);if(valid(n))out.push(n);return}if(Array.isArray(o)){o.forEach(x=>collectJson(x,out));return}if(typeof o==="object"){if(o.value)collectJson(o.value,out);if(o.href)collectJson(o.href,out);if(o.username)collectJson(o.username,out);Object.keys(o).forEach(k=>collectJson(o[k],out))}}
@@ -224,11 +224,60 @@ function copyCurrent(){
 "));
   toast("복사 완료");
 }
-function adminLogin(){if($("adminPw").value===ADMIN_PASSWORD){$("adminBox").classList.remove("hidden");$("sheetUrl").value=localStorage.getItem("yb_sheet_url_override")||HTMLVIEW_SHEET_URL;$("adminMsg").textContent="관리자 로그인 완료";toast("관리자 로그인 완료")}else toast("비밀번호가 달라요")}
-function saveSheet(){const u=$("sheetUrl").value.trim();if(!u){toast("주소를 입력해주세요");return}localStorage.setItem("yb_sheet_url_override",u);localStorage.removeItem("yb_room_cache");$("adminMsg").textContent="시트 주소 저장 완료";loadRoomList(true)}
-function resetSheet(){localStorage.removeItem("yb_sheet_url_override");localStorage.removeItem("yb_room_cache");$("sheetUrl").value=HTMLVIEW_SHEET_URL;loadRoomList(true)}
-function saveManualList(){const text=$("manualList").value.trim();if(!text){toast("명단을 붙여넣어주세요");return}const count=applyRoomText(text);$("adminMsg").textContent=`붙여넣은 명단 ${count}명 저장 완료`;toast("명단 저장 완료")}
-function clearRoomCache(){localStorage.removeItem("yb_room_cache");roomList=[];setNum("roomCount",0);$("roomStatus").textContent="대기";$("sheetState").textContent="대기";$("roomMsg").textContent="저장된 명단 삭제 완료";toast("삭제 완료")}
+
+function adminLogin(){
+  try{
+    const pw=$("adminPw") ? $("adminPw").value.trim() : "";
+    if(pw===ADMIN_PASSWORD){
+      const box=$("adminBox");
+      if(box) box.classList.remove("hidden");
+      if($("sheetUrl")) $("sheetUrl").value=localStorage.getItem("yb_sheet_url_override")||HTMLVIEW_SHEET_URL;
+      if($("adminMsg")) $("adminMsg").textContent="관리자 로그인 완료";
+      toast("관리자 로그인 완료");
+      return;
+    }
+    toast("비밀번호가 달라요");
+  }catch(e){
+    toast("관리자 오류");
+  }
+}
+
+function saveSheet(){
+  const u=$("sheetUrl") ? $("sheetUrl").value.trim() : "";
+  if(!u){toast("주소를 입력해주세요");return}
+  localStorage.setItem("yb_sheet_url_override",u);
+  localStorage.removeItem("yb_room_cache");
+  if($("adminMsg")) $("adminMsg").textContent="시트 주소 저장 완료";
+  loadRoomList(true);
+}
+
+function resetSheet(){
+  localStorage.removeItem("yb_sheet_url_override");
+  localStorage.removeItem("yb_room_cache");
+  if($("sheetUrl")) $("sheetUrl").value=HTMLVIEW_SHEET_URL;
+  loadRoomList(true);
+}
+
+function saveManualList(){
+  const text=$("manualList") ? $("manualList").value.trim() : "";
+  if(!text){toast("명단을 붙여넣어주세요");return}
+  const count=applyRoomText(text);
+  if($("adminMsg")) $("adminMsg").textContent=`붙여넣은 명단 ${count}명 저장 완료`;
+  toast("명단 저장 완료");
+}
+
+function clearRoomCache(){
+  localStorage.removeItem("yb_room_cache");
+  roomList=[];
+  if(results) results.roomAll=[];
+  setNum("roomCount",0);
+  if($("roomStatus")) $("roomStatus").textContent="대기";
+  if($("sheetState")) $("sheetState").textContent="대기";
+  if($("roomMsg")) $("roomMsg").textContent="저장된 명단 삭제 완료";
+  if(typeof updateGoldStatus==="function") updateGoldStatus("정상");
+  toast("삭제 완료");
+}
+
 $("installBtn").onclick=()=>toast("브라우저 메뉴에서 홈 화면에 추가를 눌러주세요");
 window.addEventListener("load",()=>{clearNumbers(false);if(typeof loadGoldRoomTime==="function")loadGoldRoomTime();showRoomCache();setGoldLoading();setTimeout(()=>loadRoomList(false),120);setTimeout(()=>{if(!roomList.length)loadRoomList(false)},5000);});
 window.addEventListener("pageshow",()=>{clearNumbers(false)});
