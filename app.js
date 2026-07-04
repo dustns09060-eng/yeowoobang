@@ -17,7 +17,26 @@ function stripHtml(s){return String(s||"").replace(/<br\s*\/?>/gi,"\n").replace(
 function parseHtmlTable(h){const rows=[];let tr;const trRe=/<tr[\s\S]*?<\/tr>/gi;while((tr=trRe.exec(h))){const row=[];let cell;const cellRe=/<t[dh][\s\S]*?<\/t[dh]>/gi;while((cell=cellRe.exec(tr[0])))row.push(stripHtml(cell[0]));if(row.length)rows.push(row)}return rows}
 function rowsToRoom(rows){const data=[];rows.forEach((r,i)=>{const joined=r.join(" ");if(i===0&&(joined.includes("번호")||joined.includes("닉네임")||joined.includes("아이디")))return;const id=norm(r[2]||r[1]||r[0]||"");if(valid(id))data.push({no:r[0]||"",name:r[1]||"",id})});const seen=new Set();return data.filter(x=>!seen.has(x.id)&&seen.add(x.id))}
 function applyRoomText(text,source){const rows=/<table|<tr|<td|<th/i.test(text)?parseHtmlTable(text):parseCSV(text);roomList=rowsToRoom(rows);results.roomAll=roomList;localStorage.setItem("yb_room_cache",JSON.stringify(roomList));setNum("roomCount",roomList.length);setText("roomStatus",roomList.length?"최신":"확인");setText("sheetState",roomList.length?"자동연동":"확인필요");setText("roomMsg",roomList.length?`명단 ${roomList.length}명 불러옴 (${source||"저장"})`:"명단을 읽지 못했어요.");if(roomList.length){setRoomTime();setGold("정상",source||"저장")}renderList();return roomList.length}
-function showRoomCache(){try{const c=localStorage.getItem("yb_room_cache");if(c){const p=JSON.parse(c)||[];if(p.length){roomList=p;results.roomAll=roomList;setNum("roomCount",roomList.length);setText("roomStatus","저장됨");setText("sheetState","빠른표시");setText("roomMsg",`저장된 명단 ${roomList.length}명 표시 중`);setGold("정상","저장캐시");return true}}catch(e){}setGold("확인중","없음");return false}
+function showRoomCache(){
+  try{
+    const c=localStorage.getItem("yb_room_cache");
+    if(c){
+      const p=JSON.parse(c)||[];
+      if(p.length){
+        roomList=p;
+        results.roomAll=roomList;
+        setNum("roomCount",roomList.length);
+        setText("roomStatus","저장됨");
+        setText("sheetState","빠른표시");
+        setText("roomMsg",`저장된 명단 ${roomList.length}명 표시 중`);
+        setGold("정상","저장캐시");
+        return true;
+      }
+    }
+  }catch(e){}
+  setGold("확인중","없음");
+  return false;
+}
 function sheetUrls(){const a=[];const saved=localStorage.getItem("yb_sheet_url_override");if(saved)a.push(["관리자시트",saved]);a.push(["GitHub백업",LOCAL_ROOM_URL],["CSV",DEFAULT_SHEET_URL],["GVIZ",BACKUP_SHEET_URL],["HTMLVIEW",HTMLVIEW_SHEET_URL]);return a}
 async function fetchAnyText(){
   let last="";
@@ -55,7 +74,29 @@ function saveSheet(){const u=$("sheetUrl").value.trim();if(!u){toast("주소를 
 function resetSheet(){localStorage.removeItem("yb_sheet_url_override");localStorage.removeItem("yb_room_cache");$("sheetUrl").value=HTMLVIEW_SHEET_URL;loadRoomList(true)}
 function saveManualList(){const text=$("manualList").value.trim();if(!text){toast("명단을 붙여넣어주세요");return}const count=applyRoomText(text,"수동저장");setText("adminMsg",`붙여넣은 명단 ${count}명 저장 완료`);toast("명단 저장 완료")}
 function clearRoomCache(){localStorage.removeItem("yb_room_cache");roomList=[];results.roomAll=[];setNum("roomCount",0);setText("roomStatus","대기");setText("sheetState","대기");setText("roomMsg","저장된 명단 삭제 완료");setGold("정상","삭제됨");toast("삭제 완료")}
-function bindEvents(){$("loadRoomBtn").addEventListener("click",()=>loadRoomList(true));$("analyzeBtn").addEventListener("click",analyze);$("clearBtn").addEventListener("click",()=>clearNumbers(true));$("copyBtn").addEventListener("click",copyCurrent);$("q").addEventListener("input",renderList);$("adminLoginBtn").addEventListener("click",adminLogin);$("adminPw").addEventListener("keydown",e=>{if(e.key==="Enter")adminLogin()});$("saveSheetBtn").addEventListener("click",saveSheet);$("resetSheetBtn").addEventListener("click",resetSheet);$("saveManualBtn").addEventListener("click",saveManualList);$("clearRoomBtn").addEventListener("click",clearRoomCache);document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{const target=b.dataset.scroll;if(target==="top")scrollTo(0,0);else $(target)?.scrollIntoView({behavior:"smooth"})}));$("installBtn").addEventListener("click",()=>toast("브라우저 메뉴에서 홈 화면에 추가를 눌러주세요"))}
+let eventsBound=false;
+function bindEvents(){
+  if(eventsBound) return;
+  eventsBound=true;
+  $("loadRoomBtn").addEventListener("click",()=>loadRoomList(true));
+  $("analyzeBtn").addEventListener("click",analyze);
+  $("clearBtn").addEventListener("click",()=>clearNumbers(true));
+  $("copyBtn").addEventListener("click",copyCurrent);
+  $("q").addEventListener("input",renderList);
+  $("adminLoginBtn").addEventListener("click",adminLogin);
+  $("adminPw").addEventListener("keydown",e=>{if(e.key==="Enter")adminLogin()});
+  $("saveSheetBtn").addEventListener("click",saveSheet);
+  $("resetSheetBtn").addEventListener("click",resetSheet);
+  $("saveManualBtn").addEventListener("click",saveManualList);
+  $("clearRoomBtn").addEventListener("click",clearRoomCache);
+  document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+  document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
+    const target=b.dataset.scroll;
+    if(target==="top")scrollTo(0,0);
+    else $(target)?.scrollIntoView({behavior:"smooth"});
+  }));
+  $("installBtn").addEventListener("click",()=>toast("브라우저 메뉴에서 홈 화면에 추가를 눌러주세요"));
+}
 window.addEventListener("DOMContentLoaded",()=>{try{bindEvents()}catch(e){}});
 window.addEventListener("load",()=>{clearNumbers(false);loadRoomTime();showRoomCache();setTimeout(()=>loadRoomList(false),120);setTimeout(()=>{if(!roomList.length)loadRoomList(false)},5000)});
 window.addEventListener("pageshow",()=>clearNumbers(false));
