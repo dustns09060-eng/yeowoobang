@@ -1,26 +1,109 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>여우방 맞팔확인 V11.5 GOLD ULTIMATE</title>
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ff5a92" />
+  <title>여우방 팔로우리스트</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<header><div class="logo">🦊</div><div><h1>여우방 맞팔확인</h1><p class="sub">V11.5 · GOLD ULTIMATE</p></div><button class="install" id="installBtn">앱설치</button></header>
-<div class="wrap">
-<section class="card"><div class="title"><b>👥 단톡방 명단</b><span class="pill" id="sheetState">자동확인</span></div><div class="grid"><div class="box"><div class="muted">현재 명단</div><div class="num blue" id="roomCount">0</div></div><div class="box"><div class="muted">상태</div><div class="num" style="font-size:24px" id="roomStatus">확인중</div></div></div><button id="loadRoomBtn" class="secondary">📥 최신 명단 불러오기</button><p class="warn" id="roomMsg">저장 명단 → GitHub 백업 → Google Sheets 순서로 확인합니다.</p></section>
-<section class="card"><div class="title"><b>🏆 GOLD 상태</b><span class="pill">자동점검</span></div><div class="result-grid"><div class="mini">앱 상태<strong id="goldStatus">확인중</strong></div><div class="mini">명단 출처<strong id="goldSource">확인중</strong></div><div class="mini">정확도 검사<strong id="goldCheck">대기</strong></div><div class="mini">마지막 명단<strong id="goldRoomTime">대기</strong></div></div></section>
-<section class="card"><div class="title"><b>📦 인스타그램 ZIP 업로드</b></div><p class="muted">followers_1.html / following.html을 정확히 읽어서 계산합니다.</p><input id="zipFile" type="file" accept=".zip,application/zip,application/x-zip-compressed,*/*"></section>
-<section class="card"><div class="title"><b>👤 내 인스타 정보</b><span class="pill">프로필 숫자</span></div><div class="grid"><div class="box"><label>현재 팔로워</label><input id="currentFollowers" type="number" inputmode="numeric" autocomplete="off"></div><div class="box"><label>현재 팔로잉</label><input id="currentFollowing" type="number" inputmode="numeric" autocomplete="off"></div></div><p class="muted">💡 앱을 새로 열 때마다 빈칸으로 시작합니다.</p><button id="analyzeBtn" class="primary">🦊 맞팔 분석 시작</button><button id="clearBtn" class="secondary">숫자 초기화</button><p id="status" class="muted"></p></section>
-<section id="cards" class="grid hidden"><div class="stat"><b>👥 단톡방 맞팔</b><div class="num green" id="cRoomMutual">0</div></div><div class="stat"><b>❌ 내가 팔로우했는데 날 안함</b><div class="num red" id="cRoomNot">0</div></div><div class="stat"><b>💛 상대만 나를 팔로우</b><div class="num gold" id="cFansOnly">0</div></div><div class="stat"><b>📄 단톡방 명단</b><div class="num blue" id="cRoomTotal">0</div></div></section>
-<section id="summary" class="card hidden"><div class="title"><b>📊 분석 요약</b><span class="pill" id="doneTime"></span></div><div class="result-grid"><div class="mini">팔로워<strong id="sFollowers">0</strong></div><div class="mini">팔로잉<strong id="sFollowing">0</strong></div><div class="mini">전체 맞팔<strong id="sMutual">0</strong></div><div class="mini">전체 나만 팔로우<strong id="sOnlyMe">0</strong></div></div><p class="muted" id="checkMsg"></p></section>
-<section id="lists" class="card hidden"><div class="tabs"><button class="tab active" data-tab="roomNot">내가 팔로우했는데 날 안함</button><button class="tab" data-tab="roomAll">전체 명단 검색</button><button class="tab" data-tab="roomMutual">단톡방 맞팔</button><button class="tab" data-tab="fansOnly">상대만 나를 팔로우</button><button class="tab" data-tab="roomNotFollowed">단톡방 중 내가 안함</button><button class="tab" data-tab="onlyMe">전체 나만 팔로우</button></div><div class="searchrow"><input id="q" placeholder="아이디/닉네임 검색"><button id="copyBtn" class="smallbtn">복사</button></div><div class="list" id="list"></div></section>
-<section class="card"><div class="title"><b>⚙️ 관리자 설정</b><span class="pill">관리자</span></div><div class="searchrow"><input id="adminPw" type="password" placeholder="관리자 비밀번호"><button id="adminLoginBtn" type="button" class="smallbtn">로그인</button></div><div id="adminBox" class="hidden" style="margin-top:12px"><p class="muted">시트 연동이 안 될 때는 명단을 직접 붙여넣어 저장하세요.</p><input id="sheetUrl" type="text" placeholder="Google Sheets CSV/htmlview 주소"><button id="saveSheetBtn" class="secondary">시트 주소 저장 후 다시 불러오기</button><button id="resetSheetBtn" class="secondary">기본 주소로 복원</button><hr><textarea id="manualList" placeholder="예시&#10;1, 유별, @tlso_94&#10;2, 도운맘, @o__dowoon"></textarea><button id="saveManualBtn" class="secondary">붙여넣은 명단 저장</button><button id="clearRoomBtn" class="secondary">저장된 명단 삭제</button><p class="warn" id="adminMsg"></p></div></section>
-</div>
-<nav><button data-scroll="top"><i>🏠</i>홈</button><button data-scroll="zipFile"><i>📦</i>업로드</button><button data-scroll="lists"><i>👥</i>단톡방</button><button data-scroll="cards"><i>🤝</i>맞팔</button><button data-scroll="adminPw"><i>⚙️</i>관리자</button></nav>
-<div class="toast" id="toast"></div>
-<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="app.js"></script>
-</body></html>
+  <div id="toast" class="toast"></div>
+
+  <main id="app" class="app">
+    <header class="hero">
+      <img class="logo" src="icons/icon-192.png" alt="여우방" />
+      <div>
+        <div class="eyebrow">FOLLOW LIST</div>
+        <h1>여우방 팔로우리스트</h1>
+      </div>
+    </header>
+
+    <section class="stats-card">
+      <div class="stat"><b id="totalCount">0</b><span>전체 인원</span></div>
+      <div class="stat"><b id="groupCount">0</b><span>전체 조</span></div>
+      <div class="stat"><b id="groupSizeText">30</b><span>조별 인원</span></div>
+    </section>
+
+    <section class="control-card">
+      <label class="search-wrap">
+        <span>🔍</span>
+        <input id="searchInput" type="search" placeholder="번호 · 닉네임 · 아이디 검색" autocomplete="off" />
+      </label>
+      <div class="quick-actions">
+        <button class="btn primary" id="refreshBtn">↻ 새로고침</button>
+        <button class="btn dark" id="adminOpenBtn">🔐 관리자모드</button>
+      </div>
+      <div id="tabs" class="tabs"></div>
+      <p id="resultText" class="result-text">검색 결과 0명</p>
+    </section>
+
+    <section id="noticeBox" class="notice-box hidden">
+      <div class="notice-title">📢 공지</div>
+      <div id="noticeContent" class="notice-content"></div>
+    </section>
+
+    <section id="list" class="list"></section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button id="homeBtn">⌂<span>홈</span></button>
+    <button id="bottomRefreshBtn">↻<span>새로고침</span></button>
+    <button id="bottomAdminBtn">🔐<span>관리자</span></button>
+  </nav>
+
+  <div id="adminModal" class="modal hidden">
+    <div class="modal-panel login-panel">
+      <button class="close" id="adminCloseBtn">×</button>
+      <h2>🔐 관리자 모드</h2>
+      <input id="adminPw" type="password" inputmode="numeric" placeholder="비밀번호 입력" />
+      <button class="btn primary small" id="loginBtn">로그인</button>
+    </div>
+  </div>
+
+  <section id="adminPage" class="admin-page hidden">
+    <div class="admin-top">
+      <button class="ghost" id="backToUserBtn">‹</button>
+      <h2>관리자 모드</h2>
+      <button class="logout" id="logoutBtn">로그아웃</button>
+    </div>
+
+    <div class="admin-card">
+      <h3>📢 공지 관리</h3>
+      <textarea id="adminNotice" maxlength="200" placeholder="공지 내용을 입력하세요."></textarea>
+      <div class="admin-row">
+        <button class="btn primary" id="saveNoticeBtn">공지 저장</button>
+        <button class="btn outline" id="deleteNoticeBtn">공지 삭제</button>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <h3>👥 인원 관리</h3>
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-panel="adminListPanel">전체 목록</button>
+        <button class="admin-tab" data-panel="adminAddPanel">추가하기</button>
+      </div>
+
+      <div id="adminListPanel" class="admin-panel">
+        <input id="adminSearch" type="search" placeholder="번호 · 닉네임 · 아이디 검색" />
+        <div id="adminList" class="admin-list"></div>
+      </div>
+
+      <div id="adminAddPanel" class="admin-panel hidden">
+        <input id="addName" placeholder="닉네임" />
+        <input id="addInsta" placeholder="@아이디" />
+        <button class="btn primary" id="addMemberBtn">추가 저장</button>
+      </div>
+    </div>
+
+    <div class="admin-card tip">
+      <b>관리자 안내</b>
+      <p>GitHub Pages 단독으로는 구글시트를 직접 수정할 수 없습니다. ZIP 안의 Apps Script 백엔드를 배포하고 script.js의 BACKEND_URL에 주소를 넣으면 추가/수정/삭제/공지 저장이 실제 반영됩니다.</p>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
