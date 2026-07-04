@@ -19,7 +19,25 @@ function rowsToRoom(rows){const data=[];rows.forEach((r,i)=>{const joined=r.join
 function applyRoomText(text,source){const rows=/<table|<tr|<td|<th/i.test(text)?parseHtmlTable(text):parseCSV(text);roomList=rowsToRoom(rows);results.roomAll=roomList;localStorage.setItem("yb_room_cache",JSON.stringify(roomList));setNum("roomCount",roomList.length);setText("roomStatus",roomList.length?"최신":"확인");setText("sheetState",roomList.length?"자동연동":"확인필요");setText("roomMsg",roomList.length?`명단 ${roomList.length}명 불러옴 (${source||"저장"})`:"명단을 읽지 못했어요.");if(roomList.length){setRoomTime();setGold("정상",source||"저장")}renderList();return roomList.length}
 function showRoomCache(){try{const c=localStorage.getItem("yb_room_cache");if(c){const p=JSON.parse(c)||[];if(p.length){roomList=p;results.roomAll=roomList;setNum("roomCount",roomList.length);setText("roomStatus","저장됨");setText("sheetState","빠른표시");setText("roomMsg",`저장된 명단 ${roomList.length}명 표시 중`);setGold("정상","저장캐시");return true}}catch(e){}setGold("확인중","없음");return false}
 function sheetUrls(){const a=[];const saved=localStorage.getItem("yb_sheet_url_override");if(saved)a.push(["관리자시트",saved]);a.push(["GitHub백업",LOCAL_ROOM_URL],["CSV",DEFAULT_SHEET_URL],["GVIZ",BACKUP_SHEET_URL],["HTMLVIEW",HTMLVIEW_SHEET_URL]);return a}
-async function fetchAnyText(){let last="";for(const [name,u] of sheetUrls()){try{const joiner=u.includes("?")?"&":"?";const res=await fetch(u+joiner+"t="+Date.now(),{cache:"no-store"});if(!res.ok)throw Error("HTTP "+res.status);const txt=await res.text();if(txt&&txt.length>20)return {txt,source:name}}catch(e){last=name+": "+(e.message||e)}}throw Error(last||"명단 연결 실패")}
+async function fetchAnyText(){
+  let last="";
+  for(const [name,u] of sheetUrls()){
+    try{
+      const joiner=u.includes("?")?"&":"?";
+      const res=await fetch(u+joiner+"t="+Date.now(),{cache:"no-store"});
+      if(!res.ok) throw Error("HTTP "+res.status);
+      const txt=await res.text();
+      if(!txt || txt.length<20) throw Error("empty");
+      const testRows=/<table|<tr|<td|<th/i.test(txt)?parseHtmlTable(txt):parseCSV(txt);
+      const testList=rowsToRoom(testRows);
+      if(testList.length>0) return {txt,source:name};
+      last=name+": 0명";
+    }catch(e){
+      last=name+": "+(e.message||e);
+    }
+  }
+  throw Error(last||"명단 연결 실패");
+}
 async function loadRoomList(show=false){const btn=$("loadRoomBtn");try{if(btn)btn.disabled=true;setGold("확인중","자동확인");setText("sheetState","자동확인");if(!roomList.length)setText("roomStatus","확인중");if(!roomList.length)showRoomCache();const got=await fetchAnyText();const count=applyRoomText(got.txt,got.source);if(show)toast(count?"명단 불러오기 완료":"명단 확인 필요")}catch(e){if(roomList.length){setText("roomStatus","저장됨");setText("sheetState","캐시사용");setText("roomMsg","최신 연동은 실패해서 저장된 명단을 사용 중입니다.");setGold("정상","저장캐시");if(show)toast("저장된 명단 사용")}else{setText("roomStatus","실패");setText("sheetState","오류");setText("roomMsg","명단 연결 실패. 관리자에서 명단을 붙여넣어 저장해주세요.");setGold("오류","연동실패");if(show)toast("명단 연결 실패")}}finally{if(btn)btn.disabled=false}}
 function pickFile(zip, exactName){const exact=exactName.toLowerCase();return Object.keys(zip.files).filter(n=>!zip.files[n].dir).find(n=>n.toLowerCase().replace(/\\/g,"/").split("/").pop()===exact)}
 function extractHtmlIds(text){let ids=[],m;const href=/href=["']https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)\/?["']/g;while((m=href.exec(text)))ids.push(m[1]);if(ids.length)return uniq(ids);const url=/https?:\/\/(?:www\.)?instagram\.com\/(?:_u\/)?([A-Za-z0-9._]+)/g;while((m=url.exec(text)))ids.push(m[1]);return uniq(ids)}
@@ -38,5 +56,6 @@ function resetSheet(){localStorage.removeItem("yb_sheet_url_override");localStor
 function saveManualList(){const text=$("manualList").value.trim();if(!text){toast("명단을 붙여넣어주세요");return}const count=applyRoomText(text,"수동저장");setText("adminMsg",`붙여넣은 명단 ${count}명 저장 완료`);toast("명단 저장 완료")}
 function clearRoomCache(){localStorage.removeItem("yb_room_cache");roomList=[];results.roomAll=[];setNum("roomCount",0);setText("roomStatus","대기");setText("sheetState","대기");setText("roomMsg","저장된 명단 삭제 완료");setGold("정상","삭제됨");toast("삭제 완료")}
 function bindEvents(){$("loadRoomBtn").addEventListener("click",()=>loadRoomList(true));$("analyzeBtn").addEventListener("click",analyze);$("clearBtn").addEventListener("click",()=>clearNumbers(true));$("copyBtn").addEventListener("click",copyCurrent);$("q").addEventListener("input",renderList);$("adminLoginBtn").addEventListener("click",adminLogin);$("adminPw").addEventListener("keydown",e=>{if(e.key==="Enter")adminLogin()});$("saveSheetBtn").addEventListener("click",saveSheet);$("resetSheetBtn").addEventListener("click",resetSheet);$("saveManualBtn").addEventListener("click",saveManualList);$("clearRoomBtn").addEventListener("click",clearRoomCache);document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{const target=b.dataset.scroll;if(target==="top")scrollTo(0,0);else $(target)?.scrollIntoView({behavior:"smooth"})}));$("installBtn").addEventListener("click",()=>toast("브라우저 메뉴에서 홈 화면에 추가를 눌러주세요"))}
-window.addEventListener("load",()=>{bindEvents();clearNumbers(false);loadRoomTime();showRoomCache();setTimeout(()=>loadRoomList(false),120);setTimeout(()=>{if(!roomList.length)loadRoomList(false)},5000)});
+window.addEventListener("DOMContentLoaded",()=>{try{bindEvents()}catch(e){}});
+window.addEventListener("load",()=>{clearNumbers(false);loadRoomTime();showRoomCache();setTimeout(()=>loadRoomList(false),120);setTimeout(()=>{if(!roomList.length)loadRoomList(false)},5000)});
 window.addEventListener("pageshow",()=>clearNumbers(false));
